@@ -8,8 +8,6 @@ import javax.validation.Validation;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.validation.dsl.AddressDSL;
-import fm.pattern.validation.model.Address;
 import fm.pattern.validation.sequence.Create;
 import fm.pattern.validation.sequence.Update;
 
@@ -32,12 +30,6 @@ public class PlaceValidationTest {
         onCreate(place().withoutContact().build()).rejected().withErrors("A contact is required.");
     }
 
-    @Test
-    public void path() {
-        Address address = AddressDSL.address().withLocation(null, null).build();
-        onCreate(place().withAddress(address).build()).rejected().withErrors("An address is required.");
-    }
-    
     @Test
     public void shouldNotBeAbleToCreateALocationWhenTheAddressIsNull() {
         onCreate(place().withAddress(null).build()).rejected().withErrors("An address is required.");

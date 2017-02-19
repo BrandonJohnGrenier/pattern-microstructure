@@ -41,12 +41,6 @@ public class ContactValidationTest {
     }
 
     @Test
-    public void shouldNotBeAbleToCreateAContactIfTheMobileNumberAndPhoneNumberAreNotProvided() {
-        onCreate(contact().withMobileNumber("").withPhoneNumber("").build()).rejected().withErrors("Please provide a mobile number or phone number.");
-        onCreate(contact().withMobileNumber("  ").withPhoneNumber("  ").build()).rejected().withErrors("Please provide a mobile number or phone number.");
-    }
-
-    @Test
     public void shouldNotBeAbleToCreateAContactWhenTheMobileNumberIsInvalid() {
         onCreate(contact().withMobileNumber("0426787687").build()).accepted();
         onCreate(contact().withMobileNumber("4426787687").build()).rejected().withErrors("The mobile number supplied does not appear to be a valid mobile number.");
@@ -108,12 +102,6 @@ public class ContactValidationTest {
     public void shouldBeAbleToUpdateAContactIfTheEmailAddressIsNotPresent() {
         onUpdate(contact().withEmailAddress(null).build()).accepted();
         onUpdate(contact().withEmailAddress("").build()).accepted();
-    }
-
-    @Test
-    public void shouldNotBeAbleToUpdateAContactIfTheMobileNumberAndPhoneNumberAreNotProvided() {
-        onUpdate(contact().withMobileNumber("").withPhoneNumber("").build()).rejected().withErrors("Please provide a mobile number or phone number.");
-        onUpdate(contact().withMobileNumber("  ").withPhoneNumber("  ").build()).rejected().withErrors("Please provide a mobile number or phone number.");
     }
 
     @Test
