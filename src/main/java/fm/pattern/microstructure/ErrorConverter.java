@@ -14,8 +14,8 @@ public final class ErrorConverter {
 
     }
 
-    public static <T> List<Error> convert(Set<ConstraintViolation<T>> violations) {
-        List<Error> errors = new ArrayList<Error>();
+    public static <T> List<Consumable> convert(Set<ConstraintViolation<T>> violations) {
+        List<Consumable> errors = new ArrayList<Consumable>();
         if (violations == null || violations.isEmpty()) {
             return errors;
         }
@@ -25,7 +25,7 @@ public final class ErrorConverter {
                 String code = violation.getMessageTemplate().replace("{", "").replace("}", "");
                 String description = violation.getMessage();
                 String property = violation.getPropertyPath().toString();
-                errors.add(new Error(code, description, property));
+                errors.add(new Consumable(code, description, property));
             }
         }
 
