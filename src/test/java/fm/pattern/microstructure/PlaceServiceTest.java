@@ -63,7 +63,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("Public places are not currently supported.");
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withCode("public.places.unsupported").withDescription("Public places are not currently supported.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -81,8 +81,8 @@ public class PlaceServiceTest {
         Place place = place().build();
         place.setPublic(true);
 
-        Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("Public places are not currently supported.");
+        Result<Place> result = placeService.delete(place);
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withCode("public.places.unsupported").withDescription("Public places are not currently supported.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 

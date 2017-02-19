@@ -123,7 +123,7 @@ public class Result<T> {
     public static <T> Result<T> internal_error(String description) {
         return new Result<T>(null, ResultType.INTERNAL_ERROR, Arrays.asList(convert(description)));
     }
-    
+
     private Result(T instance, ResultType type, List<Consumable> errors) {
         this.instance = instance;
         this.type = type;
@@ -151,17 +151,25 @@ public class Result<T> {
     }
 
     private static Consumable convert(String description) {
-        return new Consumable(null, resolve(description), null);
+        return isCode(description) ? new Consumable(stripBraces(description), resolve(description), null) : new Consumable(null, resolve(description), null);
     }
 
     private static String resolve(String description) {
         if (isBlank(description)) {
             return description;
         }
-        if (description.startsWith("{") && description.endsWith("}")) {
-            return ValidationMessages.getMessage(description.replace("{", "").replace("}", ""));
+        if (isCode(description)) {
+            return ValidationMessages.getMessage(stripBraces(description));
         }
         return description;
+    }
+
+    private static String stripBraces(String text) {
+        return text.replace("{", "").replace("}", "");
+    }
+
+    private static boolean isCode(String text) {
+        return (text.startsWith("{") && text.endsWith("}"));
     }
 
 }

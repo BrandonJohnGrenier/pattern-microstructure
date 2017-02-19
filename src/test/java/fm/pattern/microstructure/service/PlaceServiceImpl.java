@@ -51,7 +51,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.unprocessable_entity(place, new Consumable("PUBER01", "Public places are not currently supported."));
+            return Result.unprocessable_entity(place, new Consumable("public.places.unsupported", "Public places are not currently supported."));
         }
 
         return repository.delete(place);
