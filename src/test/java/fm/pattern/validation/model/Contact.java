@@ -7,10 +7,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import fm.pattern.validation.annotations.MobileNumber;
 import fm.pattern.validation.annotations.PhoneNumber;
-import fm.pattern.validation.sequence.CreateLevel1;
-import fm.pattern.validation.sequence.CreateLevel2;
-import fm.pattern.validation.sequence.UpdateLevel1;
-import fm.pattern.validation.sequence.UpdateLevel2;
+import fm.pattern.validation.sequences.CreateLevel1;
+import fm.pattern.validation.sequences.CreateLevel2;
+import fm.pattern.validation.sequences.UpdateLevel1;
+import fm.pattern.validation.sequences.UpdateLevel2;
 
 public class Contact {
 

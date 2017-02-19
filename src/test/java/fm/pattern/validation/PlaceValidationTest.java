@@ -9,42 +9,42 @@ public class PlaceValidationTest extends ValidationTest {
 
     @Test
     public void shouldBeAbleToCreateALocation() {
-        create(place().build()).accepted();
+        assertCreate(place().build()).accepted();
     }
 
     @Test
     public void shouldNotBeAbleToCreateALocationWhenTheContactIsNull() {
-        create(place().withoutContact().build()).rejected().withDescription("A contact is required.");
+        assertCreate(place().withoutContact().build()).rejected().withDescription("A contact is required.");
     }
 
     @Test
     public void shouldNotBeAbleToCreateALocationWhenTheAddressIsNull() {
-        create(place().withAddress(null).build()).rejected().withDescription("An address is required.");
+        assertCreate(place().withAddress(null).build()).rejected().withDescription("An address is required.");
     }
 
     @Test
     public void shouldNotBeAbleToCreateALocationWhenTheInstructionsAreTooLong() {
-        create(place().withInstructions(randomAlphabetic(251)).build()).rejected().withDescription("Instructions cannot be greater than 250 characters.");
+        assertCreate(place().withInstructions(randomAlphabetic(251)).build()).rejected().withDescription("Instructions cannot be greater than 250 characters.");
     }
 
     @Test
     public void shouldBeAbleToUpdateALocation() {
-        update(place().build()).accepted();
+        assertUpdate(place().build()).accepted();
     }
 
     @Test
     public void shouldNotBeAbleToUpdateALocationWhenTheContactIsNull() {
-        update(place().withoutContact().build()).rejected().withDescription("A contact is required.");
+        assertUpdate(place().withoutContact().build()).rejected().withDescription("A contact is required.");
     }
 
     @Test
     public void shouldNotBeAbleToUpdateALocationWhenTheAddressIsNull() {
-        update(place().withAddress(null).build()).rejected().withDescription("An address is required.");
+        assertUpdate(place().withAddress(null).build()).rejected().withDescription("An address is required.");
     }
 
     @Test
     public void shouldNotBeAbleToUpdateALocationWhenTheInstructionsAreTooLong() {
-        update(place().withInstructions(randomAlphabetic(251)).build()).rejected().withDescription("Instructions cannot be greater than 250 characters.");
+        assertUpdate(place().withInstructions(randomAlphabetic(251)).build()).rejected().withDescription("Instructions cannot be greater than 250 characters.");
     }
 
 }

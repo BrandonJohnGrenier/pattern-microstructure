@@ -1,4 +1,4 @@
-package fm.pattern.validation.sequence;
+package fm.pattern.validation.sequences;
 
 import javax.validation.GroupSequence;
 

@@ -29,6 +29,11 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
         return this;
     }
 
+    public ResultAssertions withType(ErrorType type) {
+        Assertions.assertThat(actual.getType()).isEqualTo(type);
+        return this;
+    }
+
     public ResultAssertions withCode(String... codes) {
         Assertions.assertThat(codes.length).describedAs("Expected " + codes.length + " error codes but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
         for (String code : codes) {
@@ -36,7 +41,7 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
         }
         return this;
     }
-    
+
     public ResultAssertions withDescription(String... descriptions) {
         Assertions.assertThat(descriptions.length).describedAs("Expected " + descriptions.length + " error descriptions but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
         for (String error : descriptions) {

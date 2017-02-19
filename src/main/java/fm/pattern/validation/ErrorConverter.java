@@ -17,7 +17,7 @@ public final class ErrorConverter {
 
         for (ConstraintViolation<T> violation : violations) {
             if (isNotEmpty(violation.getMessage())) {
-                String code = violation.getMessageTemplate();
+                String code = violation.getMessageTemplate().replace("{", "").replace("}", "");
                 String description = violation.getMessage();
                 String property = violation.getPropertyPath().toString();
                 result.withError(new Error(code, description, property));

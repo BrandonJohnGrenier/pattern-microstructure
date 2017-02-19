@@ -2,8 +2,8 @@ package fm.pattern.validation.model;
 
 import javax.validation.constraints.NotNull;
 
-import fm.pattern.validation.sequence.CreateLevel1;
-import fm.pattern.validation.sequence.UpdateLevel1;
+import fm.pattern.validation.sequences.CreateLevel1;
+import fm.pattern.validation.sequences.UpdateLevel1;
 
 public class Location {
 
