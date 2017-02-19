@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <name>Pattern Validation</name>
+    <name>Pattern Microstructure</name>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fm.pattern</groupId>
-    <artifactId>pattern-validation</artifactId>
+    <artifactId>pattern-microstructure</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/BrandonJohnGrenier/pattern-validation.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/BrandonJohnGrenier/pattern-microstructure.git</developerConnection>
     </scm>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -128,7 +128,7 @@
               <configuration>
                   <goals>deploy</goals>
                   <autoversionsubmodules>true</autoversionsubmodules>
-                  <tagNameFormat>pattern-validation-@{project.version}.RELEASE</tagNameFormat>
+                  <tagNameFormat>pattern-microstructure-@{project.version}.RELEASE</tagNameFormat>
               </configuration>
               <dependencies>
                   <dependency>
