@@ -1,4 +1,4 @@
-package fm.pattern.microstructure.model.service;
+package fm.pattern.microstructure.service;
 
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.model.Place;
