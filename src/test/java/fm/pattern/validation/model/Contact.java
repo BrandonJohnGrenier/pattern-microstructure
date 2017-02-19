@@ -18,14 +18,14 @@ public class Contact {
     @Size(max = 50, message = "{contact.name.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
     private String name;
 
-    @PhoneNumber(message = "{contact.phoneNumber.format}", groups = { CreateLevel2.class, UpdateLevel2.class })
+    @PhoneNumber(message = "{contact.phone_number.format}", groups = { CreateLevel2.class, UpdateLevel2.class })
     private String phoneNumber;
 
-    @MobileNumber(message = "{contact.mobileNumber.format}", groups = { CreateLevel2.class, UpdateLevel2.class })
+    @MobileNumber(message = "{contact.mobile_number.format}", groups = { CreateLevel2.class, UpdateLevel2.class })
     private String mobileNumber;
 
-    @Size(max = 80, message = "{contact.emailAddress.size}", groups = { CreateLevel1.class, UpdateLevel1.class })
-    @Email(message = "{contact.emailAddress.format}", groups = { CreateLevel2.class, UpdateLevel2.class })
+    @Size(max = 80, message = "{contact.email_address.size}", groups = { CreateLevel1.class, UpdateLevel1.class })
+    @Email(message = "{contact.email_address.format}", groups = { CreateLevel2.class, UpdateLevel2.class })
     private String emailAddress;
 
     public Contact() {

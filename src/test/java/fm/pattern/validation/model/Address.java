@@ -35,11 +35,11 @@ public class Address {
     @Size(max = 50, message = "{address.country.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
     private String country;
 
-    @NotBlank(message = "{address.postCode.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-    @Size(max = 10, message = "{address.postCode.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+    @NotBlank(message = "{address.post_code.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+    @Size(max = 10, message = "{address.post_code.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
     private String postCode;
 
-    @Size(max = 500, message = "{address.formattedAddress.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+    @Size(max = 500, message = "{address.formatted_address.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
     private String formattedAddress;
 
     @Valid

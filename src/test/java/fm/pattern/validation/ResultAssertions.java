@@ -29,7 +29,7 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
         return this;
     }
 
-    public ResultAssertions withType(ErrorType type) {
+    public ResultAssertions withType(ResultType type) {
         Assertions.assertThat(actual.getType()).isEqualTo(type);
         return this;
     }

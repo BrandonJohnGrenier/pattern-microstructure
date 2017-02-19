@@ -7,8 +7,11 @@ import fm.pattern.validation.exceptions.EntityNotFoundException;
 import fm.pattern.validation.exceptions.InternalErrorException;
 import fm.pattern.validation.exceptions.UnprocessableEntityException;
 
-public enum ErrorType {
+public enum ResultType {
 
+    CREATED(201),
+    UPDATED(200),
+    DELETED(204),
     BAD_REQUEST(BadRequestException.class, 400),
     NOT_AUTHENTICATED(AuthenticationException.class, 401),
     NOT_AUTHORIZED(AuthorizationException.class, 403),
@@ -20,7 +23,11 @@ public enum ErrorType {
     private final Class<?> exception;
     private final Integer code;
 
-    private ErrorType(Class<?> exception, Integer code) {
+    private ResultType(Integer code) {
+        this(null, code);
+    }
+    
+    private ResultType(Class<?> exception, Integer code) {
         this.exception = exception;
         this.code = code;
     }
