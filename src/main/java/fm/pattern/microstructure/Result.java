@@ -168,6 +168,10 @@ public class Result<T> {
     }
 
     public ConsumableException raise() {
+        if (type == null || type.getException() == null) {
+            return null;
+        }
+
         try {
             Constructor<?> constructor = type.getException().getDeclaredConstructor(List.class);
             constructor.setAccessible(true);

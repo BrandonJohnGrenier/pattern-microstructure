@@ -138,4 +138,10 @@ public class ResultTest {
         assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
     }
 
+    @Test
+    public void shouldNotRaiseAnExceptionIfTheResultTypeDoesNotHaveAnException() {
+        Result<String> result = Result.accept("All good");
+        assertThat(result.raise()).isNull();
+    }
+
 }
