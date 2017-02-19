@@ -29,9 +29,17 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
         return this;
     }
 
-    public ResultAssertions withErrors(String... errors) {
-        Assertions.assertThat(errors.length).describedAs("Expected " + errors.length + " errors but found " + actual.getErrors().size() + " errors: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
-        for (String error : errors) {
+    public ResultAssertions withCode(String... codes) {
+        Assertions.assertThat(codes.length).describedAs("Expected " + codes.length + " error codes but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
+        for (String code : codes) {
+            Assertions.assertThat(actual.getErrors()).extracting("code").contains(code);
+        }
+        return this;
+    }
+    
+    public ResultAssertions withDescription(String... descriptions) {
+        Assertions.assertThat(descriptions.length).describedAs("Expected " + descriptions.length + " error descriptions but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
+        for (String error : descriptions) {
             Assertions.assertThat(actual.getErrors()).extracting("description").contains(error);
         }
         return this;
