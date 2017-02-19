@@ -2,11 +2,11 @@ package fm.pattern.validation;
 
 import javax.validation.Validator;
 
-class ValidationServiceImpl implements ValidationService {
+public class SimpleValidationService implements ValidationService {
 
     private final Validator validator;
 
-    ValidationServiceImpl(Validator validator) {
+    public SimpleValidationService(Validator validator) {
         this.validator = validator;
     }
 
