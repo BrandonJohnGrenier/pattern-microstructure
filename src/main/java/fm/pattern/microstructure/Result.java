@@ -57,11 +57,11 @@ public class Result<T> {
     }
 
     public static <T> Result<T> unprocessable_entity(T instance, Consumable error) {
-        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(error));
+        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(error));
     }
 
     public static <T> Result<T> unprocessable_entity(T instance, String description) {
-        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(convert(description)));
+        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(convert(description)));
     }
 
     public static <T> Result<T> unprocessable_entity(List<Consumable> errors) {

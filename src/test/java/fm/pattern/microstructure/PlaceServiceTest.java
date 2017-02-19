@@ -1,7 +1,9 @@
 package fm.pattern.microstructure;
 
 import static fm.pattern.microstructure.PlatformAssertions.assertThat;
+import static fm.pattern.microstructure.ResultType.UNPROCESSABLE_ENTITY;
 import static fm.pattern.microstructure.dsl.PlaceDSL.place;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import javax.validation.Validation;
 
@@ -37,11 +39,31 @@ public class PlaceServiceTest {
     }
 
     @Test
+    public void shouldNotBeAbleToCreateAPlaceIfThePlaceIsPublic() {
+        Place place = place().build();
+        place.setPublic(true);
+
+        Result<Place> result = placeService.create(place);
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("Public places are not currently supported.");
+        assertThat(result.getInstance()).isEqualTo(place);
+    }
+
+    @Test
     public void shouldBeAbleToUpdateAPlace() {
         Place place = place().build();
 
         Result<Place> result = placeService.update(place);
         assertThat(result).accepted().withType(ResultType.UPDATED);
+        assertThat(result.getInstance()).isEqualTo(place);
+    }
+
+    @Test
+    public void shouldNotBeAbleToUpdateAPlaceIfThePlaceIsPublic() {
+        Place place = place().build();
+        place.setPublic(true);
+
+        Result<Place> result = placeService.update(place);
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("Public places are not currently supported.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -53,5 +75,15 @@ public class PlaceServiceTest {
         assertThat(result).accepted().withType(ResultType.DELETED);
         assertThat(result.getInstance()).isEqualTo(place);
     }
-    
+
+    @Test
+    public void shouldNotBeAbleToDeleteAPlaceIfThePlaceIsPublic() {
+        Place place = place().build();
+        place.setPublic(true);
+
+        Result<Place> result = placeService.update(place);
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("Public places are not currently supported.");
+        assertThat(result.getInstance()).isEqualTo(place);
+    }
+
 }
