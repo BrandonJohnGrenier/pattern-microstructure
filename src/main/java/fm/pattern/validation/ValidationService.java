@@ -2,6 +2,6 @@ package fm.pattern.validation;
 
 public interface ValidationService {
 
-    <T> ValidationResult validate(T instance, Class<?>... type);
+    <T> Result<T> validate(T instance, Class<?>... type);
 
 }

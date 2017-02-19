@@ -10,8 +10,9 @@ public class SimpleValidationService implements ValidationService {
         this.validator = validator;
     }
 
-    public <T> ValidationResult validate(T instance, Class<?>... types) {
-        return ValidationUtils.validate(validator.validate(instance, types));
+    public <T> Result<T> validate(T instance, Class<?>... types) {
+        ValidationResult result = ErrorConverter.convert(validator.validate(instance, types));
+        return result.containsErrors() ? Result.reject(instance, result.getErrors()) : Result.accept(instance);
     }
 
 }

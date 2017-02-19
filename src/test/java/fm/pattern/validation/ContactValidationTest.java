@@ -161,14 +161,12 @@ public class ContactValidationTest {
     }
 
     public <T> ResultAssertions onCreate(T instance) {
-        ValidationResult validationResult = validationService.validate(instance, Create.class);
-        Result<T> result = validationResult.containsErrors() ? validationResult.reject(instance) : Result.accept(instance);
+        Result<T> result = validationService.validate(instance, Create.class);
         return PlatformAssertions.assertThat(result);
     }
 
     public <T> ResultAssertions onUpdate(T instance) {
-        ValidationResult validationResult = validationService.validate(instance, Update.class);
-        Result<T> result = validationResult.containsErrors() ? validationResult.reject(instance) : Result.accept(instance);
+        Result<T> result = validationService.validate(instance, Update.class);
         return PlatformAssertions.assertThat(result);
     }
 

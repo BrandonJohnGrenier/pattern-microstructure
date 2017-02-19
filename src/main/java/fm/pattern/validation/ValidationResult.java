@@ -1,44 +1,45 @@
 package fm.pattern.validation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ValidationResult {
 
-	private List<String> messages = new ArrayList<String>();
-	private boolean authorizationErrors = false;
+    private final List<Error> errors = new ArrayList<Error>();
 
-	public ValidationResult() {
+    public ValidationResult() {
 
-	}
+    }
 
-	public ValidationResult(List<String> messages) {
-		this.messages.addAll(messages);
-	}
+    public ValidationResult(List<Error> errors) {
+        withErrors(errors);
+    }
 
-	public List<String> getMessages() {
-		return messages;
-	}
+    public ValidationResult withError(Error error) {
+        return withErrors(Arrays.asList(error));
+    }
 
-	public ValidationResult withMessages(List<String> messages) {
-		this.messages.addAll(messages);
-		return this;
-	}
+    public ValidationResult withErrors(List<Error> errors) {
+        this.errors.addAll(errors.stream().filter(error -> error != null).collect(Collectors.toList()));
+        return this;
+    }
 
-	public <T> Result<T> reject(T instance) {
-		return Result.reject(instance, getMessages());
-	}
+    public List<Error> getErrors() {
+        return new ArrayList<Error>(errors);
+    }
 
-	public boolean containsErrors() {
-		return !messages.isEmpty();
-	}
+    public <T> Result<T> reject(T instance) {
+        return Result.reject(instance, getErrors());
+    }
 
-	public void authorizationErrorDetected() {
-		this.authorizationErrors = true;
-	}
+    public <T> Result<T> accept(T instance) {
+        return Result.accept(instance);
+    }
 
-	public boolean containsAuthorizationErrors() {
-		return authorizationErrors;
-	}
+    public boolean containsErrors() {
+        return !errors.isEmpty();
+    }
 
 }
