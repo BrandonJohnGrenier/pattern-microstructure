@@ -5,6 +5,7 @@ import fm.pattern.microstructure.exceptions.AuthorizationException;
 import fm.pattern.microstructure.exceptions.BadRequestException;
 import fm.pattern.microstructure.exceptions.EntityNotFoundException;
 import fm.pattern.microstructure.exceptions.InternalErrorException;
+import fm.pattern.microstructure.exceptions.ResourceConflictException;
 import fm.pattern.microstructure.exceptions.UnprocessableEntityException;
 
 public enum ResultType {
@@ -16,7 +17,7 @@ public enum ResultType {
     NOT_AUTHENTICATED(AuthenticationException.class, 401),
     NOT_AUTHORIZED(AuthorizationException.class, 403),
     NOT_FOUND(EntityNotFoundException.class, 404),
-    CONFLICT(UnprocessableEntityException.class, 409),
+    CONFLICT(ResourceConflictException.class, 409),
     UNPROCESSABLE_ENTITY(UnprocessableEntityException.class, 422),
     INTERNAL_ERROR(InternalErrorException.class, 500);
 

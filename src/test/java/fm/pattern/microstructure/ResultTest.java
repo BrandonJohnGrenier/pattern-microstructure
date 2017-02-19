@@ -1,9 +1,16 @@
 package fm.pattern.microstructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import org.junit.Test;
 
+import fm.pattern.microstructure.exceptions.AuthenticationException;
+import fm.pattern.microstructure.exceptions.AuthorizationException;
+import fm.pattern.microstructure.exceptions.BadRequestException;
+import fm.pattern.microstructure.exceptions.EntityNotFoundException;
+import fm.pattern.microstructure.exceptions.InternalErrorException;
+import fm.pattern.microstructure.exceptions.ResourceConflictException;
 import fm.pattern.microstructure.exceptions.UnprocessableEntityException;
 
 public class ResultTest {
@@ -72,6 +79,60 @@ public class ResultTest {
     public void shouldBeAbleToRaiseAnUnprocessableEntityException() {
         Result<String> result = Result.reject("An error description");
         UnprocessableEntityException exception = (UnprocessableEntityException) result.raise();
+
+        assertThat(exception.getErrors()).hasSize(1);
+        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+    }
+
+    @Test
+    public void shouldBeAbleToRaiseAResourceConflictException() {
+        Result<String> result = Result.conflict("An error description");
+        ResourceConflictException exception = (ResourceConflictException) result.raise();
+
+        assertThat(exception.getErrors()).hasSize(1);
+        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+    }
+
+    @Test
+    public void shouldBeAbleToRaiseABadRequestException() {
+        Result<String> result = Result.bad_request("An error description");
+        BadRequestException exception = (BadRequestException) result.raise();
+
+        assertThat(exception.getErrors()).hasSize(1);
+        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+    }
+
+    @Test
+    public void shouldBeAbleToRaiseAnAuthenticationException() {
+        Result<String> result = Result.not_authenticated("An error description");
+        AuthenticationException exception = (AuthenticationException) result.raise();
+
+        assertThat(exception.getErrors()).hasSize(1);
+        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+    }
+
+    @Test
+    public void shouldBeAbleToRaiseAnAuthorizationException() {
+        Result<String> result = Result.not_authorized("An error description");
+        AuthorizationException exception = (AuthorizationException) result.raise();
+
+        assertThat(exception.getErrors()).hasSize(1);
+        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+    }
+
+    @Test
+    public void shouldBeAbleToRaiseAnEntityNotFoundException() {
+        Result<String> result = Result.not_found("An error description");
+        EntityNotFoundException exception = (EntityNotFoundException) result.raise();
+
+        assertThat(exception.getErrors()).hasSize(1);
+        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+    }
+
+    @Test
+    public void shouldBeAbleToRaiseAnInternalErrorException() {
+        Result<String> result = Result.internal_error("An error description");
+        InternalErrorException exception = (InternalErrorException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
         assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
