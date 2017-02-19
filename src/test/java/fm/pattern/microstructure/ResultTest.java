@@ -54,4 +54,16 @@ public class ResultTest {
         assertThat(result.getType()).isEqualTo(ResultType.NOT_AUTHENTICATED);
     }
 
+    @Test
+    public void shouldBeAbleToProduceAResultWithAResultTypeOfBadRequest() {
+        Result<String> result = Result.bad_request("Document is invalid.");
+        assertThat(result.getType()).isEqualTo(ResultType.BAD_REQUEST);
+    }
+
+    @Test
+    public void shouldBeAbleToProduceAResultWithAResultTypeOfInternalError() {
+        Result<String> result = Result.internal_error("Unable to process your request.");
+        assertThat(result.getType()).isEqualTo(ResultType.INTERNAL_ERROR);
+    }
+
 }

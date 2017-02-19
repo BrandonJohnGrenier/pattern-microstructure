@@ -108,6 +108,22 @@ public class Result<T> {
         return new Result<T>(null, ResultType.CONFLICT, Arrays.asList(convert(description)));
     }
 
+    public static <T> Result<T> bad_request(Error error) {
+        return new Result<T>(null, ResultType.BAD_REQUEST, Arrays.asList(error));
+    }
+
+    public static <T> Result<T> bad_request(String description) {
+        return new Result<T>(null, ResultType.BAD_REQUEST, Arrays.asList(convert(description)));
+    }
+
+    public static <T> Result<T> internal_error(Error error) {
+        return new Result<T>(null, ResultType.INTERNAL_ERROR, Arrays.asList(error));
+    }
+
+    public static <T> Result<T> internal_error(String description) {
+        return new Result<T>(null, ResultType.INTERNAL_ERROR, Arrays.asList(convert(description)));
+    }
+    
     private Result(T instance, ResultType type, List<Error> errors) {
         this.instance = instance;
         this.type = type;
