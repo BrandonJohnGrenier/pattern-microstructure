@@ -1,8 +1,10 @@
 package fm.pattern.microstructure;
 
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
+
+import fm.pattern.microstructure.exceptions.UnprocessableEntityException;
 
 public class ResultTest {
 
@@ -64,6 +66,15 @@ public class ResultTest {
     public void shouldBeAbleToProduceAResultWithAResultTypeOfInternalError() {
         Result<String> result = Result.internal_error("Unable to process your request.");
         assertThat(result.getType()).isEqualTo(ResultType.INTERNAL_ERROR);
+    }
+
+    @Test
+    public void shouldBeAbleToRaiseAnUnprocessableEntityException() {
+        Result<String> result = Result.reject("An error description");
+        UnprocessableEntityException exception = (UnprocessableEntityException) result.raise();
+
+        assertThat(exception.getErrors()).hasSize(1);
+        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
     }
 
 }

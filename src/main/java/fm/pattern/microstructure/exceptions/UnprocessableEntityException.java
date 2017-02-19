@@ -1,29 +1,23 @@
 package fm.pattern.microstructure.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class UnprocessableEntityException extends RuntimeException {
+import fm.pattern.microstructure.Consumable;
 
-	private static final long serialVersionUID = -7333875229824655548L;
-	private final List<String> errors = new ArrayList<String>();
+public class UnprocessableEntityException extends ConsumableException {
 
-	public UnprocessableEntityException() {
+    private static final long serialVersionUID = -7333875229824655548L;
 
-	}
+    public UnprocessableEntityException() {
 
-	public UnprocessableEntityException(String message) {
-		super(message);
-		this.errors.add(message);
-	}
+    }
 
-	public UnprocessableEntityException(List<String> errors) {
-		super(errors == null ? "" : errors.toString());
-		this.errors.addAll(errors);
-	}
+    public UnprocessableEntityException(List<Consumable> errors) {
+        super(errors);
+    }
 
-	public List<String> getErrors() {
-		return errors;
-	}
+    public UnprocessableEntityException(String message, List<Consumable> errors) {
+        super(message, errors);
+    }
 
 }

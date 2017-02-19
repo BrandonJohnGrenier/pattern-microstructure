@@ -1,29 +1,23 @@
 package fm.pattern.microstructure.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AuthenticationException extends RuntimeException {
+import fm.pattern.microstructure.Consumable;
 
-	private static final long serialVersionUID = -7022235345324655548L;
-	private final List<String> errors = new ArrayList<String>();
+public class AuthenticationException extends ConsumableException {
 
-	public AuthenticationException() {
+    private static final long serialVersionUID = -7022235345324655548L;
 
-	}
+    public AuthenticationException() {
 
-	public AuthenticationException(String message) {
-		super(message);
-		this.errors.add(message);
-	}
+    }
 
-	public AuthenticationException(List<String> errors) {
-		super(errors == null ? "" : errors.toString());
-		this.errors.addAll(errors);
-	}
+    public AuthenticationException(List<Consumable> errors) {
+        super(errors);
+    }
 
-	public List<String> getErrors() {
-		return errors;
-	}
+    public AuthenticationException(String message, List<Consumable> errors) {
+        super(message, errors);
+    }
 
 }

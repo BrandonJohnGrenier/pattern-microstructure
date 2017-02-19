@@ -1,29 +1,23 @@
 package fm.pattern.microstructure.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class EntityNotFoundException extends RuntimeException {
+import fm.pattern.microstructure.Consumable;
 
-	private static final long serialVersionUID = -7099875229824655548L;
-	private final List<String> errors = new ArrayList<String>();
+public class EntityNotFoundException extends ConsumableException {
 
-	public EntityNotFoundException() {
+    private static final long serialVersionUID = -7099875229824655548L;
 
-	}
+    public EntityNotFoundException() {
 
-	public EntityNotFoundException(String message) {
-		super(message);
-		this.errors.add(message);
-	}
+    }
 
-	public EntityNotFoundException(List<String> errors) {
-		super(errors == null ? "" : errors.toString());
-		this.errors.addAll(errors);
-	}
+    public EntityNotFoundException(List<Consumable> errors) {
+        super(errors);
+    }
 
-	public List<String> getErrors() {
-		return errors;
-	}
+    public EntityNotFoundException(String message, List<Consumable> errors) {
+        super(message, errors);
+    }
 
 }

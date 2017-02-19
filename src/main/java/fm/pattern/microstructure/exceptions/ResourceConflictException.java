@@ -1,29 +1,23 @@
 package fm.pattern.microstructure.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ResourceConflictException extends RuntimeException {
+import fm.pattern.microstructure.Consumable;
 
-	private static final long serialVersionUID = -7735345324657785548L;
-	private final List<String> errors = new ArrayList<String>();
+public class ResourceConflictException extends ConsumableException {
 
-	public ResourceConflictException() {
+    private static final long serialVersionUID = -7735345324657785548L;
 
-	}
+    public ResourceConflictException() {
 
-	public ResourceConflictException(String message) {
-		super(message);
-		this.errors.add(message);
-	}
+    }
 
-	public ResourceConflictException(List<String> errors) {
-		super(errors == null ? "" : errors.toString());
-		this.errors.addAll(errors);
-	}
+    public ResourceConflictException(List<Consumable> errors) {
+        super(errors);
+    }
 
-	public List<String> getErrors() {
-		return errors;
-	}
+    public ResourceConflictException(String message, List<Consumable> errors) {
+        super(message, errors);
+    }
 
 }

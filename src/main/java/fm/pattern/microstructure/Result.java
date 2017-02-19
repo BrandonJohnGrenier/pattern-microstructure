@@ -2,9 +2,12 @@ package fm.pattern.microstructure;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import fm.pattern.microstructure.exceptions.ConsumableException;
 
 public class Result<T> {
 
@@ -139,7 +142,7 @@ public class Result<T> {
     public static <T> Result<T> bad_request(T instance, String description) {
         return new Result<T>(instance, ResultType.BAD_REQUEST, Arrays.asList(convert(description)));
     }
-    
+
     public static <T> Result<T> bad_request(Consumable error) {
         return new Result<T>(null, ResultType.BAD_REQUEST, Arrays.asList(error));
     }
@@ -162,6 +165,17 @@ public class Result<T> {
 
     public static <T> Result<T> internal_error(String description) {
         return new Result<T>(null, ResultType.INTERNAL_ERROR, Arrays.asList(convert(description)));
+    }
+
+    public ConsumableException raise() {
+        try {
+            Constructor<?> constructor = type.getException().getDeclaredConstructor(List.class);
+            constructor.setAccessible(true);
+            return (ConsumableException) constructor.newInstance(errors);
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     private Result(T instance, ResultType type, List<Consumable> errors) {

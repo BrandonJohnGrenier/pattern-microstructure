@@ -1,29 +1,23 @@
 package fm.pattern.microstructure.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class BadRequestException extends RuntimeException {
+import fm.pattern.microstructure.Consumable;
 
-	private static final long serialVersionUID = -11353433548L;
-	private final List<String> errors = new ArrayList<String>();
+public class BadRequestException extends ConsumableException {
 
-	public BadRequestException() {
+    private static final long serialVersionUID = -11353433548L;
 
-	}
+    public BadRequestException() {
 
-	public BadRequestException(String message) {
-		super(message);
-		this.errors.add(message);
-	}
+    }
 
-	public BadRequestException(List<String> errors) {
-		super(errors == null ? "" : errors.toString());
-		this.errors.addAll(errors);
-	}
+    public BadRequestException(List<Consumable> errors) {
+        super(errors);
+    }
 
-	public List<String> getErrors() {
-		return errors;
-	}
+    public BadRequestException(String message, List<Consumable> errors) {
+        super(message, errors);
+    }
 
 }

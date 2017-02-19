@@ -1,29 +1,23 @@
 package fm.pattern.microstructure.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class InternalErrorException extends RuntimeException {
+import fm.pattern.microstructure.Consumable;
 
-	private static final long serialVersionUID = -7093595345324626648L;
-	private final List<String> errors = new ArrayList<String>();
+public class InternalErrorException extends ConsumableException {
 
-	public InternalErrorException() {
+    private static final long serialVersionUID = -7093595345324626648L;
 
-	}
+    public InternalErrorException() {
 
-	public InternalErrorException(String message) {
-		super(message);
-		this.errors.add(message);
-	}
+    }
 
-	public InternalErrorException(List<String> errors) {
-		super(errors == null ? "" : errors.toString());
-		this.errors.addAll(errors);
-	}
+    public InternalErrorException(List<Consumable> errors) {
+        super(errors);
+    }
 
-	public List<String> getErrors() {
-		return errors;
-	}
+    public InternalErrorException(String message, List<Consumable> errors) {
+        super(message, errors);
+    }
 
 }
