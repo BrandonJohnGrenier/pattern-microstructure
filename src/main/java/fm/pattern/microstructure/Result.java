@@ -9,8 +9,8 @@ import java.util.List;
 public class Result<T> {
 
     private final T instance;
-    private final List<Error> errors = new ArrayList<Error>();
     private final ResultType type;
+    private final List<Error> errors = new ArrayList<Error>();
 
     public static <T> Result<T> accept(T instance) {
         return new Result<T>(instance, null, new ArrayList<Error>());
