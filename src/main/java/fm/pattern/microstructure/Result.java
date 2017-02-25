@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fm.pattern.commons.util.JSON;
 import fm.pattern.microstructure.exceptions.ConsumableException;
 
 public class Result<T> {
@@ -228,6 +229,10 @@ public class Result<T> {
 
     private static boolean isCode(String text) {
         return (text.startsWith("{") && text.endsWith("}"));
+    }
+
+    public String toString() {
+        return JSON.stringify(this);
     }
 
 }
