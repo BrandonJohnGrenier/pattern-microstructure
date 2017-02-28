@@ -18,7 +18,7 @@ public class SimpleValidationService implements ValidationService {
     }
 
     public <T> Result<T> validate(T instance, Class<?>... types) {
-        List<Consumable> errors = ErrorConverter.convert(validator.validate(instance, types));
+        List<Reportable> errors = ErrorConverter.convert(validator.validate(instance, types));
         return !errors.isEmpty() ? Result.unprocessable_entity(instance, errors) : accept(instance, types);
     }
 

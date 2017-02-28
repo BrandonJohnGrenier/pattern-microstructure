@@ -8,35 +8,35 @@ import java.util.Arrays;
 import java.util.List;
 
 import fm.pattern.commons.util.JSON;
-import fm.pattern.microstructure.exceptions.ConsumableException;
+import fm.pattern.microstructure.exceptions.ReportableException;
 
 public class Result<T> {
 
     private final T instance;
     private final ResultType type;
-    private final List<Consumable> errors = new ArrayList<Consumable>();
+    private final List<Reportable> errors = new ArrayList<Reportable>();
 
     public static <T> Result<T> accept(T instance) {
-        return new Result<T>(instance, null, new ArrayList<Consumable>());
+        return new Result<T>(instance, null, new ArrayList<Reportable>());
     }
 
     public static <T> Result<T> created(T instance) {
-        return new Result<T>(instance, ResultType.CREATED, new ArrayList<Consumable>());
+        return new Result<T>(instance, ResultType.CREATED, new ArrayList<Reportable>());
     }
 
     public static <T> Result<T> updated(T instance) {
-        return new Result<T>(instance, ResultType.UPDATED, new ArrayList<Consumable>());
+        return new Result<T>(instance, ResultType.UPDATED, new ArrayList<Reportable>());
     }
 
     public static <T> Result<T> deleted(T instance) {
-        return new Result<T>(instance, ResultType.DELETED, new ArrayList<Consumable>());
+        return new Result<T>(instance, ResultType.DELETED, new ArrayList<Reportable>());
     }
 
-    public static <T> Result<T> reject(T instance, List<Consumable> errors) {
+    public static <T> Result<T> reject(T instance, List<Reportable> errors) {
         return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> reject(T instance, Consumable error) {
+    public static <T> Result<T> reject(T instance, Reportable error) {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(error));
     }
 
@@ -44,11 +44,11 @@ public class Result<T> {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> reject(List<Consumable> errors) {
+    public static <T> Result<T> reject(List<Reportable> errors) {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> reject(Consumable error) {
+    public static <T> Result<T> reject(Reportable error) {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(error));
     }
 
@@ -56,11 +56,11 @@ public class Result<T> {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> unprocessable_entity(T instance, List<Consumable> errors) {
+    public static <T> Result<T> unprocessable_entity(T instance, List<Reportable> errors) {
         return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> unprocessable_entity(T instance, Consumable error) {
+    public static <T> Result<T> unprocessable_entity(T instance, Reportable error) {
         return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(error));
     }
 
@@ -68,11 +68,11 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> unprocessable_entity(List<Consumable> errors) {
+    public static <T> Result<T> unprocessable_entity(List<Reportable> errors) {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> unprocessable_entity(Consumable error) {
+    public static <T> Result<T> unprocessable_entity(Reportable error) {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(error));
     }
 
@@ -80,7 +80,7 @@ public class Result<T> {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> not_found(Consumable error) {
+    public static <T> Result<T> not_found(Reportable error) {
         return new Result<T>(null, ResultType.NOT_FOUND, Arrays.asList(error));
     }
 
@@ -88,7 +88,7 @@ public class Result<T> {
         return new Result<T>(null, ResultType.NOT_FOUND, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> not_authorized(T instance, Consumable error) {
+    public static <T> Result<T> not_authorized(T instance, Reportable error) {
         return new Result<T>(instance, ResultType.NOT_AUTHORIZED, Arrays.asList(error));
     }
 
@@ -96,7 +96,7 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.NOT_AUTHORIZED, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> not_authorized(Consumable error) {
+    public static <T> Result<T> not_authorized(Reportable error) {
         return new Result<T>(null, ResultType.NOT_AUTHORIZED, Arrays.asList(error));
     }
 
@@ -104,7 +104,7 @@ public class Result<T> {
         return new Result<T>(null, ResultType.NOT_AUTHORIZED, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> not_authenticated(T instance, Consumable error) {
+    public static <T> Result<T> not_authenticated(T instance, Reportable error) {
         return new Result<T>(instance, ResultType.NOT_AUTHENTICATED, Arrays.asList(error));
     }
 
@@ -112,7 +112,7 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.NOT_AUTHORIZED, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> not_authenticated(Consumable error) {
+    public static <T> Result<T> not_authenticated(Reportable error) {
         return new Result<T>(null, ResultType.NOT_AUTHENTICATED, Arrays.asList(error));
     }
 
@@ -120,7 +120,7 @@ public class Result<T> {
         return new Result<T>(null, ResultType.NOT_AUTHENTICATED, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> conflict(T instance, Consumable error) {
+    public static <T> Result<T> conflict(T instance, Reportable error) {
         return new Result<T>(instance, ResultType.CONFLICT, Arrays.asList(error));
     }
 
@@ -128,7 +128,7 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.CONFLICT, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> conflict(Consumable error) {
+    public static <T> Result<T> conflict(Reportable error) {
         return new Result<T>(null, ResultType.CONFLICT, Arrays.asList(error));
     }
 
@@ -136,7 +136,7 @@ public class Result<T> {
         return new Result<T>(null, ResultType.CONFLICT, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> bad_request(T instance, Consumable error) {
+    public static <T> Result<T> bad_request(T instance, Reportable error) {
         return new Result<T>(instance, ResultType.BAD_REQUEST, Arrays.asList(error));
     }
 
@@ -144,7 +144,7 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.BAD_REQUEST, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> bad_request(Consumable error) {
+    public static <T> Result<T> bad_request(Reportable error) {
         return new Result<T>(null, ResultType.BAD_REQUEST, Arrays.asList(error));
     }
 
@@ -152,7 +152,7 @@ public class Result<T> {
         return new Result<T>(null, ResultType.BAD_REQUEST, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> internal_error(T instance, Consumable error) {
+    public static <T> Result<T> internal_error(T instance, Reportable error) {
         return new Result<T>(instance, ResultType.INTERNAL_ERROR, Arrays.asList(error));
     }
 
@@ -160,7 +160,7 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.INTERNAL_ERROR, Arrays.asList(convert(description)));
     }
 
-    public static <T> Result<T> internal_error(Consumable error) {
+    public static <T> Result<T> internal_error(Reportable error) {
         return new Result<T>(null, ResultType.INTERNAL_ERROR, Arrays.asList(error));
     }
 
@@ -168,28 +168,46 @@ public class Result<T> {
         return new Result<T>(null, ResultType.INTERNAL_ERROR, Arrays.asList(convert(description)));
     }
 
-    public ConsumableException raise() {
-        if (type == null || type.getException() == null) {
+    public ReportableException raise(Class<? extends ReportableException> exception) {
+        if (exception == null) {
             return null;
         }
 
         try {
-            Constructor<?> constructor = type.getException().getDeclaredConstructor(List.class);
+            Constructor<?> constructor = exception.getDeclaredConstructor(List.class);
             constructor.setAccessible(true);
-            return (ConsumableException) constructor.newInstance(errors);
+            return (ReportableException) constructor.newInstance(errors);
         }
         catch (Exception e) {
             return null;
         }
     }
 
-    private Result(T instance, ResultType type, List<Consumable> errors) {
+    public ReportableException raise() {
+        return (type == null || type.getException() == null) ? null : raise(type.getException());
+    }
+
+    private Result(T instance, ResultType type, List<Reportable> errors) {
         this.instance = instance;
         this.type = type;
         this.errors.addAll(errors);
     }
 
     public T getInstance() {
+        return instance;
+    }
+
+    public T orThrow() {
+        if (rejected()) {
+            throw raise();
+        }
+        return instance;
+    }
+
+    public T orThrow(Class<? extends ReportableException> exception) {
+        if (rejected()) {
+            throw raise(exception);
+        }
         return instance;
     }
 
@@ -205,12 +223,12 @@ public class Result<T> {
         return type;
     }
 
-    public List<Consumable> getErrors() {
-        return new ArrayList<Consumable>(this.errors);
+    public List<Reportable> getErrors() {
+        return new ArrayList<Reportable>(this.errors);
     }
 
-    private static Consumable convert(String description) {
-        return isCode(description) ? new Consumable(stripBraces(description), resolve(description), null) : new Consumable(null, resolve(description), null);
+    private static Reportable convert(String description) {
+        return isCode(description) ? new Reportable(stripBraces(description), resolve(description), null) : new Reportable(null, resolve(description), null);
     }
 
     private static String resolve(String description) {

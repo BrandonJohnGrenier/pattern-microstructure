@@ -2,9 +2,9 @@ package fm.pattern.microstructure.exceptions;
 
 import java.util.List;
 
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 
-public class BadRequestException extends ConsumableException {
+public class BadRequestException extends ReportableException {
 
     private static final long serialVersionUID = -11353433548L;
 
@@ -12,11 +12,11 @@ public class BadRequestException extends ConsumableException {
 
     }
 
-    public BadRequestException(List<Consumable> errors) {
+    public BadRequestException(List<Reportable> errors) {
         super(errors);
     }
 
-    public BadRequestException(String message, List<Consumable> errors) {
+    public BadRequestException(String message, List<Reportable> errors) {
         super(message, errors);
     }
 

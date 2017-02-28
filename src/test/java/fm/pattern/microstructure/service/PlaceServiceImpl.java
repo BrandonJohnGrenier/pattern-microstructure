@@ -1,6 +1,6 @@
 package fm.pattern.microstructure.service;
 
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.model.Place;
@@ -51,7 +51,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.unprocessable_entity(place, new Consumable("public.places.unsupported", "Public places are not currently supported."));
+            return Result.unprocessable_entity(place, new Reportable("public.places.unsupported", "Public places are not currently supported."));
         }
 
         return repository.delete(place);

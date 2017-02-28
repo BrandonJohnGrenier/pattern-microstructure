@@ -1,6 +1,6 @@
 package fm.pattern.microstructure.service;
 
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 
 public class DataRepositoryImpl implements DataRepository {
@@ -17,7 +17,7 @@ public class DataRepositoryImpl implements DataRepository {
             return Result.created(instance);
         }
         catch (Exception e) {
-            return Result.internal_error(instance, new Consumable("ERR_INT01", e.getMessage()));
+            return Result.internal_error(instance, new Reportable("ERR_INT01", e.getMessage()));
         }
     }
 

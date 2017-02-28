@@ -18,19 +18,19 @@ package fm.pattern.microstructure;
 
 import fm.pattern.commons.util.JSON;
 
-public class Consumable {
+public class Reportable {
 
     private final String code;
     private final String description;
     private final String property;
 
-    public Consumable(String code, String description, String property) {
+    public Reportable(String code, String description, String property) {
         this.code = code;
         this.description = description;
         this.property = property;
     }
 
-    public Consumable(String code, String description) {
+    public Reportable(String code, String description) {
         this.code = code;
         this.description = description;
         this.property = null;

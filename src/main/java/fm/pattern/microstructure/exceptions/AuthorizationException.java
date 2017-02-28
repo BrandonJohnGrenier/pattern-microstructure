@@ -2,9 +2,9 @@ package fm.pattern.microstructure.exceptions;
 
 import java.util.List;
 
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 
-public class AuthorizationException extends ConsumableException {
+public class AuthorizationException extends ReportableException {
 
     private static final long serialVersionUID = -7022235229824655548L;
 
@@ -12,11 +12,11 @@ public class AuthorizationException extends ConsumableException {
 
     }
 
-    public AuthorizationException(List<Consumable> errors) {
+    public AuthorizationException(List<Reportable> errors) {
         super(errors);
     }
 
-    public AuthorizationException(String message, List<Consumable> errors) {
+    public AuthorizationException(String message, List<Reportable> errors) {
         super(message, errors);
     }
 
