@@ -23,6 +23,15 @@ public class ReportableException extends RuntimeException {
         this.errors.addAll(errors);
     }
 
+    public ReportableException(String message, Reportable error) {
+        super(message);
+        this.errors.add(error);
+    }
+
+    public ReportableException(Reportable error) {
+        this.errors.add(error);
+    }
+
     public List<Reportable> getErrors() {
         return errors;
     }

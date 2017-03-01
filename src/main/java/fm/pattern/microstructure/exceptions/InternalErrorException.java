@@ -20,4 +20,12 @@ public class InternalErrorException extends ReportableException {
         super(message, errors);
     }
 
+    public InternalErrorException(Reportable error) {
+        super(error);
+    }
+
+    public InternalErrorException(String message, Reportable error) {
+        super(message, error);
+    }
+    
 }

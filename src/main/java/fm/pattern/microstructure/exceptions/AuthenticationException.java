@@ -20,4 +20,12 @@ public class AuthenticationException extends ReportableException {
         super(message, errors);
     }
 
+    public AuthenticationException(Reportable error) {
+        super(error);
+    }
+
+    public AuthenticationException(String message, Reportable error) {
+        super(message, error);
+    }
+
 }

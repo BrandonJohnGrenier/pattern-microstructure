@@ -20,4 +20,12 @@ public class EntityNotFoundException extends ReportableException {
         super(message, errors);
     }
 
+    public EntityNotFoundException(Reportable error) {
+        super(error);
+    }
+
+    public EntityNotFoundException(String message, Reportable error) {
+        super(message, error);
+    }
+    
 }

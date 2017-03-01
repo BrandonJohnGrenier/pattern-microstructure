@@ -20,4 +20,12 @@ public class BadRequestException extends ReportableException {
         super(message, errors);
     }
 
+    public BadRequestException(Reportable error) {
+        super(error);
+    }
+
+    public BadRequestException(String message, Reportable error) {
+        super(message, error);
+    }
+    
 }

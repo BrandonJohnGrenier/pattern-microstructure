@@ -20,4 +20,12 @@ public class UnprocessableEntityException extends ReportableException {
         super(message, errors);
     }
 
+    public UnprocessableEntityException(Reportable error) {
+        super(error);
+    }
+
+    public UnprocessableEntityException(String message, Reportable error) {
+        super(message, error);
+    }
+    
 }
