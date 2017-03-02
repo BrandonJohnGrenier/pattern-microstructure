@@ -4,7 +4,7 @@
 
     <groupId>fm.pattern</groupId>
     <artifactId>pattern-microstructure</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -17,7 +17,7 @@
     
     <scm>
         <developerConnection>scm:git:https://github.com/BrandonJohnGrenier/pattern-microstructure.git</developerConnection>
-        <tag>pattern-microstructure-1.0.8.RELEASE</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
