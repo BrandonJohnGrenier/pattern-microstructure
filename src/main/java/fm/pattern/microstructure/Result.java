@@ -18,6 +18,14 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.OK);
     }
 
+    public static <T> Result<T> reject(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
+    }
+
+    public static <T> Result<T> reject(Reportable... errors) {
+        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
+    }
+
     public static <T> Result<T> created(T instance) {
         return new Result<T>(instance, ResultType.CREATED);
     }
@@ -28,14 +36,6 @@ public class Result<T> {
 
     public static <T> Result<T> deleted(T instance) {
         return new Result<T>(instance, ResultType.DELETED);
-    }
-
-    public static <T> Result<T> reject(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
-    }
-
-    public static <T> Result<T> reject(Reportable... errors) {
-        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
     public static <T> Result<T> invalid(T instance, Reportable... errors) {

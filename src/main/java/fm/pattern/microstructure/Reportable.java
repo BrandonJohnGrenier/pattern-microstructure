@@ -24,11 +24,11 @@ public class Reportable {
     private final String message;
 
     public static Reportable code(String code) {
-        return new Reportable(code, null);
+        return isProperty(code) ? new Reportable(lookupCode(code), null) : new Reportable(code, null);
     }
 
     public static Reportable message(String message) {
-        return new Reportable(null, message);
+        return isProperty(message) ? new Reportable(null, lookupMessage(message)) : new Reportable(null, message);
     }
 
     public static Reportable resolve(String key) {
@@ -46,6 +46,22 @@ public class Reportable {
 
     public String getMessage() {
         return message;
+    }
+
+    private static String lookupCode(String key) {
+        return ValidationMessages.getCode(stripBraces(key));
+    }
+
+    private static String lookupMessage(String key) {
+        return ValidationMessages.getMessage(stripBraces(key));
+    }
+
+    private static boolean isProperty(String text) {
+        return (text.startsWith("{") && text.endsWith("}"));
+    }
+
+    private static String stripBraces(String text) {
+        return text.replace("{", "").replace("}", "");
     }
 
     public String toString() {

@@ -22,9 +22,8 @@ public final class ConstraintViolationConverter {
 
         for (ConstraintViolation<T> violation : violations) {
             if (isNotEmpty(violation.getMessage())) {
-                String code = violation.getMessageTemplate().replace("{", "").replace("}", "");
-                String description = violation.getMessage();
-                errors.add(new Reportable(code, description));
+                String key = violation.getMessageTemplate().replace("{", "").replace("}", "");
+                errors.add(new Reportable(ValidationMessages.getCode(key), violation.getMessage()));
             }
         }
 
