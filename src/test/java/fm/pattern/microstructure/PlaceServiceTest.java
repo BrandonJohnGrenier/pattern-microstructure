@@ -55,7 +55,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.create(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("Public places are not currently supported.");
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("Public places are not currently supported.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -65,7 +65,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).save(Mockito.anyObject());
 
         Result<Place> result = placeService.create(place);
-        assertThat(result).rejected().withType(INTERNAL_ERROR).withCode("ERR_INT01").withDescription("Some JDBC connection error.");
+        assertThat(result).rejected().withType(INTERNAL_ERROR).withCode("ACC-4000").withMessage("Some JDBC connection error.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -84,7 +84,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withCode("public.places.unsupported").withDescription("Public places are not currently supported.");
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("Public places are not currently supported.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -94,7 +94,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).update(Mockito.anyObject());
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withType(INTERNAL_ERROR).withDescription("Some JDBC connection error.");
+        assertThat(result).rejected().withType(INTERNAL_ERROR).withMessage("Some JDBC connection error.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -113,7 +113,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.delete(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withCode("public.places.unsupported").withDescription("Public places are not currently supported.");
+        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withCode("public.places.unsupported").withMessage("Public places are not currently supported.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -123,7 +123,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).delete(Mockito.anyObject());
 
         Result<Place> result = placeService.delete(place);
-        assertThat(result).rejected().withType(INTERNAL_ERROR).withDescription("Some JDBC connection error.");
+        assertThat(result).rejected().withType(INTERNAL_ERROR).withMessage("Some JDBC connection error.");
         assertThat(result.getInstance()).isEqualTo(place);
     }
 

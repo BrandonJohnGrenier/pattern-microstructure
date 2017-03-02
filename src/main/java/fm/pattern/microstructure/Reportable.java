@@ -21,31 +21,31 @@ import fm.pattern.commons.util.JSON;
 public class Reportable {
 
     private final String code;
-    private final String description;
-    private final String property;
+    private final String message;
 
-    public Reportable(String code, String description, String property) {
-        this.code = code;
-        this.description = description;
-        this.property = property;
+    public static Reportable code(String code) {
+        return new Reportable(code, null);
     }
 
-    public Reportable(String code, String description) {
+    public static Reportable message(String message) {
+        return new Reportable(null, message);
+    }
+
+    public static Reportable resolve(String key) {
+        return new Reportable(ValidationMessages.getCode(key), ValidationMessages.getMessage(key));
+    }
+
+    public Reportable(String code, String message) {
         this.code = code;
-        this.description = description;
-        this.property = null;
+        this.message = message;
     }
 
     public String getCode() {
         return code;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getProperty() {
-        return property;
+    public String getMessage() {
+        return message;
     }
 
     public String toString() {

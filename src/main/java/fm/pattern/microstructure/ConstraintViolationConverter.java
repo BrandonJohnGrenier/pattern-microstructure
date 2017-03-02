@@ -8,9 +8,9 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
-public final class ErrorConverter {
+public final class ConstraintViolationConverter {
 
-    private ErrorConverter() {
+    private ConstraintViolationConverter() {
 
     }
 
@@ -24,8 +24,7 @@ public final class ErrorConverter {
             if (isNotEmpty(violation.getMessage())) {
                 String code = violation.getMessageTemplate().replace("{", "").replace("}", "");
                 String description = violation.getMessage();
-                String property = violation.getPropertyPath().toString();
-                errors.add(new Reportable(code, description, property));
+                errors.add(new Reportable(code, description));
             }
         }
 

@@ -16,14 +16,14 @@ import fm.pattern.microstructure.exceptions.UnprocessableEntityException;
 public class ResultTest {
 
     @Test
-    public void anAcceptedResultShouldHaveNotTypeByDefault() {
+    public void anAcceptedResultShouldHaveATypeOfOKByDefault() {
         Result<String> result = Result.accept("Some Instance");
-        assertThat(result.getType()).isNull();
+        assertThat(result.getType()).isEqualTo(ResultType.OK);
     }
 
     @Test
     public void aRejectedResultShouldHaveATypeOfUnprocessableEntityByDefault() {
-        Result<String> result = Result.reject("Some Instance");
+        Result<String> result = Result.reject(Reportable.message("some message"));
         assertThat(result.getType()).isEqualTo(ResultType.UNPROCESSABLE_ENTITY);
     }
 
@@ -53,7 +53,7 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToProduceAResultWithAResultTypeOfNotFound() {
-        Result<String> result = Result.not_found("Resource not found.");
+        Result<String> result = Result.not_found(Reportable.message("Resource not found."));
         assertThat(result.getType()).isEqualTo(ResultType.NOT_FOUND);
     }
 
@@ -77,65 +77,65 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToRaiseAnUnprocessableEntityException() {
-        Result<String> result = Result.reject("An error description");
+        Result<String> result = Result.reject("instance", Reportable.message("An error message"));
         UnprocessableEntityException exception = (UnprocessableEntityException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
-        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+        assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("An error message");
     }
 
     @Test
     public void shouldBeAbleToRaiseAResourceConflictException() {
-        Result<String> result = Result.conflict("An error description");
+        Result<String> result = Result.conflict("instance", Reportable.message("An error message"));
         ResourceConflictException exception = (ResourceConflictException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
-        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+        assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("An error message");
     }
 
     @Test
     public void shouldBeAbleToRaiseABadRequestException() {
-        Result<String> result = Result.bad_request("An error description");
+        Result<String> result = Result.bad_request("instance", Reportable.message("An error message"));
         BadRequestException exception = (BadRequestException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
-        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+        assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("An error message");
     }
 
     @Test
     public void shouldBeAbleToRaiseAnAuthenticationException() {
-        Result<String> result = Result.not_authenticated("An error description");
+        Result<String> result = Result.not_authenticated("instance", Reportable.message("An error message"));
         AuthenticationException exception = (AuthenticationException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
-        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+        assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("An error message");
     }
 
     @Test
     public void shouldBeAbleToRaiseAnAuthorizationException() {
-        Result<String> result = Result.not_authorized("An error description");
+        Result<String> result = Result.not_authorized("instance", Reportable.message("An error message"));
         AuthorizationException exception = (AuthorizationException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
-        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+        assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("An error message");
     }
 
     @Test
     public void shouldBeAbleToRaiseAnEntityNotFoundException() {
-        Result<String> result = Result.not_found("An error description");
+        Result<String> result = Result.not_found("instance", Reportable.message("An error message"));
         EntityNotFoundException exception = (EntityNotFoundException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
-        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+        assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("An error message");
     }
 
     @Test
     public void shouldBeAbleToRaiseAnInternalErrorException() {
-        Result<String> result = Result.internal_error("An error description");
+        Result<String> result = Result.internal_error("instance", Reportable.message("An error message"));
         InternalErrorException exception = (InternalErrorException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
-        assertThat(exception.getErrors().get(0).getDescription()).isEqualTo("An error description");
+        assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("An error message");
     }
 
     @Test

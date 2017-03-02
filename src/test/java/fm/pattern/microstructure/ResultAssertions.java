@@ -45,10 +45,10 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
         return this;
     }
 
-    public ResultAssertions withDescription(String... descriptions) {
-        Assertions.assertThat(descriptions.length).describedAs("Expected " + descriptions.length + " error descriptions but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
-        for (String error : descriptions) {
-            Assertions.assertThat(actual.getErrors()).extracting("description").contains(error);
+    public ResultAssertions withMessage(String... messages) {
+        Assertions.assertThat(messages.length).describedAs("Expected " + messages.length + " error messages but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
+        for (String error : messages) {
+            Assertions.assertThat(actual.getErrors()).extracting("message").contains(error);
         }
         return this;
     }

@@ -21,6 +21,10 @@ public class ValidationMessages {
         }
     }
 
+    public static String getCode(String key) {
+        return StringUtils.isBlank(key) ? null : properties.getProperty(key + ".code");
+    }
+    
     public static String getMessage(String key) {
         return StringUtils.isBlank(key) ? null : properties.getProperty(key);
     }
