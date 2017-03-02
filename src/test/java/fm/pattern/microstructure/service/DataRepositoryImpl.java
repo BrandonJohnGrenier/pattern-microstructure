@@ -17,7 +17,7 @@ public class DataRepositoryImpl implements DataRepository {
             return Result.created(instance);
         }
         catch (Exception e) {
-            return Result.internal_error(instance, new Reportable("ACC-4000", e.getMessage()));
+            return Result.internal_error(instance).with(new Reportable("ACC-4000", e.getMessage()));
         }
     }
 
@@ -27,7 +27,7 @@ public class DataRepositoryImpl implements DataRepository {
             return Result.updated(instance);
         }
         catch (Exception e) {
-            return Result.internal_error(instance, new Reportable("ACC-4001", e.getMessage()));
+            return Result.internal_error(instance).with(new Reportable("ACC-4001", e.getMessage()));
         }
     }
 
@@ -37,7 +37,7 @@ public class DataRepositoryImpl implements DataRepository {
             return Result.deleted(instance);
         }
         catch (Exception e) {
-            return Result.internal_error(instance, new Reportable("ACC-4002", e.getMessage()));
+            return Result.internal_error(instance).with(new Reportable("ACC-4002", e.getMessage()));
         }
     }
 

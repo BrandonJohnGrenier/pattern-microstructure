@@ -19,7 +19,7 @@ public class SimpleValidationService implements ValidationService {
 
     public <T> Result<T> validate(T instance, Class<?>... types) {
         List<Reportable> errors = ConstraintViolationConverter.convert(validator.validate(instance, types));
-        return !errors.isEmpty() ? Result.invalid(instance, errors.toArray(new Reportable[errors.size()])) : accept(instance, types);
+        return !errors.isEmpty() ? Result.invalid(instance).with(errors.toArray(new Reportable[errors.size()])) : accept(instance, types);
     }
 
     private <T> Result<T> accept(T instance, Class<?>... types) {
