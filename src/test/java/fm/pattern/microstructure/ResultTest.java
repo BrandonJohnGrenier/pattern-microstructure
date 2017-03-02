@@ -23,7 +23,7 @@ public class ResultTest {
 
     @Test
     public void aRejectedResultShouldHaveATypeOfUnprocessableEntityByDefault() {
-        Result<String> result = Result.reject("instance").with(Reportable.message("some message"));
+        Result<String> result = Result.reject(Reportable.message("some message"));
         assertThat(result.getType()).isEqualTo(ResultType.UNPROCESSABLE_ENTITY);
     }
 
@@ -47,37 +47,37 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToProduceAResultWithAResultTypeOfConflict() {
-        Result<String> result = Result.conflict("instance").with(Reportable.message("some message"));
+        Result<String> result = Result.conflict("Resource already exists.");
         assertThat(result.getType()).isEqualTo(ResultType.CONFLICT);
     }
 
     @Test
     public void shouldBeAbleToProduceAResultWithAResultTypeOfNotFound() {
-        Result<String> result = Result.not_found("instance").with(Reportable.message("Resource not found."));
+        Result<String> result = Result.not_found(Reportable.message("Resource not found."));
         assertThat(result.getType()).isEqualTo(ResultType.NOT_FOUND);
     }
 
     @Test
     public void shouldBeAbleToProduceAResultWithAResultTypeOfNotAuthenticated() {
-        Result<String> result = Result.not_authenticated("instance").with(Reportable.message("some message"));
+        Result<String> result = Result.not_authenticated("Full authentication required to access this resource.");
         assertThat(result.getType()).isEqualTo(ResultType.NOT_AUTHENTICATED);
     }
 
     @Test
     public void shouldBeAbleToProduceAResultWithAResultTypeOfBadRequest() {
-        Result<String> result = Result.bad_request("instance").with(Reportable.message("some message"));
+        Result<String> result = Result.bad_request("Document is invalid.");
         assertThat(result.getType()).isEqualTo(ResultType.BAD_REQUEST);
     }
 
     @Test
     public void shouldBeAbleToProduceAResultWithAResultTypeOfInternalError() {
-        Result<String> result = Result.internal_error("instance").with(Reportable.message("some message"));
+        Result<String> result = Result.internal_error("Unable to process your request.");
         assertThat(result.getType()).isEqualTo(ResultType.INTERNAL_ERROR);
     }
 
     @Test
     public void shouldBeAbleToRaiseAnUnprocessableEntityException() {
-        Result<String> result = Result.reject("instance").with(Reportable.message("An error message"));
+        Result<String> result = Result.reject("instance", Reportable.message("An error message"));
         UnprocessableEntityException exception = (UnprocessableEntityException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
@@ -86,7 +86,7 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToRaiseAResourceConflictException() {
-        Result<String> result = Result.conflict("instance").with(Reportable.message("An error message"));
+        Result<String> result = Result.conflict("instance", Reportable.message("An error message"));
         ResourceConflictException exception = (ResourceConflictException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
@@ -95,7 +95,7 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToRaiseABadRequestException() {
-        Result<String> result = Result.bad_request("instance").with(Reportable.message("An error message"));
+        Result<String> result = Result.bad_request("instance", Reportable.message("An error message"));
         BadRequestException exception = (BadRequestException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
@@ -104,7 +104,7 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToRaiseAnAuthenticationException() {
-        Result<String> result = Result.not_authenticated("instance").with(Reportable.message("An error message"));
+        Result<String> result = Result.not_authenticated("instance", Reportable.message("An error message"));
         AuthenticationException exception = (AuthenticationException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
@@ -113,7 +113,7 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToRaiseAnAuthorizationException() {
-        Result<String> result = Result.unauthorized("instance").with(Reportable.message("An error message"));
+        Result<String> result = Result.not_authorized("instance", Reportable.message("An error message"));
         AuthorizationException exception = (AuthorizationException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
@@ -122,7 +122,7 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToRaiseAnEntityNotFoundException() {
-        Result<String> result = Result.not_found("instance").with(Reportable.message("An error message"));
+        Result<String> result = Result.not_found("instance", Reportable.message("An error message"));
         EntityNotFoundException exception = (EntityNotFoundException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);
@@ -131,7 +131,7 @@ public class ResultTest {
 
     @Test
     public void shouldBeAbleToRaiseAnInternalErrorException() {
-        Result<String> result = Result.internal_error("instance").with(Reportable.message("An error message"));
+        Result<String> result = Result.internal_error("instance", Reportable.message("An error message"));
         InternalErrorException exception = (InternalErrorException) result.raise();
 
         assertThat(exception.getErrors()).hasSize(1);

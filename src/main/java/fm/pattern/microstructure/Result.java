@@ -30,89 +30,68 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.DELETED);
     }
 
-    public static <T> Result<T> reject(T instance) {
-        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY);
+    public static <T> Result<T> reject(Reportable... errors) {
+        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> reject() {
-        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY);
+    public static <T> Result<T> reject(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> invalid(T instance) {
-        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY);
+    public static <T> Result<T> invalid(Reportable... errors) {
+        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> invalid() {
-        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY);
+    public static <T> Result<T> invalid(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> not_found(T instance) {
-        return new Result<T>(instance, ResultType.NOT_FOUND);
+    public static <T> Result<T> not_found(Reportable... errors) {
+        return new Result<T>(null, ResultType.NOT_FOUND, errors);
     }
 
-    public static <T> Result<T> not_found() {
-        return new Result<T>(null, ResultType.NOT_FOUND);
+    public static <T> Result<T> not_found(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.NOT_FOUND, errors);
     }
 
-    public static <T> Result<T> unauthorized(T instance) {
-        return new Result<T>(instance, ResultType.NOT_AUTHORIZED);
+    public static <T> Result<T> not_authorized(Reportable... errors) {
+        return new Result<T>(null, ResultType.NOT_AUTHORIZED, errors);
     }
 
-    public static <T> Result<T> unauthorized() {
-        return new Result<T>(null, ResultType.NOT_AUTHORIZED);
+    public static <T> Result<T> not_authorized(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.NOT_AUTHORIZED, errors);
     }
 
-    public static <T> Result<T> not_authenticated(T instance) {
-        return new Result<T>(null, ResultType.NOT_AUTHENTICATED);
+    public static <T> Result<T> not_authenticated(Reportable... errors) {
+        return new Result<T>(null, ResultType.NOT_AUTHENTICATED, errors);
     }
 
-    public static <T> Result<T> not_authenticated(T instance, String key, Object... arguments) {
-        return new Result<T>(instance, ResultType.NOT_AUTHENTICATED, Reportable.report(key, arguments));
+    public static <T> Result<T> not_authenticated(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.NOT_AUTHENTICATED, errors);
     }
 
-    public static <T> Result<T> conflict(T instance) {
-        return new Result<T>(instance, ResultType.CONFLICT);
+    public static <T> Result<T> conflict(Reportable... errors) {
+        return new Result<T>(null, ResultType.CONFLICT, errors);
     }
 
-    public static <T> Result<T> conflict() {
-        return new Result<T>(null, ResultType.CONFLICT);
+    public static <T> Result<T> conflict(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.CONFLICT, errors);
     }
 
-    public static <T> Result<T> bad_request(T instance) {
-        return new Result<T>(null, ResultType.BAD_REQUEST);
+    public static <T> Result<T> bad_request(Reportable... errors) {
+        return new Result<T>(null, ResultType.BAD_REQUEST, errors);
     }
 
-    public static <T> Result<T> bad_request() {
-        return new Result<T>(null, ResultType.BAD_REQUEST);
+    public static <T> Result<T> bad_request(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.BAD_REQUEST, errors);
     }
 
-    public static <T> Result<T> internal_error(T instance) {
-        return new Result<T>(instance, ResultType.INTERNAL_ERROR);
+    public static <T> Result<T> internal_error(Reportable... errors) {
+        return new Result<T>(null, ResultType.INTERNAL_ERROR, errors);
     }
 
-    public static <T> Result<T> internal_error() {
-        return new Result<T>(null, ResultType.INTERNAL_ERROR);
-    }
-
-    private Result(T instance, ResultType type) {
-        this.instance = instance;
-        this.type = type;
-    }
-
-    private Result(T instance, ResultType type, Reportable... errors) {
-        this.instance = instance;
-        this.type = type;
-        this.errors.addAll(Arrays.asList(errors));
-    }
-
-    public Result<T> with(Reportable... errors) {
-        this.errors.addAll(Arrays.asList(errors));
-        return this;
-    }
-
-    public Result<T> with(String key, Object... arguments) {
-        this.errors.add(Reportable.report(key, arguments));
-        return this;
+    public static <T> Result<T> internal_error(T instance, Reportable... errors) {
+        return new Result<T>(instance, ResultType.INTERNAL_ERROR, errors);
     }
 
     public ReportableException raise(Class<? extends ReportableException> exception) {
@@ -132,6 +111,17 @@ public class Result<T> {
 
     public ReportableException raise() {
         return (type == null || type.getException() == null) ? null : raise(type.getException());
+    }
+
+    private Result(T instance, ResultType type) {
+        this.instance = instance;
+        this.type = type;
+    }
+
+    private Result(T instance, ResultType type, Reportable... errors) {
+        this.instance = instance;
+        this.type = type;
+        this.errors.addAll(Arrays.asList(errors));
     }
 
     public T getInstance() {
