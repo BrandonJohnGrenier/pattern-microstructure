@@ -23,21 +23,18 @@ public class Reportable {
     private final String code;
     private final String message;
 
-    public static Reportable code(String code) {
-        return isProperty(code) ? new Reportable(lookupCode(code), null) : new Reportable(code, null);
+    public static Reportable message(String message, Object... arguments) {
+        return new Reportable(null, message, arguments);
     }
 
-    public static Reportable message(String message) {
-        return isProperty(message) ? new Reportable(null, lookupMessage(message)) : new Reportable(null, message);
+    public static Reportable report(String key, Object... arguments) {
+        return new Reportable(ValidationMessages.getCode(key), ValidationMessages.getMessage(key), arguments);
     }
 
-    public static Reportable resolve(String key) {
-        return new Reportable(ValidationMessages.getCode(key), ValidationMessages.getMessage(key));
-    }
-
-    public Reportable(String code, String message) {
+    public Reportable(String code, String message, Object... arguments) {
+        String text = isProperty(message) ? lookup(message) : message;
         this.code = code;
-        this.message = message;
+        this.message = String.format(text, arguments);
     }
 
     public String getCode() {
@@ -48,11 +45,7 @@ public class Reportable {
         return message;
     }
 
-    private static String lookupCode(String key) {
-        return ValidationMessages.getCode(stripBraces(key));
-    }
-
-    private static String lookupMessage(String key) {
+    private static String lookup(String key) {
         return ValidationMessages.getMessage(stripBraces(key));
     }
 
