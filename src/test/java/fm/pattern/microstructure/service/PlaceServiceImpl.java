@@ -25,7 +25,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.invalid(Reportable.report("Public places are not currently supported."));
+            return Result.reject(Reportable.report("Public places are not currently supported."));
         }
 
         return repository.save(place);
@@ -38,7 +38,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.invalid(Reportable.report("Public places are not currently supported."));
+            return Result.reject(Reportable.report("Public places are not currently supported."));
         }
 
         return repository.update(place);
@@ -51,7 +51,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.invalid(new Reportable("public.places.unsupported", "Public places are not currently supported."));
+            return Result.reject(Reportable.report("Public places are not currently supported."));
         }
 
         return repository.delete(place);

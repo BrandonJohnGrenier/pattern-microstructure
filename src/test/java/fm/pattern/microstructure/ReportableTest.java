@@ -24,14 +24,14 @@ public class ReportableTest {
 
     @Test
     public void shouldBeAbleToConstructAReportable() {
-        Reportable reportable = new Reportable("code", "message");
+        Reportable reportable = new Reportable("code", "message", UnprocessableEntityException.class);
         assertThat(reportable.getCode()).isEqualTo("code");
         assertThat(reportable.getMessage()).isEqualTo("message");
     }
 
     @Test
     public void shouldBeAbleToConstructAReportableWithAFormattableString() {
-        Reportable reportable = new Reportable("code", "message %s", "content");
+        Reportable reportable = new Reportable("code", "message %s", UnprocessableEntityException.class, "content");
         assertThat(reportable.getCode()).isEqualTo("code");
         assertThat(reportable.getMessage()).isEqualTo("message content");
     }

@@ -5,9 +5,6 @@ import java.util.Arrays;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ResultType;
-
 public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>> {
 
     public ResultAssertions(Result<?> result) {
@@ -32,24 +29,34 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
         return this;
     }
 
-    public ResultAssertions withType(ResultType type) {
-        Assertions.assertThat(actual.getType()).isEqualTo(type);
+    public ResultAssertions withErrorCount(Integer count) {
+        Assertions.assertThat(actual.getErrors()).describedAs("Expected the result to have " + count + "errors, but found " + actual.getErrors().size());
         return this;
     }
 
-    public ResultAssertions withCode(String... codes) {
-        Assertions.assertThat(codes.length).describedAs("Expected " + codes.length + " error codes but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
-        for (String code : codes) {
-            Assertions.assertThat(actual.getErrors()).extracting("code").contains(code);
+    public ResultAssertions withError(String code, String message, Class<? extends ReportableException> exception) {
+        for (Reportable error : actual.getErrors()) {
+            if (error.getCode().equals(code) && error.getMessage().equals(message) && error.getException().equals(exception)) {
+                return this;
+            }
         }
+
+        Assertions.fail("Unable to find an error with code '" + code + "', message '" + message + "' and class '" + exception.getCanonicalName() + "'");
         return this;
     }
 
-    public ResultAssertions withMessage(String... messages) {
-        Assertions.assertThat(messages.length).describedAs("Expected " + messages.length + " error messages but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
-        for (String error : messages) {
-            Assertions.assertThat(actual.getErrors()).extracting("message").contains(error);
-        }
+    public ResultAssertions withCode(String code) {
+        Assertions.assertThat(actual.getErrors()).extracting("code").contains(code);
+        return this;
+    }
+
+    public ResultAssertions withMessage(String message) {
+        Assertions.assertThat(actual.getErrors()).extracting("message").contains(message);
+        return this;
+    }
+
+    public ResultAssertions withException(Class<? extends ReportableException> exception) {
+        Assertions.assertThat(actual.getErrors()).extracting("exception").contains(exception);
         return this;
     }
 

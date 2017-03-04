@@ -1,0 +1,4 @@
+address.unit.size:
+  code: ADD-1000
+  message: The unit number cannot be greater than {max} characters.
+  exception: fm.pattern.microstructure.UnprocessableEntityException.class

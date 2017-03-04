@@ -1,8 +1,6 @@
 package fm.pattern.microstructure;
 
 import static fm.pattern.microstructure.PlatformAssertions.assertThat;
-import static fm.pattern.microstructure.ResultType.INTERNAL_ERROR;
-import static fm.pattern.microstructure.ResultType.UNPROCESSABLE_ENTITY;
 import static fm.pattern.microstructure.dsl.PlaceDSL.place;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.mockito.Mockito.doThrow;
@@ -45,7 +43,7 @@ public class PlaceServiceTest {
         Place place = place().build();
 
         Result<Place> result = placeService.create(place);
-        assertThat(result).accepted().withType(ResultType.CREATED);
+        assertThat(result).accepted();
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -55,7 +53,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.create(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("Public places are not currently supported.");
+        assertThat(result).rejected().withMessage("Public places are not currently supported.");
     }
 
     @Test
@@ -64,7 +62,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).save(Mockito.anyObject());
 
         Result<Place> result = placeService.create(place);
-        assertThat(result).rejected().withType(INTERNAL_ERROR).withCode("ACC-4000").withMessage("Some JDBC connection error.");
+        assertThat(result).rejected().withCode("ACC-4000").withMessage("Some JDBC connection error.");
     }
 
     @Test
@@ -72,7 +70,7 @@ public class PlaceServiceTest {
         Place place = place().build();
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).accepted().withType(ResultType.UPDATED);
+        assertThat(result).accepted();
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -82,7 +80,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("Public places are not currently supported.");
+        assertThat(result).rejected().withMessage("Public places are not currently supported.");
     }
 
     @Test
@@ -91,7 +89,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).update(Mockito.anyObject());
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withType(INTERNAL_ERROR).withMessage("Some JDBC connection error.");
+        assertThat(result).rejected().withMessage("Some JDBC connection error.");
     }
 
     @Test
@@ -99,7 +97,7 @@ public class PlaceServiceTest {
         Place place = place().build();
 
         Result<Place> result = placeService.delete(place);
-        assertThat(result).accepted().withType(ResultType.DELETED);
+        assertThat(result).accepted();
         assertThat(result.getInstance()).isEqualTo(place);
     }
 
@@ -109,7 +107,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.delete(place);
-        assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withCode("public.places.unsupported").withMessage("Public places are not currently supported.");
+        assertThat(result).rejected().withCode("public.places.unsupported").withMessage("Public places are not currently supported.");
     }
 
     @Test
@@ -118,7 +116,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).delete(Mockito.anyObject());
 
         Result<Place> result = placeService.delete(place);
-        assertThat(result).rejected().withType(INTERNAL_ERROR).withMessage("Some JDBC connection error.");
+        assertThat(result).rejected().withMessage("Some JDBC connection error.");
     }
 
 }

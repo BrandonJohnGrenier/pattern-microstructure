@@ -1,6 +1,5 @@
 package fm.pattern.microstructure.service;
 
-import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 
 public class DataRepositoryImpl implements DataRepository {
@@ -14,30 +13,30 @@ public class DataRepositoryImpl implements DataRepository {
     public <T> Result<T> save(T instance) {
         try {
             session.save(instance);
-            return Result.created(instance);
+            return Result.accept(instance);
         }
         catch (Exception e) {
-            return Result.internal_error(new Reportable("ACC-4000", e.getMessage()));
+            return Result.reject("system.create.failed", e.getMessage());
         }
     }
 
     public <T> Result<T> update(T instance) {
         try {
             session.update(instance);
-            return Result.updated(instance);
+            return Result.accept(instance);
         }
         catch (Exception e) {
-            return Result.internal_error(new Reportable("ACC-4000", e.getMessage()));
+            return Result.reject("system.update.failed", e.getMessage());
         }
     }
 
     public <T> Result<T> delete(T instance) {
         try {
             session.delete(instance);
-            return Result.deleted(instance);
+            return Result.accept(instance);
         }
         catch (Exception e) {
-            return Result.internal_error(new Reportable("ACC-4000", e.getMessage()));
+            return Result.reject("system.delete.failed", e.getMessage());
         }
     }
 

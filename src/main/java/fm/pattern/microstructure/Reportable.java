@@ -20,18 +20,26 @@ import org.apache.commons.lang3.StringUtils;
 
 import fm.pattern.commons.util.JSON;
 
+@SuppressWarnings("unchecked")
 public class Reportable {
 
     private final String code;
     private final String message;
+    private final Class<? extends ReportableException> exception;
 
     public static Reportable report(String keyOrMessage, Object... arguments) {
-        return new Reportable(ValidationMessages.getCode(keyOrMessage), resolve(keyOrMessage), arguments);
+        return new Reportable(getCode(keyOrMessage), getMessage(keyOrMessage), getException(keyOrMessage), arguments);
     }
 
-    public Reportable(String code, String message, Object... arguments) {
+    /** TODO: Remove after refactor. */
+    public static Reportable report_bv(String key, String message, Object... arguments) {
+        return new Reportable(getCode(key), getMessage(key), getException(key), arguments);
+    }
+
+    public Reportable(String code, String message, Class<? extends ReportableException> exception, Object... arguments) {
         this.code = code;
         this.message = String.format(message, arguments);
+        this.exception = exception;
     }
 
     public String getCode() {
@@ -42,9 +50,32 @@ public class Reportable {
         return message;
     }
 
-    private static String resolve(String input) {
-        String message = ValidationMessages.getMessage(input);
+    public Class<? extends ReportableException> getException() {
+        return exception;
+    }
+
+    private static String getCode(String key) {
+        String code = ValidationRepositoryFactory.getRepository().getCode(key);
+        return StringUtils.isEmpty(code) ? key : code;
+    }
+
+    private static String getMessage(String input) {
+        String message = ValidationRepositoryFactory.getRepository().getMessage(input);
         return StringUtils.isEmpty(message) ? input : message;
+    }
+
+    private static Class<? extends ReportableException> getException(String key) {
+        String className = ValidationRepositoryFactory.getRepository().getException(key);
+        if (StringUtils.isBlank(className)) {
+            return null;
+        }
+
+        try {
+            return (Class<? extends ReportableException>) Class.forName(className);
+        }
+        catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String toString() {

@@ -1,9 +1,7 @@
-package fm.pattern.microstructure.exceptions;
+package fm.pattern.microstructure;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import fm.pattern.microstructure.Reportable;
 
 public class ReportableException extends RuntimeException {
 
