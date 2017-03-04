@@ -1,4 +1,4 @@
-package fm.pattern.microstructure.annotations;
+package fm.pattern.microstructure.fixtures.annotations;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 

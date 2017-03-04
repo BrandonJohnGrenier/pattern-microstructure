@@ -1,7 +1,7 @@
 package fm.pattern.microstructure.dsl;
 
-import fm.pattern.microstructure.model.Address;
-import fm.pattern.microstructure.model.Location;
+import fm.pattern.microstructure.fixtures.model.Address;
+import fm.pattern.microstructure.fixtures.model.Location;
 
 public class AddressDSL extends AbstractDSL<AddressDSL, Address> {
 

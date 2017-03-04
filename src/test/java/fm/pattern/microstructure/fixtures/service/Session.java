@@ -1,4 +1,4 @@
-package fm.pattern.microstructure.service;
+package fm.pattern.microstructure.fixtures.service;
 
 public class Session {
 

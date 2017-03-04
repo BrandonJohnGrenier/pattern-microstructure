@@ -1,7 +1,7 @@
-package fm.pattern.microstructure.service;
+package fm.pattern.microstructure.fixtures.service;
 
 import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.model.Place;
+import fm.pattern.microstructure.fixtures.model.Place;
 
 public interface PlaceService {
 

@@ -1,8 +1,8 @@
-package fm.pattern.microstructure.service;
+package fm.pattern.microstructure.fixtures.service;
 
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
-import fm.pattern.microstructure.model.Place;
+import fm.pattern.microstructure.fixtures.model.Place;
 import fm.pattern.microstructure.sequences.Create;
 import fm.pattern.microstructure.sequences.Delete;
 import fm.pattern.microstructure.sequences.Update;

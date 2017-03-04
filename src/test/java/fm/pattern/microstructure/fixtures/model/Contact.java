@@ -1,12 +1,12 @@
-package fm.pattern.microstructure.model;
+package fm.pattern.microstructure.fixtures.model;
 
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import fm.pattern.microstructure.annotations.MobileNumber;
-import fm.pattern.microstructure.annotations.PhoneNumber;
+import fm.pattern.microstructure.fixtures.annotations.MobileNumber;
+import fm.pattern.microstructure.fixtures.annotations.PhoneNumber;
 import fm.pattern.microstructure.sequences.CreateLevel1;
 import fm.pattern.microstructure.sequences.CreateLevel2;
 import fm.pattern.microstructure.sequences.UpdateLevel1;

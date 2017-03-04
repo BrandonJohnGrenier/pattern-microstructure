@@ -1,7 +1,7 @@
 package fm.pattern.microstructure.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import fm.pattern.microstructure.model.Contact;
+import fm.pattern.microstructure.fixtures.model.Contact;
 
 public class ContactDSL extends AbstractDSL<ContactDSL, Contact> {
 

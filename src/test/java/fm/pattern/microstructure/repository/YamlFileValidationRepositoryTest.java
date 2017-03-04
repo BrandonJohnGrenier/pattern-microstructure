@@ -21,6 +21,9 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import fm.pattern.microstructure.repository.ValidationRepository;
+import fm.pattern.microstructure.repository.YamlFileValidationRepository;
+
 public class YamlFileValidationRepositoryTest {
 
     private ValidationRepository repository;

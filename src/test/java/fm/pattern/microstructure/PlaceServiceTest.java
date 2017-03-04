@@ -13,12 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import fm.pattern.microstructure.model.Place;
-import fm.pattern.microstructure.service.DataRepository;
-import fm.pattern.microstructure.service.DataRepositoryImpl;
-import fm.pattern.microstructure.service.PlaceService;
-import fm.pattern.microstructure.service.PlaceServiceImpl;
-import fm.pattern.microstructure.service.Session;
+import fm.pattern.microstructure.fixtures.model.Place;
+import fm.pattern.microstructure.fixtures.service.DataRepository;
+import fm.pattern.microstructure.fixtures.service.DataRepositoryImpl;
+import fm.pattern.microstructure.fixtures.service.PlaceService;
+import fm.pattern.microstructure.fixtures.service.PlaceServiceImpl;
+import fm.pattern.microstructure.fixtures.service.Session;
 
 public class PlaceServiceTest {
 

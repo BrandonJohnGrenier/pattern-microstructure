@@ -1,4 +1,4 @@
-package fm.pattern.microstructure.service;
+package fm.pattern.microstructure.fixtures.service;
 
 import fm.pattern.microstructure.Result;
 

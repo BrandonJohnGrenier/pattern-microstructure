@@ -1,4 +1,4 @@
-package fm.pattern.microstructure.annotations;
+package fm.pattern.microstructure.fixtures.annotations;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;

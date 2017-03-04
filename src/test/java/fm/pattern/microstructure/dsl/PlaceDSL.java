@@ -2,9 +2,9 @@ package fm.pattern.microstructure.dsl;
 
 import static fm.pattern.microstructure.dsl.AddressDSL.address;
 import static fm.pattern.microstructure.dsl.ContactDSL.contact;
-import fm.pattern.microstructure.model.Address;
-import fm.pattern.microstructure.model.Contact;
-import fm.pattern.microstructure.model.Place;
+import fm.pattern.microstructure.fixtures.model.Address;
+import fm.pattern.microstructure.fixtures.model.Contact;
+import fm.pattern.microstructure.fixtures.model.Place;
 
 public class PlaceDSL extends AbstractDSL<PlaceDSL, Place> {
 

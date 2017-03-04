@@ -1,4 +1,4 @@
-package fm.pattern.microstructure.model;
+package fm.pattern.microstructure.fixtures.model;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
