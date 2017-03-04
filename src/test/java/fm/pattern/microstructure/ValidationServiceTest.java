@@ -11,7 +11,7 @@ import fm.pattern.microstructure.sequences.Create;
 import fm.pattern.microstructure.sequences.Delete;
 import fm.pattern.microstructure.sequences.Update;
 
-public class ValidationTest {
+public class ValidationServiceTest {
 
     private ValidationService validationService;
 

@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import org.junit.Test;
 
-public class AddressValidationTest extends ValidationTest {
+public class AddressValidationTest extends ValidationServiceTest {
 
     @Test
     public void shouldBeAbleToCreateAnAddress() {

@@ -32,8 +32,7 @@ public class Reportable {
         return new Reportable(getCode(keyOrMessage), getMessage(keyOrMessage), getException(keyOrMessage), arguments);
     }
 
-    /** TODO: Remove after refactor. */
-    public static Reportable report_bv(String key, String message, Object... arguments) {
+    static Reportable report_interpolated(String key, String message, Object... arguments) {
         return new Reportable(getCode(key), message, getException(key), arguments);
     }
 

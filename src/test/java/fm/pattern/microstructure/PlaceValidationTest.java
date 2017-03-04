@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import org.junit.Test;
 
-public class PlaceValidationTest extends ValidationTest {
+public class PlaceValidationTest extends ValidationServiceTest {
 
     @Test
     public void shouldBeAbleToCreateALocation() {
