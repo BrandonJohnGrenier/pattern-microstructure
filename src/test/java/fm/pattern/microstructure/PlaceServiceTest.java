@@ -53,7 +53,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.create(place);
-        assertThat(result).rejected().withMessage("Public places are not currently supported.");
+        assertThat(result).rejected().withError("ADD-2000", "Public places are not currently supported.", UnprocessableEntityException.class);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).save(Mockito.anyObject());
 
         Result<Place> result = placeService.create(place);
-        assertThat(result).rejected().withCode("ACC-4000").withMessage("Some JDBC connection error.");
+        assertThat(result).rejected().withError("SYS-0003", "The create operation failed due to an internal system error: Some JDBC connection error.", InternalErrorException.class);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withMessage("Public places are not currently supported.");
+        assertThat(result).rejected().withError("ADD-2000", "Public places are not currently supported.", UnprocessableEntityException.class);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).update(Mockito.anyObject());
 
         Result<Place> result = placeService.update(place);
-        assertThat(result).rejected().withMessage("Some JDBC connection error.");
+        assertThat(result).rejected().withError("SYS-0004", "The update operation failed due to an internal system error: Some JDBC connection error.", InternalErrorException.class);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class PlaceServiceTest {
         place.setPublic(true);
 
         Result<Place> result = placeService.delete(place);
-        assertThat(result).rejected().withCode("public.places.unsupported").withMessage("Public places are not currently supported.");
+        assertThat(result).rejected().withError("ADD-2000", "Public places are not currently supported.", UnprocessableEntityException.class);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class PlaceServiceTest {
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).delete(Mockito.anyObject());
 
         Result<Place> result = placeService.delete(place);
-        assertThat(result).rejected().withMessage("Some JDBC connection error.");
+        assertThat(result).rejected().withError("SYS-0005", "The delete operation failed due to an internal system error: Some JDBC connection error.", InternalErrorException.class);
     }
 
 }

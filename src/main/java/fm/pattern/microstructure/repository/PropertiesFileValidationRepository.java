@@ -1,17 +1,17 @@
-package fm.pattern.microstructure;
+package fm.pattern.microstructure.repository;
 
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class PropertiesValidationRepository implements ValidationRepository {
+public class PropertiesFileValidationRepository implements ValidationRepository {
 
     private static final Properties properties = new Properties();
     private static boolean available = false;
 
     static {
-        InputStream inputStream = PropertiesValidationRepository.class.getClassLoader().getResourceAsStream("ValidationMessages.properties");
+        InputStream inputStream = PropertiesFileValidationRepository.class.getClassLoader().getResourceAsStream("ValidationMessages.properties");
         try {
             if (inputStream != null) {
                 properties.load(inputStream);
@@ -23,7 +23,7 @@ public class PropertiesValidationRepository implements ValidationRepository {
         }
     }
 
-    public PropertiesValidationRepository() {
+    public PropertiesFileValidationRepository() {
 
     }
 
@@ -41,7 +41,7 @@ public class PropertiesValidationRepository implements ValidationRepository {
 
     public String getException(String key) {
         if (StringUtils.isBlank(key)) {
-            return properties.getProperty("default.exception");
+            return null;
         }
 
         if (StringUtils.isBlank(getMessage(key))) {

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package fm.pattern.microstructure;
+package fm.pattern.microstructure.repository;
+
 
 public class ValidationRepositoryFactory {
 
-    private static final PropertiesValidationRepository propertiesFileValidationRepository = new PropertiesValidationRepository();
-    private static final YamlValidationRepository yamlFileValidationRepository = new YamlValidationRepository();
+    private static final PropertiesFileValidationRepository propertiesFileValidationRepository = new PropertiesFileValidationRepository();
+    private static final YamlFileValidationRepository yamlFileValidationRepository = new YamlFileValidationRepository();
 
     public static ValidationRepository getRepository() {
         if (propertiesFileValidationRepository.isAvailable()) {

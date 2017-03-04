@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.microstructure;
+package fm.pattern.microstructure.repository;
 
 public interface ValidationRepository {
 

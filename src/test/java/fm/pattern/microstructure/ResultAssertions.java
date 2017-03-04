@@ -1,6 +1,7 @@
 package fm.pattern.microstructure;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
@@ -41,7 +42,8 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
             }
         }
 
-        Assertions.fail("Unable to find an error with code '" + code + "', message '" + message + "' and class '" + exception.getCanonicalName() + "'");
+        String errors = actual.getErrors().stream().map(error -> error.toString()).collect(Collectors.joining(","));
+        Assertions.fail("Unable to find an error with code '" + code + "', message '" + message + "' and class '" + exception.getCanonicalName() + "'. Errors are: " + errors);
         return this;
     }
 

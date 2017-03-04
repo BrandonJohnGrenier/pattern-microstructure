@@ -1,6 +1,5 @@
 package fm.pattern.microstructure.service;
 
-import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.model.Place;
@@ -25,7 +24,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.reject(Reportable.report("Public places are not currently supported."));
+            return Result.reject("public.places.unsupported");
         }
 
         return repository.save(place);
@@ -38,7 +37,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.reject(Reportable.report("Public places are not currently supported."));
+            return Result.reject("public.places.unsupported");
         }
 
         return repository.update(place);
@@ -51,7 +50,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         if (place.isPublic()) {
-            return Result.reject(Reportable.report("Public places are not currently supported."));
+            return Result.reject("public.places.unsupported");
         }
 
         return repository.delete(place);

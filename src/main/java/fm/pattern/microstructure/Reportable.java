@@ -19,6 +19,7 @@ package fm.pattern.microstructure;
 import org.apache.commons.lang3.StringUtils;
 
 import fm.pattern.commons.util.JSON;
+import fm.pattern.microstructure.repository.ValidationRepositoryFactory;
 
 @SuppressWarnings("unchecked")
 public class Reportable {
@@ -33,7 +34,7 @@ public class Reportable {
 
     /** TODO: Remove after refactor. */
     public static Reportable report_bv(String key, String message, Object... arguments) {
-        return new Reportable(getCode(key), getMessage(key), getException(key), arguments);
+        return new Reportable(getCode(key), message, getException(key), arguments);
     }
 
     public Reportable(String code, String message, Class<? extends ReportableException> exception, Object... arguments) {

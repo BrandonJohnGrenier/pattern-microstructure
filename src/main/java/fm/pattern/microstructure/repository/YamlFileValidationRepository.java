@@ -1,4 +1,4 @@
-package fm.pattern.microstructure;
+package fm.pattern.microstructure.repository;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -7,13 +7,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
 @SuppressWarnings("unchecked")
-public class YamlValidationRepository implements ValidationRepository {
+public class YamlFileValidationRepository implements ValidationRepository {
 
     private static Map<String, Map<String, String>> properties;
     private static boolean available = false;
 
     static {
-        InputStream inputStream = YamlValidationRepository.class.getClassLoader().getResourceAsStream("validation.yml");
+        InputStream inputStream = YamlFileValidationRepository.class.getClassLoader().getResourceAsStream("ValidationMessages.yml");
 
         try {
             if (inputStream != null) {
@@ -26,7 +26,7 @@ public class YamlValidationRepository implements ValidationRepository {
         }
     }
 
-    public YamlValidationRepository() {
+    public YamlFileValidationRepository() {
 
     }
 
@@ -43,7 +43,18 @@ public class YamlValidationRepository implements ValidationRepository {
     }
 
     public String getException(String key) {
-        return StringUtils.isBlank(key) ? null : getValue(properties.get(key), "exception");
+        Map<String, String> attributes = properties.get(key);
+        if (attributes == null || attributes.isEmpty()) {
+            return null;
+        }
+
+        String exception = getValue(attributes, "exception");
+        if (!StringUtils.isBlank(exception)) {
+            return exception;
+        }
+
+        Map<String, String> defaults = properties.get("default");
+        return (defaults == null || defaults.isEmpty()) ? null : defaults.get("exception");
     }
 
     private static String getValue(Map<String, String> attributes, String key) {

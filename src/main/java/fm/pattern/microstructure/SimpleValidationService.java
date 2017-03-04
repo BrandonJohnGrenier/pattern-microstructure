@@ -18,11 +18,7 @@ public class SimpleValidationService implements ValidationService {
         }
 
         List<Reportable> errors = ConstraintViolationConverter.convert(validator.validate(instance, types));
-        return !errors.isEmpty() ? Result.reject(errors.toArray(new Reportable[errors.size()])) : accept(instance);
-    }
-
-    private <T> Result<T> accept(T instance) {
-        return Result.accept(instance);
+        return !errors.isEmpty() ? Result.reject(errors.toArray(new Reportable[errors.size()])) : Result.accept(instance);
     }
 
 }
