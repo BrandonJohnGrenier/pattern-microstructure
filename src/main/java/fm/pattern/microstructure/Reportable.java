@@ -16,6 +16,8 @@
 
 package fm.pattern.microstructure;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fm.pattern.commons.util.JSON;
 
 public class Reportable {
@@ -23,18 +25,13 @@ public class Reportable {
     private final String code;
     private final String message;
 
-    public static Reportable message(String message, Object... arguments) {
-        return new Reportable(null, message, arguments);
-    }
-
-    public static Reportable report(String key, Object... arguments) {
-        return new Reportable(ValidationMessages.getCode(key), ValidationMessages.getMessage(key), arguments);
+    public static Reportable report(String keyOrMessage, Object... arguments) {
+        return new Reportable(ValidationMessages.getCode(keyOrMessage), resolve(keyOrMessage), arguments);
     }
 
     public Reportable(String code, String message, Object... arguments) {
-        String text = isProperty(message) ? lookup(message) : message;
         this.code = code;
-        this.message = String.format(text, arguments);
+        this.message = String.format(message, arguments);
     }
 
     public String getCode() {
@@ -45,16 +42,9 @@ public class Reportable {
         return message;
     }
 
-    private static String lookup(String key) {
-        return ValidationMessages.getMessage(stripBraces(key));
-    }
-
-    private static boolean isProperty(String text) {
-        return (text.startsWith("{") && text.endsWith("}"));
-    }
-
-    private static String stripBraces(String text) {
-        return text.replace("{", "").replace("}", "");
+    private static String resolve(String input) {
+        String message = ValidationMessages.getMessage(input);
+        return StringUtils.isEmpty(message) ? input : message;
     }
 
     public String toString() {

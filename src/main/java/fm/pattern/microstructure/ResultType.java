@@ -11,16 +11,16 @@ import fm.pattern.microstructure.exceptions.UnprocessableEntityException;
 
 public enum ResultType {
 
-    CREATED(201), UPDATED(200), DELETED(204), OK(200), BAD_REQUEST(BadRequestException.class, 400), NOT_AUTHENTICATED(AuthenticationException.class, 401), NOT_AUTHORIZED(AuthorizationException.class, 403), NOT_FOUND(EntityNotFoundException.class, 404), CONFLICT(ResourceConflictException.class, 409), UNPROCESSABLE_ENTITY(UnprocessableEntityException.class, 422), INTERNAL_ERROR(InternalErrorException.class, 500);
+    CREATED(201), UPDATED(200), DELETED(204), OK(200), BAD_REQUEST(400, BadRequestException.class), NOT_AUTHENTICATED(401, AuthenticationException.class), NOT_AUTHORIZED(403, AuthorizationException.class), NOT_FOUND(404, EntityNotFoundException.class), CONFLICT(409, ResourceConflictException.class), UNPROCESSABLE_ENTITY(422, UnprocessableEntityException.class), INTERNAL_ERROR(500, InternalErrorException.class);
 
     private final Class<? extends ReportableException> exception;
     private final Integer code;
 
     private ResultType(Integer code) {
-        this(null, code);
+        this(code, null);
     }
 
-    private ResultType(Class<? extends ReportableException> exception, Integer code) {
+    private ResultType(Integer code, Class<? extends ReportableException> exception) {
         this.exception = exception;
         this.code = code;
     }

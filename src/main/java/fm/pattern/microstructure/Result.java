@@ -30,68 +30,68 @@ public class Result<T> {
         return new Result<T>(instance, ResultType.DELETED);
     }
 
+    public static <T> Result<T> reject(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Reportable.report(key, arguments));
+    }
+
     public static <T> Result<T> reject(Reportable... errors) {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> reject(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
+    public static <T> Result<T> invalid(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> invalid(Reportable... errors) {
         return new Result<T>(null, ResultType.UNPROCESSABLE_ENTITY, errors);
     }
 
-    public static <T> Result<T> invalid(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.UNPROCESSABLE_ENTITY, errors);
+    public static <T> Result<T> not_found(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.NOT_FOUND, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> not_found(Reportable... errors) {
         return new Result<T>(null, ResultType.NOT_FOUND, errors);
     }
 
-    public static <T> Result<T> not_found(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.NOT_FOUND, errors);
+    public static <T> Result<T> not_authorized(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.NOT_AUTHORIZED, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> not_authorized(Reportable... errors) {
         return new Result<T>(null, ResultType.NOT_AUTHORIZED, errors);
     }
 
-    public static <T> Result<T> not_authorized(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.NOT_AUTHORIZED, errors);
+    public static <T> Result<T> not_authenticated(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.NOT_AUTHENTICATED, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> not_authenticated(Reportable... errors) {
         return new Result<T>(null, ResultType.NOT_AUTHENTICATED, errors);
     }
 
-    public static <T> Result<T> not_authenticated(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.NOT_AUTHENTICATED, errors);
+    public static <T> Result<T> conflict(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.CONFLICT, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> conflict(Reportable... errors) {
         return new Result<T>(null, ResultType.CONFLICT, errors);
     }
 
-    public static <T> Result<T> conflict(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.CONFLICT, errors);
+    public static <T> Result<T> bad_request(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.BAD_REQUEST, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> bad_request(Reportable... errors) {
         return new Result<T>(null, ResultType.BAD_REQUEST, errors);
     }
 
-    public static <T> Result<T> bad_request(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.BAD_REQUEST, errors);
+    public static <T> Result<T> internal_error(String key, Object... arguments) {
+        return new Result<T>(null, ResultType.INTERNAL_ERROR, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> internal_error(Reportable... errors) {
         return new Result<T>(null, ResultType.INTERNAL_ERROR, errors);
-    }
-
-    public static <T> Result<T> internal_error(T instance, Reportable... errors) {
-        return new Result<T>(instance, ResultType.INTERNAL_ERROR, errors);
     }
 
     public ReportableException raise(Class<? extends ReportableException> exception) {

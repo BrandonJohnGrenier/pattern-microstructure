@@ -56,7 +56,6 @@ public class PlaceServiceTest {
 
         Result<Place> result = placeService.create(place);
         assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("Public places are not currently supported.");
-        assertThat(result.getInstance()).isEqualTo(place);
     }
 
     @Test
@@ -66,7 +65,6 @@ public class PlaceServiceTest {
 
         Result<Place> result = placeService.create(place);
         assertThat(result).rejected().withType(INTERNAL_ERROR).withCode("ACC-4000").withMessage("Some JDBC connection error.");
-        assertThat(result.getInstance()).isEqualTo(place);
     }
 
     @Test
@@ -85,7 +83,6 @@ public class PlaceServiceTest {
 
         Result<Place> result = placeService.update(place);
         assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("Public places are not currently supported.");
-        assertThat(result.getInstance()).isEqualTo(place);
     }
 
     @Test
@@ -95,7 +92,6 @@ public class PlaceServiceTest {
 
         Result<Place> result = placeService.update(place);
         assertThat(result).rejected().withType(INTERNAL_ERROR).withMessage("Some JDBC connection error.");
-        assertThat(result.getInstance()).isEqualTo(place);
     }
 
     @Test
@@ -114,7 +110,6 @@ public class PlaceServiceTest {
 
         Result<Place> result = placeService.delete(place);
         assertThat(result).rejected().withType(UNPROCESSABLE_ENTITY).withCode("public.places.unsupported").withMessage("Public places are not currently supported.");
-        assertThat(result.getInstance()).isEqualTo(place);
     }
 
     @Test
@@ -124,7 +119,6 @@ public class PlaceServiceTest {
 
         Result<Place> result = placeService.delete(place);
         assertThat(result).rejected().withType(INTERNAL_ERROR).withMessage("Some JDBC connection error.");
-        assertThat(result.getInstance()).isEqualTo(place);
     }
 
 }
