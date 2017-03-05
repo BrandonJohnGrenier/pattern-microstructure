@@ -10,16 +10,8 @@ public class AuthorizationException extends ReportableException {
         super(errors);
     }
 
-    public AuthorizationException(String message, List<Reportable> errors) {
-        super(message, errors);
-    }
-
     public AuthorizationException(Reportable error) {
         super(error);
-    }
-
-    public AuthorizationException(String message, Reportable error) {
-        super(message, error);
     }
     
 }

@@ -10,16 +10,8 @@ public class ResourceConflictException extends ReportableException {
         super(errors);
     }
 
-    public ResourceConflictException(String message, List<Reportable> errors) {
-        super(message, errors);
-    }
-
     public ResourceConflictException(Reportable error) {
         super(error);
     }
 
-    public ResourceConflictException(String message, Reportable error) {
-        super(message, error);
-    }
-    
 }
