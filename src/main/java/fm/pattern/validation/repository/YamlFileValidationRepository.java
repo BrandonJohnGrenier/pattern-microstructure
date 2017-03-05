@@ -34,14 +34,17 @@ public class YamlFileValidationRepository implements ValidationRepository {
         return available;
     }
 
+    @Override
     public String getCode(String key) {
         return StringUtils.isBlank(key) ? null : getValue(properties.get(key), "code");
     }
 
+    @Override
     public String getMessage(String key) {
         return StringUtils.isBlank(key) ? null : getValue(properties.get(key), "message");
     }
 
+    @Override
     public String getException(String key) {
         Map<String, String> attributes = properties.get(key);
         if (attributes == null || attributes.isEmpty()) {

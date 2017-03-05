@@ -6,11 +6,7 @@ import java.util.List;
 public class ReportableException extends RuntimeException {
 
     private static final long serialVersionUID = -7677235345324655548L;
-    private transient final List<Reportable> errors = new ArrayList<Reportable>();
-
-    public ReportableException() {
-
-    }
+    private final transient List<Reportable> errors = new ArrayList<>();
 
     public ReportableException(String message, List<Reportable> errors) {
         super(message);

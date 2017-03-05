@@ -6,10 +6,6 @@ public class ResourceConflictException extends ReportableException {
 
     private static final long serialVersionUID = -7735345324657785548L;
 
-    public ResourceConflictException() {
-
-    }
-
     public ResourceConflictException(List<Reportable> errors) {
         super(errors);
     }

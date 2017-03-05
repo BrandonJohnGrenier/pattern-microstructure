@@ -31,14 +31,17 @@ public class PropertiesFileValidationRepository implements ValidationRepository 
         return available;
     }
 
+    @Override
     public String getMessage(String key) {
         return StringUtils.isBlank(key) ? null : properties.getProperty(key);
     }
 
+    @Override
     public String getCode(String key) {
         return StringUtils.isBlank(key) ? null : properties.getProperty(key + ".code");
     }
 
+    @Override
     public String getException(String key) {
         if (StringUtils.isBlank(key)) {
             return null;

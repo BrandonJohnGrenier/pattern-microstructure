@@ -6,10 +6,6 @@ public class InternalErrorException extends ReportableException {
 
     private static final long serialVersionUID = -7093595345324626648L;
 
-    public InternalErrorException() {
-
-    }
-
     public InternalErrorException(List<Reportable> errors) {
         super(errors);
     }

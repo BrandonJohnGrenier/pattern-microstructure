@@ -19,11 +19,11 @@ public class Result<T> {
     private final List<Reportable> errors = new ArrayList<>();
 
     public static <T> Result<T> accept(T instance) {
-        return new Result<T>(instance);
+        return new Result<>(instance);
     }
 
     public static <T> Result<T> reject(String key, Object... arguments) {
-        return new Result<T>(null, Reportable.report(key, arguments));
+        return new Result<>(null, Reportable.report(key, arguments));
     }
 
     public static <T> Result<T> reject(Reportable... errors) {
@@ -69,13 +69,14 @@ public class Result<T> {
         return new ArrayList<>(this.errors);
     }
 
+    @Override
     public String toString() {
         return JSON.stringify(this);
     }
 
     private ReportableException raise(Class<? extends ReportableException> exception) {
         if (exception == null) {
-            return null;
+            return new UnprocessableEntityException(errors);
         }
 
         try {
@@ -85,7 +86,7 @@ public class Result<T> {
         }
         catch (Exception e) {
             log.error("Failed to instantiate a ReportableException class:", e);
-            return null;
+            return new UnprocessableEntityException(errors);
         }
     }
 

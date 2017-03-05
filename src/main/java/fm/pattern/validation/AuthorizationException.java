@@ -6,10 +6,6 @@ public class AuthorizationException extends ReportableException {
 
     private static final long serialVersionUID = -7022235229824655548L;
 
-    public AuthorizationException() {
-
-    }
-
     public AuthorizationException(List<Reportable> errors) {
         super(errors);
     }
