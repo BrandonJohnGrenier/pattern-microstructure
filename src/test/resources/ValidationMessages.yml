@@ -1,5 +1,5 @@
 default:
-  exception: fm.pattern.microstructure.UnprocessableEntityException
+  exception: fm.pattern.validation.UnprocessableEntityException
 
 address.city.size:
   code: ADD-1000
@@ -8,4 +8,4 @@ address.city.size:
 contact.name.required:
   code: CON-1000
   message: A contact name is required.
-  exception: fm.pattern.microstructure.UnprocessableEntityException
+  exception: fm.pattern.validation.UnprocessableEntityException

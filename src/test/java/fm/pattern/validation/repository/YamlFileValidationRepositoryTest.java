@@ -72,7 +72,7 @@ public class YamlFileValidationRepositoryTest {
     @Test
     public void shouldBeAbleToResolveAnExceptionClassForTheSpecifiedValidationKey() {
         String exception = repository.getException("contact.name.required");
-        assertThat(exception).isEqualTo("fm.pattern.microstructure.UnprocessableEntityException");
+        assertThat(exception).isEqualTo("fm.pattern.validation.UnprocessableEntityException");
     }
 
     @Test
@@ -89,7 +89,7 @@ public class YamlFileValidationRepositoryTest {
 
     @Test
     public void shouldReturnTheDefaultExceptionClassIfAnExceptionClassIsNotDefinedForTheValidationKey() {
-        assertThat(repository.getException("address.city.size")).isEqualTo("fm.pattern.microstructure.UnprocessableEntityException");
+        assertThat(repository.getException("address.city.size")).isEqualTo("fm.pattern.validation.UnprocessableEntityException");
     }
 
 }
