@@ -16,11 +16,14 @@
 
 package fm.pattern.validation.repository;
 
-
-public class ValidationRepositoryFactory {
+public final class ValidationRepositoryFactory {
 
     private static final PropertiesFileValidationRepository propertiesFileValidationRepository = new PropertiesFileValidationRepository();
     private static final YamlFileValidationRepository yamlFileValidationRepository = new YamlFileValidationRepository();
+
+    private ValidationRepositoryFactory() {
+
+    }
 
     public static ValidationRepository getRepository() {
         if (propertiesFileValidationRepository.isAvailable()) {

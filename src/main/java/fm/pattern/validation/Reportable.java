@@ -74,10 +74,11 @@ public class Reportable {
             return (Class<? extends ReportableException>) Class.forName(className);
         }
         catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
+    @Override
     public String toString() {
         return JSON.stringify(this);
     }

@@ -12,6 +12,7 @@ public class SimpleValidationService implements ValidationService {
         this.validator = validator;
     }
 
+    @Override
     public <T> Result<T> validate(T instance, Class<?>... types) {
         if (instance == null) {
             return Result.reject("instance.null");

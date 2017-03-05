@@ -20,7 +20,7 @@ public final class ConstraintViolationConverter {
     }
 
     public static <T> List<Reportable> convert(Set<ConstraintViolation<T>> violations) {
-        List<Reportable> errors = new ArrayList<Reportable>();
+        List<Reportable> errors = new ArrayList<>();
         if (violations == null || violations.isEmpty()) {
             return errors;
         }
@@ -53,7 +53,7 @@ public final class ConstraintViolationConverter {
     private static <T> Map<String, Object> annotationAttributes(ConstraintViolation<T> violation) {
         ConstraintDescriptor<?> constraint = violation.getConstraintDescriptor();
 
-        Map<String, Object> attributes = new HashMap<String, Object>(constraint.getAttributes());
+        Map<String, Object> attributes = new HashMap<>(constraint.getAttributes());
         attributes.remove("groups");
         attributes.remove("payload");
         attributes.remove("message");
