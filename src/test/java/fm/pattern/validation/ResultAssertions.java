@@ -35,7 +35,7 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
     }
 
     public ResultAssertions withErrorCount(Integer count) {
-        Assertions.assertThat(actual.getErrors()).describedAs("Expected the result to have " + count + "errors, but found " + actual.getErrors().size());
+        Assertions.assertThat(actual.getErrors()).describedAs("Expected the result to have " + count + "errors, but found " + actual.getErrors().size()).isEqualTo(count);
         return this;
     }
 
