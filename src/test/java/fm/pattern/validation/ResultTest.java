@@ -32,10 +32,10 @@ public class ResultTest {
         result.orThrow();
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test(expected = ResourceConflictException.class)
     public void shouldBeAbleToThrowACustomisedExceptionWhenTheResultHasErrors() {
         Result<String> result = Result.reject("contact.name.required");
-        result.orThrow(BadRequestException.class);
+        result.orThrow(ResourceConflictException.class);
     }
 
     @Test

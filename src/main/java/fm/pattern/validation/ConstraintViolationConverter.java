@@ -29,7 +29,7 @@ public final class ConstraintViolationConverter {
             if (isNotEmpty(violation.getMessage())) {
                 String key = violation.getMessageTemplate().replace("{", "").replace("}", "");
                 String message = ValidationRepositoryFactory.getRepository().getMessage(key);
-                errors.add(Reportable.report_interpolated(key, interpolate(message, violation)));
+                errors.add(Reportable.interpolated(key, interpolate(message, violation)));
             }
         }
 

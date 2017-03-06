@@ -28,18 +28,18 @@ public class Reportable {
     private final String message;
     private final Class<? extends ReportableException> exception;
 
-    public static Reportable report(String keyOrMessage, Object... arguments) {
-        return new Reportable(getCode(keyOrMessage), getMessage(keyOrMessage), getException(keyOrMessage), arguments);
-    }
-
-    static Reportable report_interpolated(String key, String message, Object... arguments) {
-        return new Reportable(getCode(key), message, getException(key), arguments);
-    }
-
     public Reportable(String code, String message, Class<? extends ReportableException> exception, Object... arguments) {
         this.code = code;
         this.message = String.format(message, arguments);
         this.exception = exception;
+    }
+
+    public static Reportable report(String keyOrMessage, Object... arguments) {
+        return new Reportable(getCode(keyOrMessage), getMessage(keyOrMessage), getException(keyOrMessage), arguments);
+    }
+
+    static Reportable interpolated(String key, String message, Object... arguments) {
+        return new Reportable(getCode(key), message, getException(key), arguments);
     }
 
     public String getCode() {
