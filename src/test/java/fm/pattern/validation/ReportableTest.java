@@ -27,9 +27,10 @@ public class ReportableTest {
 
     @Test
     public void shouldBeAbleToConstructAReportable() {
-        Reportable reportable = new Reportable("code", "message", UnprocessableEntityException.class);
+        Reportable reportable = new Reportable("code", "message", BadRequestException.class);
         assertThat(reportable.getCode()).isEqualTo("code");
         assertThat(reportable.getMessage()).isEqualTo("message");
+        assertThat(reportable.getException()).isEqualTo(BadRequestException.class);
     }
 
     @Test
@@ -38,7 +39,7 @@ public class ReportableTest {
         assertThat(reportable.getCode()).isEqualTo("code");
         assertThat(reportable.getMessage()).isEqualTo("message content");
     }
-    
+
     @Test
     public void shouldBeAbleToFormatAMessageWithArguments() {
         String message = Reportable.report("The username %s cannot be greater than %d characters.", "smithers", 5).getMessage();
