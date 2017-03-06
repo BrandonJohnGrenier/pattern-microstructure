@@ -10,16 +10,8 @@ public class InternalErrorException extends ReportableException {
         super(errors);
     }
 
-    public InternalErrorException(String message, List<Reportable> errors) {
-        super(message, errors);
-    }
-
     public InternalErrorException(Reportable error) {
         super(error);
     }
 
-    public InternalErrorException(String message, Reportable error) {
-        super(message, error);
-    }
-    
 }

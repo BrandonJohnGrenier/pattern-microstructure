@@ -4,8 +4,6 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import org.junit.Test;
 
-import fm.pattern.validation.Result;
-
 public class ResultTest {
 
     @Test
@@ -26,6 +24,18 @@ public class ResultTest {
         Result<String> result = Result.reject("username.length", "jim", 2);
         assertThat(result.getErrors().get(0).getCode()).isEqualTo("LOC-NTFD");
         assertThat(result.getErrors().get(0).getMessage()).isEqualTo("The username jim cannot be greater than 2 characters.");
+    }
+
+    @Test(expected = UnprocessableEntityException.class)
+    public void shouldBeAbleToThrowAnException() {
+        Result<String> result = Result.reject("contact.name.required");
+        result.orThrow();
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldBeAbleToThrowACustomisedException() {
+        Result<String> result = Result.reject("contact.name.required");
+        result.orThrow(BadRequestException.class);
     }
 
 }

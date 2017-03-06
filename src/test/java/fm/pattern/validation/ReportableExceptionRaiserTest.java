@@ -42,7 +42,7 @@ public class ReportableExceptionRaiserTest {
         Assertions.assertThat(exception.getErrors().get(1).getCode()).isEqualTo("code2");
         Assertions.assertThat(exception.getErrors().get(1).getMessage()).isEqualTo("message2");
     }
-    
+
     @Test
     public void shouldBeAbleToOverrideReportableExceptionPopulatedWithTheGivenReportableErrors() {
         List<Reportable> errors = new ArrayList<>();
@@ -57,6 +57,26 @@ public class ReportableExceptionRaiserTest {
         Assertions.assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("message1");
         Assertions.assertThat(exception.getErrors().get(1).getCode()).isEqualTo("code2");
         Assertions.assertThat(exception.getErrors().get(1).getMessage()).isEqualTo("message2");
+    }
+
+    @Test
+    public void shouldReturnAnUnprocessableEntityExceptionIfTheProvidedExceptionIsNull() {
+        List<Reportable> errors = new ArrayList<>();
+        errors.add(new Reportable("code1", "message1", BadRequestException.class));
+        errors.add(new Reportable("code2", "message2", BadRequestException.class));
+
+        ReportableException exception = ReportableExceptionRaiser.raise(null, errors);
+        Assertions.assertThat(exception).isInstanceOf(UnprocessableEntityException.class);
+    }
+
+    @Test
+    public void shouldReturnAnUnprocessableEntityExceptionIfTheReportablesDoNotHaveExceptions() {
+        List<Reportable> errors = new ArrayList<>();
+        errors.add(new Reportable("code1", "message1", null));
+        errors.add(new Reportable("code2", "message2", null));
+
+        ReportableException exception = ReportableExceptionRaiser.raise(null, errors);
+        Assertions.assertThat(exception).isInstanceOf(UnprocessableEntityException.class);
     }
 
 }

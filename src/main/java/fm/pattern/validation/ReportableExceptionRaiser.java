@@ -7,10 +7,14 @@ import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class ReportableExceptionRaiser {
+final class ReportableExceptionRaiser {
 
     private static final Log log = LogFactory.getLog(ReportableExceptionRaiser.class);
     private static final Class<? extends ReportableException> DEFAULT_EXCEPTION = UnprocessableEntityException.class;
+
+    private ReportableExceptionRaiser() {
+
+    }
 
     public static ReportableException raise(Class<? extends ReportableException> exception, List<Reportable> errors) {
         Class<? extends ReportableException> actual = exception == null ? DEFAULT_EXCEPTION : exception;
