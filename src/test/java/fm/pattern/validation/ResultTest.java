@@ -27,15 +27,27 @@ public class ResultTest {
     }
 
     @Test(expected = UnprocessableEntityException.class)
-    public void shouldBeAbleToThrowAnException() {
+    public void shouldBeAbleToThrowAnExceptionWhenTheResultHasErrors() {
         Result<String> result = Result.reject("contact.name.required");
         result.orThrow();
     }
 
     @Test(expected = BadRequestException.class)
-    public void shouldBeAbleToThrowACustomisedException() {
+    public void shouldBeAbleToThrowACustomisedExceptionWhenTheResultHasErrors() {
         Result<String> result = Result.reject("contact.name.required");
         result.orThrow(BadRequestException.class);
+    }
+
+    @Test
+    public void shouldNotThrowACustomizedExceptionAndReturnTheInstanceWhenTheResultHasNoErrors() {
+        Result<String> result = Result.accept("string");
+        assertThat(result.orThrow(BadRequestException.class)).isEqualTo("string");
+    }
+
+    @Test
+    public void shouldNotThrowAnExceptionAndReturnTheInstanceWhenTheResultHasNoErrors() {
+        Result<String> result = Result.accept("string");
+        assertThat(result.orThrow()).isEqualTo("string");
     }
 
 }

@@ -79,4 +79,20 @@ public class ReportableExceptionRaiserTest {
         Assertions.assertThat(exception).isInstanceOf(UnprocessableEntityException.class);
     }
 
+    @Test
+    public void shouldFilterOutAnyReportablesThatDoNotHaveExceptions() {
+        List<Reportable> errors = new ArrayList<>();
+        errors.add(new Reportable("code1", "message1", null));
+        errors.add(new Reportable("code2", "message2", BadRequestException.class));
+
+        ReportableException exception = ReportableExceptionRaiser.raise(AuthorizationException.class, errors);
+        Assertions.assertThat(exception).isInstanceOf(AuthorizationException.class);
+        Assertions.assertThat(exception.getErrors()).hasSize(2);
+
+        Assertions.assertThat(exception.getErrors().get(0).getCode()).isEqualTo("code1");
+        Assertions.assertThat(exception.getErrors().get(0).getMessage()).isEqualTo("message1");
+        Assertions.assertThat(exception.getErrors().get(1).getCode()).isEqualTo("code2");
+        Assertions.assertThat(exception.getErrors().get(1).getMessage()).isEqualTo("message2");
+    }
+
 }
