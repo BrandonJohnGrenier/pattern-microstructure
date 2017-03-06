@@ -39,15 +39,16 @@ public final class ConstraintViolationConverter {
     private static <T> String interpolate(String message, ConstraintViolation<T> violation) {
         Map<String, Object> attributes = annotationAttributes(violation);
 
+        String interpolated = message;
         for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-            message = message.replace("{" + entry.getKey() + "}", entry.getValue().toString());
+            interpolated = interpolated.replace("{" + entry.getKey() + "}", entry.getValue().toString());
         }
 
         if (violation.getInvalidValue() != null) {
-            message = message.replace("{validatedValue}", violation.getInvalidValue().toString());
+            interpolated = interpolated.replace("{validatedValue}", violation.getInvalidValue().toString());
         }
 
-        return message;
+        return interpolated;
     }
 
     private static <T> Map<String, Object> annotationAttributes(ConstraintViolation<T> violation) {
