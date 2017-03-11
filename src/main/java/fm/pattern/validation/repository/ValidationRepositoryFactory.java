@@ -18,18 +18,25 @@ package fm.pattern.validation.repository;
 
 public final class ValidationRepositoryFactory {
 
-    private static final PropertiesFileValidationRepository propertiesFileValidationRepository = new PropertiesFileValidationRepository();
-    private static final YamlFileValidationRepository yamlFileValidationRepository = new YamlFileValidationRepository();
+    private static ValidationRepository validationRepository = null;
+
+    private static final ValidationRepository propertiesFileValidationRepository = new PropertiesFileValidationRepository();
+    private static final ValidationRepository yamlFileValidationRepository = new YamlFileValidationRepository();
 
     private ValidationRepositoryFactory() {
 
     }
 
+    public static void use(ValidationRepository repository) {
+        validationRepository = repository;
+    }
+
     public static ValidationRepository getRepository() {
-        if (propertiesFileValidationRepository.isAvailable()) {
-            return propertiesFileValidationRepository;
-        }
-        return yamlFileValidationRepository;
+        return validationRepository != null ? validationRepository : getDefaultRepository();
+    }
+
+    private static ValidationRepository getDefaultRepository() {
+        return propertiesFileValidationRepository.isAvailable() ? propertiesFileValidationRepository : yamlFileValidationRepository;
     }
 
 }

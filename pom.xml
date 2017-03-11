@@ -66,6 +66,24 @@
       </dependency>
 
       <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>1.7.24</version>
+      </dependency>
+
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-classic</artifactId>
+         <version>1.2.1</version>
+      </dependency>
+
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-core</artifactId>
+         <version>1.2.1</version>
+      </dependency>
+
+      <dependency>
          <groupId>org.mockito</groupId>
          <artifactId>mockito-all</artifactId>
          <version>1.9.5</version>
@@ -140,12 +158,12 @@
             <artifactId>aws-maven</artifactId>
             <version>5.0.0.RELEASE</version>
          </extension>
-         
+
          <extension>
             <groupId>org.kuali.maven.wagons</groupId>
             <artifactId>maven-s3-wagon</artifactId>
             <version>1.2.1</version>
-         </extension>         
+         </extension>
       </extensions>
 
       <plugins>

@@ -36,9 +36,14 @@ public class YamlFileValidationRepositoryTest {
     }
 
     @Test
-    public void theRepositoryShouldBNotBeAvailableWhenAYamlFileCannotBeFound() {
-        ValidationRepository unavailable = new YamlFileValidationRepository("invalid.yaml");
+    public void theRepositoryShouldNotBeAvailableWhenAYamlFileCannotBeFound() {
+        ValidationRepository unavailable = new YamlFileValidationRepository("sadlfisj.yaml");
         assertThat(unavailable.isAvailable()).isFalse();
+    }
+
+    @Test(expected = PatternConfigurationException.class)
+    public void theRepositoryShouldThrowAnExceptionWhenAYamlFileCannotBeParsed() {
+        new YamlFileValidationRepository("invalid.yml");
     }
 
     @Test

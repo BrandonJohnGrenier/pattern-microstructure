@@ -4,12 +4,12 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PropertiesFileValidationRepository implements ValidationRepository {
 
-    private static final Log log = LogFactory.getLog(PropertiesFileValidationRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(PropertiesFileValidationRepository.class);
     private static final String FILENAME = "ValidationMessages.properties";
 
     private static final Properties properties = new Properties();
