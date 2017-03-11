@@ -15,4 +15,9 @@ public class ValidationRepositoryFactoryTest {
         PatternAssertions.assertThat(ValidationRepositoryFactory.getRepository().getClass()).isEqualTo(PropertiesFileValidationRepository.class);
     }
 
+    @Test
+    public void theClassShouldBeAWellDefinedUtilityClass() {
+        PatternAssertions.assertClass(ValidationRepositoryFactory.class).isAWellDefinedUtilityClass();
+    }
+
 }
