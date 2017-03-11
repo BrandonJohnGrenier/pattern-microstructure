@@ -32,7 +32,7 @@
       <dependency>
          <groupId>fm.pattern.commons</groupId>
          <artifactId>commons-util</artifactId>
-         <version>1.0.17</version>
+         <version>1.0.18</version>
       </dependency>
 
       <dependency>
