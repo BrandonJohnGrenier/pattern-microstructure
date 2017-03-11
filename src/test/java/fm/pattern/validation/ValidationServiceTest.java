@@ -22,17 +22,17 @@ public abstract class ValidationServiceTest {
 
     public <T> ResultAssertions assertCreate(T instance) {
         Result<T> result = validationService.validate(instance, Create.class);
-        return PlatformAssertions.assertThat(result);
+        return PatternAssertions.assertThat(result);
     }
 
     public <T> ResultAssertions assertUpdate(T instance) {
         Result<T> result = validationService.validate(instance, Update.class);
-        return PlatformAssertions.assertThat(result);
+        return PatternAssertions.assertThat(result);
     }
 
     public <T> ResultAssertions assertDelete(T instance) {
         Result<T> result = validationService.validate(instance, Delete.class);
-        return PlatformAssertions.assertThat(result);
+        return PatternAssertions.assertThat(result);
     }
 
 }

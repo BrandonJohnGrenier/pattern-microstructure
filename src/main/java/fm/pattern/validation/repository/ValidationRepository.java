@@ -24,4 +24,6 @@ public interface ValidationRepository {
 
     String getException(String key);
 
+    boolean isAvailable();
+    
 }

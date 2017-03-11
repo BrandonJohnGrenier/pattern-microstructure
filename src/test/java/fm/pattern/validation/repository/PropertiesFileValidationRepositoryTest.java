@@ -5,9 +5,6 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.validation.repository.PropertiesFileValidationRepository;
-import fm.pattern.validation.repository.ValidationRepository;
-
 public class PropertiesFileValidationRepositoryTest {
 
     private ValidationRepository repository;
@@ -15,6 +12,17 @@ public class PropertiesFileValidationRepositoryTest {
     @Before
     public void before() {
         this.repository = new PropertiesFileValidationRepository();
+    }
+
+    @Test
+    public void theRepositoryShouldBeAvailableWhenAPropertiesFileIsLocatedAndLoadedSuccessfully() {
+        assertThat(repository.isAvailable()).isTrue();
+    }
+
+    @Test
+    public void theRepositoryShouldBNotBeAvailableWhenAPropertiesFileCannotBeFound() {
+        ValidationRepository unavailable = new PropertiesFileValidationRepository("invalid.properties");
+        assertThat(unavailable.isAvailable()).isFalse();
     }
 
     @Test

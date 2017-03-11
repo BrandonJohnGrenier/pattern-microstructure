@@ -10,23 +10,38 @@ import org.apache.commons.logging.LogFactory;
 public class PropertiesFileValidationRepository implements ValidationRepository {
 
     private static final Log log = LogFactory.getLog(PropertiesFileValidationRepository.class);
+    private static final String FILENAME = "ValidationMessages.properties";
 
     private static final Properties properties = new Properties();
     private static boolean available = false;
 
-    static {
-        InputStream inputStream = PropertiesFileValidationRepository.class.getClassLoader().getResourceAsStream("ValidationMessages.properties");
+    public PropertiesFileValidationRepository() {
+        load(FILENAME);
+    }
+
+    public PropertiesFileValidationRepository(String filename) {
+        load(filename);
+    }
+
+    private void load(String filename) {
+        InputStream inputStream = PropertiesFileValidationRepository.class.getClassLoader().getResourceAsStream(filename);
+        if (inputStream == null) {
+            available = false;
+            log.warn("Unable to find " + filename + " on the classpath.");
+            return;
+        }
+
         try {
-            if (inputStream != null) {
-                properties.load(inputStream);
-                available = true;
-            }
+            properties.load(inputStream);
+            available = true;
         }
         catch (Exception e) {
-            log.error("Unable to load validation properties file:", e);
+            available = false;
+            throw new PatternConfigurationException("Failed to parse " + filename + ":", e);
         }
     }
 
+    @Override
     public boolean isAvailable() {
         return available;
     }

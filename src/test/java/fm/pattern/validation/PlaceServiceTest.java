@@ -1,6 +1,6 @@
 package fm.pattern.validation;
 
-import static fm.pattern.validation.PlatformAssertions.assertThat;
+import static fm.pattern.validation.PatternAssertions.assertThat;
 import static fm.pattern.validation.dsl.PlaceDSL.place;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.mockito.Mockito.doThrow;

@@ -15,6 +15,13 @@ public class AddressValidationTest extends ValidationServiceTest {
     }
 
     @Test
+    public void shouldNotBeAbleToCreateAnAddressWhenTheAddressToCreateIsNull() {
+        assertCreate(null).rejected().withMessage("The instance to validate is null.");
+        assertCreate(null).rejected().withCode("SYS-0006");
+        assertCreate(null).rejected().withException(UnprocessableEntityException.class);
+    }
+    
+    @Test
     public void shouldNotBeAbleToCreateAnAddressIfTheUnitNumberIsGreaterThan30Characters() {
         assertCreate(address().withUnit(randomAlphabetic(31)).build()).rejected().withMessage("The unit number cannot be greater than 30 characters.");
         assertCreate(address().withUnit(randomAlphabetic(31)).build()).rejected().withCode("ADD-1000");

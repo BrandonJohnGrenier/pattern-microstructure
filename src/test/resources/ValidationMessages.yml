@@ -9,3 +9,7 @@ contact.name.required:
   code: CON-1000
   message: A contact name is required.
   exception: fm.pattern.validation.UnprocessableEntityException
+  
+instance.null:
+  code: SYS-0006
+  message: The instance to validate is null.

@@ -95,4 +95,9 @@ public class ReportableExceptionRaiserTest {
         Assertions.assertThat(exception.getErrors().get(1).getMessage()).isEqualTo("message2");
     }
 
+    @Test
+    public void theClassShouldBeAWellDefinedUtilityClass() {
+        PatternAssertions.assertClass(ReportableExceptionRaiser.class).isAWellDefinedUtilityClass();
+    }
+
 }

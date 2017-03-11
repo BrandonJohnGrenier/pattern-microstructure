@@ -21,9 +21,6 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.validation.repository.ValidationRepository;
-import fm.pattern.validation.repository.YamlFileValidationRepository;
-
 public class YamlFileValidationRepositoryTest {
 
     private ValidationRepository repository;
@@ -31,6 +28,17 @@ public class YamlFileValidationRepositoryTest {
     @Before
     public void before() {
         this.repository = new YamlFileValidationRepository();
+    }
+
+    @Test
+    public void theRepositoryShouldBeAvailableWhenAYamlFileIsLocatedAndLoadedSuccessfully() {
+        assertThat(repository.isAvailable()).isTrue();
+    }
+
+    @Test
+    public void theRepositoryShouldBNotBeAvailableWhenAYamlFileCannotBeFound() {
+        ValidationRepository unavailable = new YamlFileValidationRepository("invalid.yaml");
+        assertThat(unavailable.isAvailable()).isFalse();
     }
 
     @Test

@@ -12,24 +12,38 @@ import org.yaml.snakeyaml.Yaml;
 public class YamlFileValidationRepository implements ValidationRepository {
 
     private static final Log log = LogFactory.getLog(YamlFileValidationRepository.class);
+    private static final String FILENAME = "ValidationMessages.yml";
 
-    private static Map<String, Map<String, String>> properties;
-    private static boolean available = false;
+    private Map<String, Map<String, String>> properties;
+    private boolean available = false;
 
-    static {
-        InputStream inputStream = YamlFileValidationRepository.class.getClassLoader().getResourceAsStream("ValidationMessages.yml");
+    public YamlFileValidationRepository() {
+        load(FILENAME);
+    }
+
+    public YamlFileValidationRepository(String filename) {
+        load(filename);
+    }
+
+    private void load(String filename) {
+        InputStream inputStream = YamlFileValidationRepository.class.getClassLoader().getResourceAsStream(filename);
+        if (inputStream == null) {
+            available = false;
+            log.warn("Unable to find " + filename + " on the classpath.");
+            return;
+        }
 
         try {
-            if (inputStream != null) {
-                properties = (Map<String, Map<String, String>>) new Yaml().load(inputStream);
-                available = true;
-            }
+            properties = (Map<String, Map<String, String>>) new Yaml().load(inputStream);
+            available = true;
         }
         catch (Exception e) {
-            log.error("Unable to load validation yaml file:", e);
+            available = false;
+            throw new PatternConfigurationException("Failed to parse " + filename + ":", e);
         }
     }
 
+    @Override
     public boolean isAvailable() {
         return available;
     }
