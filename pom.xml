@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <name>Pattern Validation</name>
+   <name>Valex</name>
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>fm.pattern</groupId>
    <artifactId>valex</artifactId>
-   <version>1.0.1-SNAPSHOT</version>
+   <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
 
    <properties>
@@ -174,7 +174,7 @@
             <configuration>
                <goals>deploy</goals>
                <autoversionsubmodules>true</autoversionsubmodules>
-               <tagNameFormat>pattern-valex-@{project.version}</tagNameFormat>
+               <tagNameFormat>valex-@{project.version}</tagNameFormat>
             </configuration>
             <dependencies>
                <dependency>
