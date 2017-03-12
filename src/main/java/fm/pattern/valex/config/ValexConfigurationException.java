@@ -1,4 +1,4 @@
-package fm.pattern.valex.repository;
+package fm.pattern.valex.config;
 
 public class ValexConfigurationException extends RuntimeException {
 

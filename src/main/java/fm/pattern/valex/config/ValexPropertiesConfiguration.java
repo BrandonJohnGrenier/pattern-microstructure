@@ -1,4 +1,4 @@
-package fm.pattern.valex.repository;
+package fm.pattern.valex.config;
 
 import java.io.InputStream;
 import java.util.Properties;

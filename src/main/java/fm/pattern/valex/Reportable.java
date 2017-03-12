@@ -19,7 +19,7 @@ package fm.pattern.valex;
 import org.apache.commons.lang3.StringUtils;
 
 import fm.pattern.commons.util.JSON;
-import fm.pattern.valex.repository.ValexConfigurationFactory;
+import fm.pattern.valex.config.ValexConfigurationFactory;
 
 @SuppressWarnings("unchecked")
 public class Reportable {

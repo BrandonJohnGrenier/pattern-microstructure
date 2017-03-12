@@ -11,7 +11,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.metadata.ConstraintDescriptor;
 
-import fm.pattern.valex.repository.ValexConfigurationFactory;
+import fm.pattern.valex.config.ValexConfigurationFactory;
 
 public final class ConstraintViolationConverter {
 

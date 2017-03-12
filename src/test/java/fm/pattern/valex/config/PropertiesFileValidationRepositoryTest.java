@@ -1,12 +1,12 @@
-package fm.pattern.valex.repository;
+package fm.pattern.valex.config;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.valex.repository.ValexConfiguration;
-import fm.pattern.valex.repository.ValexPropertiesConfiguration;
+import fm.pattern.valex.config.ValexConfiguration;
+import fm.pattern.valex.config.ValexPropertiesConfiguration;
 
 public class PropertiesFileValidationRepositoryTest {
 

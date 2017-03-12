@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.valex.repository;
+package fm.pattern.valex.config;
 
 public final class ValexConfigurationFactory {
 

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package fm.pattern.valex.repository;
+package fm.pattern.valex.config;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.valex.repository.ValexConfiguration;
-import fm.pattern.valex.repository.ValexConfigurationException;
-import fm.pattern.valex.repository.ValexYamlConfiguration;
+import fm.pattern.valex.config.ValexConfiguration;
+import fm.pattern.valex.config.ValexConfigurationException;
+import fm.pattern.valex.config.ValexYamlConfiguration;
 
 public class YamlFileValidationRepositoryTest {
 
