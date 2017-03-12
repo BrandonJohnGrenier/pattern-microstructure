@@ -19,7 +19,7 @@ package fm.pattern.validation;
 import org.apache.commons.lang3.StringUtils;
 
 import fm.pattern.commons.util.JSON;
-import fm.pattern.validation.repository.ValidationRepositoryFactory;
+import fm.pattern.validation.repository.ValexConfigurationFactory;
 
 @SuppressWarnings("unchecked")
 public class Reportable {
@@ -55,17 +55,17 @@ public class Reportable {
     }
 
     private static String getCode(String key) {
-        String code = ValidationRepositoryFactory.getRepository().getCode(key);
+        String code = ValexConfigurationFactory.getRepository().getCode(key);
         return StringUtils.isEmpty(code) ? key : code;
     }
 
     private static String getMessage(String input) {
-        String message = ValidationRepositoryFactory.getRepository().getMessage(input);
+        String message = ValexConfigurationFactory.getRepository().getMessage(input);
         return StringUtils.isEmpty(message) ? input : message;
     }
 
     private static Class<? extends ReportableException> getException(String key) {
-        String className = ValidationRepositoryFactory.getRepository().getException(key);
+        String className = ValexConfigurationFactory.getRepository().getException(key);
         if (StringUtils.isBlank(className)) {
             return null;
         }

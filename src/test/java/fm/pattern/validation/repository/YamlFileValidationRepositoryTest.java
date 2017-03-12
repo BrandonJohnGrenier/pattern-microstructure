@@ -23,11 +23,11 @@ import org.junit.Test;
 
 public class YamlFileValidationRepositoryTest {
 
-    private ValidationRepository repository;
+    private ValexConfiguration repository;
 
     @Before
     public void before() {
-        this.repository = new YamlFileValidationRepository();
+        this.repository = new ValexYamlConfiguration();
     }
 
     @Test
@@ -37,13 +37,13 @@ public class YamlFileValidationRepositoryTest {
 
     @Test
     public void theRepositoryShouldNotBeAvailableWhenAYamlFileCannotBeFound() {
-        ValidationRepository unavailable = new YamlFileValidationRepository("sadlfisj.yaml");
+        ValexConfiguration unavailable = new ValexYamlConfiguration("sadlfisj.yaml");
         assertThat(unavailable.isAvailable()).isFalse();
     }
 
-    @Test(expected = PatternConfigurationException.class)
+    @Test(expected = ValexConfigurationException.class)
     public void theRepositoryShouldThrowAnExceptionWhenAYamlFileCannotBeParsed() {
-        new YamlFileValidationRepository("invalid.yml");
+        new ValexYamlConfiguration("invalid.yml");
     }
 
     @Test

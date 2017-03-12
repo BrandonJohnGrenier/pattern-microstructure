@@ -16,26 +16,26 @@
 
 package fm.pattern.validation.repository;
 
-public final class ValidationRepositoryFactory {
+public final class ValexConfigurationFactory {
 
-    private static ValidationRepository validationRepository = null;
+    private static ValexConfiguration validationRepository = null;
 
-    private static final ValidationRepository propertiesFileValidationRepository = new PropertiesFileValidationRepository();
-    private static final ValidationRepository yamlFileValidationRepository = new YamlFileValidationRepository();
+    private static final ValexConfiguration propertiesFileValidationRepository = new ValexPropertiesConfiguration();
+    private static final ValexConfiguration yamlFileValidationRepository = new ValexYamlConfiguration();
 
-    private ValidationRepositoryFactory() {
+    private ValexConfigurationFactory() {
 
     }
 
-    public static void use(ValidationRepository repository) {
+    public static void use(ValexConfiguration repository) {
         validationRepository = repository;
     }
 
-    public static ValidationRepository getRepository() {
+    public static ValexConfiguration getRepository() {
         return validationRepository != null ? validationRepository : getDefaultRepository();
     }
 
-    private static ValidationRepository getDefaultRepository() {
+    private static ValexConfiguration getDefaultRepository() {
         return propertiesFileValidationRepository.isAvailable() ? propertiesFileValidationRepository : yamlFileValidationRepository;
     }
 

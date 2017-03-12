@@ -16,7 +16,7 @@
 
 package fm.pattern.validation.repository;
 
-public interface ValidationRepository {
+public interface ValexConfiguration {
 
     String getCode(String key);
 

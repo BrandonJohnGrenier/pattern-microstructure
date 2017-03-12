@@ -8,16 +8,16 @@ public class ValidationRepositoryFactoryTest {
 
     @Test
     public void shouldBeAbleToExplicitlySetTheValidationRepositoryToUse() {
-        ValidationRepositoryFactory.use(new YamlFileValidationRepository());
-        PatternAssertions.assertThat(ValidationRepositoryFactory.getRepository().getClass()).isEqualTo(YamlFileValidationRepository.class);
+        ValexConfigurationFactory.use(new ValexYamlConfiguration());
+        PatternAssertions.assertThat(ValexConfigurationFactory.getRepository().getClass()).isEqualTo(ValexYamlConfiguration.class);
 
-        ValidationRepositoryFactory.use(null);
-        PatternAssertions.assertThat(ValidationRepositoryFactory.getRepository().getClass()).isEqualTo(PropertiesFileValidationRepository.class);
+        ValexConfigurationFactory.use(null);
+        PatternAssertions.assertThat(ValexConfigurationFactory.getRepository().getClass()).isEqualTo(ValexPropertiesConfiguration.class);
     }
 
     @Test
     public void theClassShouldBeAWellDefinedUtilityClass() {
-        PatternAssertions.assertClass(ValidationRepositoryFactory.class).isAWellDefinedUtilityClass();
+        PatternAssertions.assertClass(ValexConfigurationFactory.class).isAWellDefinedUtilityClass();
     }
 
 }

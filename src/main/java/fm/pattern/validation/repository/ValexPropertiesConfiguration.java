@@ -7,24 +7,24 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PropertiesFileValidationRepository implements ValidationRepository {
+public class ValexPropertiesConfiguration implements ValexConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(PropertiesFileValidationRepository.class);
-    private static final String FILENAME = "ValidationMessages.properties";
+    private static final Logger log = LoggerFactory.getLogger(ValexPropertiesConfiguration.class);
+    private static final String DEFAULT_CONFIG_FILENAME = "ValidationMessages.properties";
 
     private static final Properties properties = new Properties();
     private static boolean available = false;
 
-    public PropertiesFileValidationRepository() {
-        load(FILENAME);
+    public ValexPropertiesConfiguration() {
+        load(DEFAULT_CONFIG_FILENAME);
     }
 
-    public PropertiesFileValidationRepository(String filename) {
+    public ValexPropertiesConfiguration(String filename) {
         load(filename);
     }
 
     private void load(String filename) {
-        InputStream inputStream = PropertiesFileValidationRepository.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = ValexPropertiesConfiguration.class.getClassLoader().getResourceAsStream(filename);
         if (inputStream == null) {
             available = false;
             log.warn("Unable to find " + filename + " on the classpath.");
@@ -37,7 +37,7 @@ public class PropertiesFileValidationRepository implements ValidationRepository 
         }
         catch (Exception e) {
             available = false;
-            throw new PatternConfigurationException("Failed to parse " + filename + ":", e);
+            throw new ValexConfigurationException("Failed to parse " + filename + ":", e);
         }
     }
 

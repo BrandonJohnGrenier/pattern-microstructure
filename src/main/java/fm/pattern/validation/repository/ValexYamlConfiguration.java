@@ -9,24 +9,24 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 @SuppressWarnings("unchecked")
-public class YamlFileValidationRepository implements ValidationRepository {
+public class ValexYamlConfiguration implements ValexConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(PropertiesFileValidationRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(ValexPropertiesConfiguration.class);
     private static final String FILENAME = "ValidationMessages.yml";
 
     private Map<String, Map<String, String>> properties;
     private boolean available = false;
 
-    public YamlFileValidationRepository() {
+    public ValexYamlConfiguration() {
         load(FILENAME);
     }
 
-    public YamlFileValidationRepository(String filename) {
+    public ValexYamlConfiguration(String filename) {
         load(filename);
     }
 
     private void load(String filename) {
-        InputStream inputStream = YamlFileValidationRepository.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = ValexYamlConfiguration.class.getClassLoader().getResourceAsStream(filename);
         if (inputStream == null) {
             available = false;
             log.warn("Unable to find " + filename + " on the classpath.");
@@ -39,7 +39,7 @@ public class YamlFileValidationRepository implements ValidationRepository {
         }
         catch (Exception e) {
             available = false;
-            throw new PatternConfigurationException("Failed to parse " + filename + ":", e);
+            throw new ValexConfigurationException("Failed to parse " + filename + ":", e);
         }
     }
 

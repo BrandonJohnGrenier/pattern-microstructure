@@ -11,7 +11,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.metadata.ConstraintDescriptor;
 
-import fm.pattern.validation.repository.ValidationRepositoryFactory;
+import fm.pattern.validation.repository.ValexConfigurationFactory;
 
 public final class ConstraintViolationConverter {
 
@@ -28,7 +28,7 @@ public final class ConstraintViolationConverter {
         for (ConstraintViolation<T> violation : violations) {
             if (isNotEmpty(violation.getMessage())) {
                 String key = violation.getMessageTemplate().replace("{", "").replace("}", "");
-                String message = ValidationRepositoryFactory.getRepository().getMessage(key);
+                String message = ValexConfigurationFactory.getRepository().getMessage(key);
                 errors.add(Reportable.interpolated(key, interpolate(message, violation)));
             }
         }

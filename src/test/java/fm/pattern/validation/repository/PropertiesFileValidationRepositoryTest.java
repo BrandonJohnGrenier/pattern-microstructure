@@ -7,11 +7,11 @@ import org.junit.Test;
 
 public class PropertiesFileValidationRepositoryTest {
 
-    private ValidationRepository repository;
+    private ValexConfiguration repository;
 
     @Before
     public void before() {
-        this.repository = new PropertiesFileValidationRepository();
+        this.repository = new ValexPropertiesConfiguration();
     }
 
     @Test
@@ -21,7 +21,7 @@ public class PropertiesFileValidationRepositoryTest {
 
     @Test
     public void theRepositoryShouldBNotBeAvailableWhenAPropertiesFileCannotBeFound() {
-        ValidationRepository unavailable = new PropertiesFileValidationRepository("invalid.properties");
+        ValexConfiguration unavailable = new ValexPropertiesConfiguration("invalid.properties");
         assertThat(unavailable.isAvailable()).isFalse();
     }
 
