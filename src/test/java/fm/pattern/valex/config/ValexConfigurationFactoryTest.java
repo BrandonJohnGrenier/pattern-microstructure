@@ -7,7 +7,7 @@ import fm.pattern.valex.config.ValexConfigurationFactory;
 import fm.pattern.valex.config.ValexPropertiesConfiguration;
 import fm.pattern.valex.config.ValexYamlConfiguration;
 
-public class ValidationRepositoryFactoryTest {
+public class ValexConfigurationFactoryTest {
 
     @Test
     public void shouldBeAbleToExplicitlySetTheValidationRepositoryToUse() {

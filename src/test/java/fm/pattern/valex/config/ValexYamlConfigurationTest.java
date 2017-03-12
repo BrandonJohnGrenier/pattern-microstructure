@@ -1,3 +1,19 @@
+/*
+ * Copyright 2012-2017 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package fm.pattern.valex.config;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
@@ -6,26 +22,32 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.valex.config.ValexConfiguration;
-import fm.pattern.valex.config.ValexPropertiesConfiguration;
+import fm.pattern.valex.config.ValexConfigurationException;
+import fm.pattern.valex.config.ValexYamlConfiguration;
 
-public class PropertiesFileValidationRepositoryTest {
+public class ValexYamlConfigurationTest {
 
     private ValexConfiguration repository;
 
     @Before
     public void before() {
-        this.repository = new ValexPropertiesConfiguration();
+        this.repository = new ValexYamlConfiguration();
     }
 
     @Test
-    public void theRepositoryShouldBeAvailableWhenAPropertiesFileIsLocatedAndLoadedSuccessfully() {
+    public void theRepositoryShouldBeAvailableWhenAYamlFileIsLocatedAndLoadedSuccessfully() {
         assertThat(repository.isAvailable()).isTrue();
     }
 
     @Test
-    public void theRepositoryShouldBNotBeAvailableWhenAPropertiesFileCannotBeFound() {
-        ValexConfiguration unavailable = new ValexPropertiesConfiguration("invalid.properties");
+    public void theRepositoryShouldNotBeAvailableWhenAYamlFileCannotBeFound() {
+        ValexConfiguration unavailable = new ValexYamlConfiguration("sadlfisj.yaml");
         assertThat(unavailable.isAvailable()).isFalse();
+    }
+
+    @Test(expected = ValexConfigurationException.class)
+    public void theRepositoryShouldThrowAnExceptionWhenAYamlFileCannotBeParsed() {
+        new ValexYamlConfiguration("invalid.yml");
     }
 
     @Test
