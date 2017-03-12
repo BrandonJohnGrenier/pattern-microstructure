@@ -1,5 +1,5 @@
 default:
-  exception: fm.pattern.validation.UnprocessableEntityException
+  exception: fm.pattern.valex.UnprocessableEntityException
 
 address.city.size:
   code: ADD-1000
@@ -8,7 +8,7 @@ address.city.size:
 contact.name.required:
   code: CON-1000
   message: A contact name is required.
-  exception: fm.pattern.validation.UnprocessableEntityException
+  exception: fm.pattern.valex.UnprocessableEntityException
   
 instance.null:
   code: SYS-0006
