@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>fm.pattern</groupId>
-   <artifactId>valex</artifactId>
+   <artifactId>pattern-valex</artifactId>
    <version>1.0.1-SNAPSHOT</version>
    <packaging>jar</packaging>
 
@@ -30,9 +30,9 @@
 
    <dependencies>
       <dependency>
-         <groupId>fm.pattern.commons</groupId>
-         <artifactId>commons-util</artifactId>
-         <version>1.0.0</version>
+         <groupId>fm.pattern</groupId>
+         <artifactId>pattern-commons-util</artifactId>
+         <version>1.0.1</version>
       </dependency>
 
       <dependency>
