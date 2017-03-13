@@ -3,8 +3,8 @@
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>fm.pattern</groupId>
-   <artifactId>pattern-valex</artifactId>
-   <version>1.0.3-SNAPSHOT</version>
+   <artifactId>valex</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
 
    <properties>
@@ -16,7 +16,7 @@
    </properties>
 
    <scm>
-      <developerConnection>scm:git:https://github.com/BrandonJohnGrenier/valex.git</developerConnection>
+      <developerConnection>scm:git:https://github.com/PatternFM/valex.git</developerConnection>
       <tag>HEAD</tag>
    </scm>
 
@@ -31,8 +31,8 @@
    <dependencies>
       <dependency>
          <groupId>fm.pattern</groupId>
-         <artifactId>pattern-commons-util</artifactId>
-         <version>1.0.1</version>
+         <artifactId>commons-util</artifactId>
+         <version>1.0.0</version>
       </dependency>
 
       <dependency>
@@ -174,7 +174,7 @@
             <configuration>
                <goals>deploy</goals>
                <autoversionsubmodules>true</autoversionsubmodules>
-               <tagNameFormat>pattern-valex-@{project.version}</tagNameFormat>
+               <tagNameFormat>valex-@{project.version}</tagNameFormat>
             </configuration>
             <dependencies>
                <dependency>
