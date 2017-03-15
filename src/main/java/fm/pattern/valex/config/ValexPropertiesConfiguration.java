@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 public class ValexPropertiesConfiguration implements ValexConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(ValexPropertiesConfiguration.class);
-    private static final String DEFAULT_CONFIG_FILENAME = "ValidationMessages.properties";
+    private static final String default_filename = "ValidationMessages.properties";
 
     private static final Properties properties = new Properties();
     private static boolean available = false;
 
     public ValexPropertiesConfiguration() {
-        load(DEFAULT_CONFIG_FILENAME);
+        load(default_filename);
     }
 
     public ValexPropertiesConfiguration(String filename) {
@@ -27,7 +27,7 @@ public class ValexPropertiesConfiguration implements ValexConfiguration {
         InputStream inputStream = ValexPropertiesConfiguration.class.getClassLoader().getResourceAsStream(filename);
         if (inputStream == null) {
             available = false;
-            log.warn("Unable to find " + filename + " on the classpath.");
+            log.warn("Unable to find Valex configuration file '" + filename + "' on the classpath.");
             return;
         }
 

@@ -16,27 +16,42 @@
 
 package fm.pattern.valex.config;
 
+import org.apache.commons.lang3.StringUtils;
+
 public final class ValexConfigurationFactory {
 
-    private static ValexConfiguration validationRepository = null;
+    private static ValexConfiguration explicitConfiguration = null;
 
-    private static final ValexConfiguration propertiesFileValidationRepository = new ValexPropertiesConfiguration();
-    private static final ValexConfiguration yamlFileValidationRepository = new ValexYamlConfiguration();
+    private static final ValexConfiguration propertiesFileConfiguration = new ValexPropertiesConfiguration();
+    private static final ValexConfiguration yamlFileConfiguration = new ValexYamlConfiguration();
 
     private ValexConfigurationFactory() {
 
     }
 
-    public static void use(ValexConfiguration repository) {
-        validationRepository = repository;
+    public static void use(ValexConfiguration configuration) {
+        explicitConfiguration = configuration;
     }
 
     public static ValexConfiguration getRepository() {
-        return validationRepository != null ? validationRepository : getDefaultRepository();
+        String filename = System.getProperty("valex.config");
+        if (StringUtils.isBlank(filename)) {
+            return explicitConfiguration != null ? explicitConfiguration : getDefaultRepository();
+        }
+
+        if (filename.endsWith(".yml")) {
+            return new ValexYamlConfiguration(filename);
+        }
+
+        if (filename.endsWith(".properties")) {
+            return new ValexPropertiesConfiguration(filename);
+        }
+
+        throw new ValexConfigurationException("Invalid Valex configuration file '" + filename + "' - file must be a .yml or .properties file");
     }
 
     private static ValexConfiguration getDefaultRepository() {
-        return propertiesFileValidationRepository.isAvailable() ? propertiesFileValidationRepository : yamlFileValidationRepository;
+        return propertiesFileConfiguration.isAvailable() ? propertiesFileConfiguration : yamlFileConfiguration;
     }
 
 }
