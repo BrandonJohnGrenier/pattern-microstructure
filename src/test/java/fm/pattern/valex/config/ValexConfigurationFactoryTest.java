@@ -12,10 +12,10 @@ public class ValexConfigurationFactoryTest {
     @Test
     public void shouldBeAbleToExplicitlySetTheValidationRepositoryToUse() {
         ValexConfigurationFactory.use(new ValexYamlConfiguration());
-        PatternAssertions.assertThat(ValexConfigurationFactory.getRepository().getClass()).isEqualTo(ValexYamlConfiguration.class);
+        PatternAssertions.assertThat(ValexConfigurationFactory.getConfiguration().getClass()).isEqualTo(ValexYamlConfiguration.class);
 
         ValexConfigurationFactory.use(null);
-        PatternAssertions.assertThat(ValexConfigurationFactory.getRepository().getClass()).isEqualTo(ValexPropertiesConfiguration.class);
+        PatternAssertions.assertThat(ValexConfigurationFactory.getConfiguration().getClass()).isEqualTo(ValexPropertiesConfiguration.class);
     }
 
     @Test

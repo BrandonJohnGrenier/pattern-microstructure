@@ -55,17 +55,17 @@ public class Reportable {
     }
 
     private static String getCode(String key) {
-        String code = ValexConfigurationFactory.getRepository().getCode(key);
-        return StringUtils.isEmpty(code) ? key : code;
+        String code = ValexConfigurationFactory.getCode(key);
+        return StringUtils.isBlank(code) ? key : code;
     }
 
     private static String getMessage(String input) {
-        String message = ValexConfigurationFactory.getRepository().getMessage(input);
-        return StringUtils.isEmpty(message) ? input : message;
+        String message = ValexConfigurationFactory.getMessage(input);
+        return StringUtils.isBlank(message) ? input : message;
     }
 
     private static Class<? extends ReportableException> getException(String key) {
-        String className = ValexConfigurationFactory.getRepository().getException(key);
+        String className = ValexConfigurationFactory.getException(key);
         if (StringUtils.isBlank(className)) {
             return null;
         }

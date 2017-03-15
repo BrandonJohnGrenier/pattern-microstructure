@@ -33,7 +33,19 @@ public final class ValexConfigurationFactory {
         explicitConfiguration = configuration;
     }
 
-    public static ValexConfiguration getRepository() {
+    public static String getCode(String key) {
+        return getConfiguration().getCode(key);
+    }
+
+    public static String getMessage(String key) {
+        return getConfiguration().getMessage(key);
+    }
+
+    public static String getException(String key) {
+        return getConfiguration().getException(key);
+    }
+
+    public static ValexConfiguration getConfiguration() {
         String filename = System.getProperty("valex.config");
         if (StringUtils.isBlank(filename)) {
             return explicitConfiguration != null ? explicitConfiguration : getDefaultRepository();

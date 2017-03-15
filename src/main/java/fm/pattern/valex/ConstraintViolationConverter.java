@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.metadata.ConstraintDescriptor;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fm.pattern.valex.config.ValexConfigurationFactory;
 
 public final class ConstraintViolationConverter {
@@ -28,7 +30,7 @@ public final class ConstraintViolationConverter {
         for (ConstraintViolation<T> violation : violations) {
             if (isNotEmpty(violation.getMessage())) {
                 String key = violation.getMessageTemplate().replace("{", "").replace("}", "");
-                String message = ValexConfigurationFactory.getRepository().getMessage(key);
+                String message = ValexConfigurationFactory.getMessage(key);
                 errors.add(Reportable.interpolated(key, interpolate(message, violation)));
             }
         }
@@ -37,6 +39,10 @@ public final class ConstraintViolationConverter {
     }
 
     private static <T> String interpolate(String message, ConstraintViolation<T> violation) {
+        if (StringUtils.isBlank(message)) {
+            return message;
+        }
+
         Map<String, Object> attributes = annotationAttributes(violation);
 
         String interpolated = message;
