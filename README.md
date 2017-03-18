@@ -14,6 +14,40 @@ To get started, add the following dependency to your depedency list:
 </dependency>
 ```
 
+Valex exposes a ValidationService API that can be used to explicitly trigger validation, as well as a @Valid annotation that can be used to perform validation declaratively. You can wire these services up into your Spring app using the following configuration:
+
+```java
+import javax.validation.Validator;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import fm.pattern.valex.SimpleValidationService;
+import fm.pattern.valex.ValidationService;
+import fm.pattern.valex.annotations.ValidationAdvisor;
+
+@Configuration
+public class ValidationConfiguration {
+
+    @Bean(name = "validator")
+    public Validator validator() {
+        return new LocalValidatorFactoryBean();
+    }
+
+    @Bean
+    public ValidationService validationService() {
+        return new SimpleValidationService(validator());
+    }
+
+    @Bean
+    public ValidationAdvisor validationAdvisor() {
+        return new ValidationAdvisor(validationService());
+    }
+
+}
+```
+
 # Building from Source
 
 Both JDK 8 and Maven 3 are required to build Valex from source. With these prerequisites in place you can build Valex by:
