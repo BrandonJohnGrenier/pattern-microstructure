@@ -41,7 +41,7 @@
       <dependency>
          <groupId>fm.pattern</groupId>
          <artifactId>commons-util</artifactId>
-         <version>1.0.7</version>
+         <version>1.0.9</version>
       </dependency>
 
       <dependency>
