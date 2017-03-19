@@ -124,24 +124,23 @@ account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
 
 ```
 
-# Validating
+# Triggering Validation
 
 ```java
 
 public interface AccountService {
 
-	Result<Account> create(Account account);
+   Result<Account> create(Account account);
 
-	Result<Account> update(Account account);
+   Result<Account> update(Account account);
 
-	Result<Account> delete(Account account);
+   Result<Account> delete(Account account);
 
-	Result<Account> findById(String id);
+   Result<Account> findById(String id);
 
-	Result<Account> findByUsername(String username);
+   Result<Account> findByUsername(String username);
 
 }
-
 ```
 
 ### Explict validation using the ValidationService
@@ -170,7 +169,6 @@ class AccountServiceImpl implements AccountService {
     }
     
 }
-
 ```
 
 ### Declarative Validation using Annotations
@@ -191,8 +189,11 @@ class AccountServiceImpl implements AccountService {
     public Result<Account> create(@Valid Account account) {
         return Result.accept(repository.save(account));
     }
-    
+
+}      
 ```
+
+# Conditional Validation
 
 ### Conditional validation using the ValidationService
 ```java
@@ -240,7 +241,6 @@ class AccountServiceImpl implements AccountService {
     }
             
 }
-    
 ```
 
 
@@ -276,7 +276,50 @@ class AccountServiceImpl implements AccountService {
     }
             
 }
+```
+
+# Explicit Rejection
+
+```java
+
+import fm.pattern.valex.Result;
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    private final AccountRepository repository;
     
+    public AccountServiceImpl(AccountRepository repository) {
+        repository = repository;
+    }
+
+    public Result<Account> findById(String id) {
+        if (StringUtils.isBlank(id)) {
+            return Result.reject("account.id.required");
+        }
+
+        Account account = repository.findById(username);
+        if(account == null) {
+            Result.reject("account.id.not_found", username);
+        }
+        
+        return Result.accept(account): 
+    }
+
+    public Result<Account> findByUsername(String username) {
+        if (StringUtils.isBlank(username)) {
+            return Result.reject("account.username.required");
+        }
+
+        Account account = repository.findByUsername(username);
+        if(account == null) {
+            Result.reject("account.username.not_found", username);
+        }
+        
+        return Result.accept(account): 
+    }
+            
+}
 ```
 
 
