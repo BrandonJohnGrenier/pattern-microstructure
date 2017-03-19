@@ -124,7 +124,7 @@ account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
 
 ```
 
-#Validating
+# Validating
 
 ```java
 
@@ -156,7 +156,6 @@ class AccountServiceImpl implements AccountService {
     private final AccountRepository repository;
     private final ValidationService validationService;
     
-    @Autowired
     public AccountServiceImpl(AccountRepository repository, ValidationService validationService) {
         repository = repository;
         this.validationService = validationService;
@@ -185,7 +184,6 @@ class AccountServiceImpl implements AccountService {
 
     private final AccountRepository repository;
     
-    @Autowired
     public AccountServiceImpl(AccountRepository repository) {
         repository = repository;
     }
@@ -212,7 +210,6 @@ class AccountServiceImpl implements AccountService {
     private final AccountRepository repository;
     private final ValidationService validationService;
     
-    @Autowired
     public AccountServiceImpl(AccountRepository repository, ValidationService validationService) {
         repository = repository;
         this.validationService = validationService;
@@ -261,7 +258,6 @@ class AccountServiceImpl implements AccountService {
 
     private final AccountRepository repository;
     
-    @Autowired
     public AccountServiceImpl(AccountRepository repository) {
         repository = repository;
         this.validationService = validationService;
