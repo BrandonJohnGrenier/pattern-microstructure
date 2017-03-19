@@ -11,7 +11,7 @@ public class AddressValidationTest extends ValidationServiceTest {
 
     @Test
     public void shouldBeAbleToCreateAnAddress() {
-        assertCreate(address().withUnit(randomAlphabetic(5)).build()).accepted();
+        assertCreate(address().build()).accepted();
     }
 
     @Test

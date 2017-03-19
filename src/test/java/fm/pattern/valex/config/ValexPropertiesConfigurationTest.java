@@ -10,16 +10,16 @@ import fm.pattern.valex.config.ValexPropertiesConfiguration;
 
 public class ValexPropertiesConfigurationTest {
 
-    private ValexConfiguration repository;
+    private ValexConfiguration configuration;
 
     @Before
     public void before() {
-        this.repository = new ValexPropertiesConfiguration();
+        this.configuration = new ValexPropertiesConfiguration();
     }
 
     @Test
     public void theRepositoryShouldBeAvailableWhenAPropertiesFileIsLocatedAndLoadedSuccessfully() {
-        assertThat(repository.isAvailable()).isTrue();
+        assertThat(configuration.isAvailable()).isTrue();
     }
 
     @Test
@@ -30,61 +30,61 @@ public class ValexPropertiesConfigurationTest {
 
     @Test
     public void shouldBeAbleToResolveAMessageForTheSpecifiedValidationKey() {
-        String description = repository.getMessage("contact.name.required");
+        String description = configuration.getMessage("contact.name.required");
         assertThat(description).isEqualTo("A contact name is required.");
     }
 
     @Test
     public void shouldReturnANullAMessageIfTheSpecifiedValidationKeyIsNullOrEmpty() {
-        assertThat(repository.getMessage(null)).isNull();
-        assertThat(repository.getMessage("")).isNull();
-        assertThat(repository.getMessage("   ")).isNull();
+        assertThat(configuration.getMessage(null)).isNull();
+        assertThat(configuration.getMessage("")).isNull();
+        assertThat(configuration.getMessage("   ")).isNull();
     }
 
     @Test
     public void shouldReturnANullAMessageIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getMessage("invalid.key.name")).isNull();
+        assertThat(configuration.getMessage("invalid.key.name")).isNull();
     }
 
     @Test
     public void shouldBeAbleToResolveACodeForTheSpecifiedValidationKey() {
-        String code = repository.getCode("contact.name.required");
+        String code = configuration.getCode("contact.name.required");
         assertThat(code).isEqualTo("CON-1000");
     }
 
     @Test
     public void shouldReturnANullCodeIfTheSpecifiedValidationKeyIsNullOrEmpty() {
-        assertThat(repository.getCode(null)).isNull();
-        assertThat(repository.getCode("")).isNull();
-        assertThat(repository.getCode("   ")).isNull();
+        assertThat(configuration.getCode(null)).isNull();
+        assertThat(configuration.getCode("")).isNull();
+        assertThat(configuration.getCode("   ")).isNull();
     }
 
     @Test
     public void shouldReturnANullACodeIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getCode("invalid.key.name")).isNull();
+        assertThat(configuration.getCode("invalid.key.name")).isNull();
     }
 
     @Test
     public void shouldBeAbleToResolveAnExceptionClassForTheSpecifiedValidationKey() {
-        String exception = repository.getException("contact.name.required");
+        String exception = configuration.getException("contact.name.required");
         assertThat(exception).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
     }
 
     @Test
     public void shouldReturnANullExceptionClassIfTheSpecifiedValidationKeyIsNullOrEmpty() {
-        assertThat(repository.getException(null)).isNull();
-        assertThat(repository.getException("")).isNull();
-        assertThat(repository.getException("   ")).isNull();
+        assertThat(configuration.getException(null)).isNull();
+        assertThat(configuration.getException("")).isNull();
+        assertThat(configuration.getException("   ")).isNull();
     }
 
     @Test
     public void shouldReturnANullExceptionClassIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getException("invalid.key.name")).isNull();
+        assertThat(configuration.getException("invalid.key.name")).isNull();
     }
 
     @Test
     public void shouldReturnTheDefaultExceptionClassIfAnExceptionClassIsNotDefinedForTheValidationKey() {
-        assertThat(repository.getException("address.city.size")).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
+        assertThat(configuration.getException("address.city.size")).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
     }
-
+    
 }
