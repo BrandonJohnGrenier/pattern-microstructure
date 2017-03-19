@@ -3,7 +3,7 @@
 
 # Introduction
 
-Valex provides YAML-based validation configuration and fluent exception management for Java.
+Valex is a YAML-based validation and fluent exception management API for Java.
 
 To get started, add the following dependency to your depedency list:
 ```xml
@@ -347,21 +347,22 @@ class AccountServiceImpl implements AccountService {
 I've met a number of people who have used the BeanValidation API but haven't had much exposure to conditional validation using validation groups. Validation groups are a great feature of the BeanValidation API, and Valex provides first class support for Validation groups.
 
 ```java
-@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })
+@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel3.class, UpdateLevel3.class })
 public class Account {
 
-	@NotBlank(message = "{account.id.required}", groups = { UpdateLevel1.class, DeleteLevel1.class })
-	@Size(min = 3, max = 128, message = "{account.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
-	private String id;
+  @NotBlank(message = "{account.id.required}", groups = { UpdateLevel1.class, DeleteLevel1.class })
+  @Size(min = 3, max = 128, message = "{account.username.size}", groups = { UpdateLevel2.class, DeleteLevel2.class })
+  private String id;
 
-	@NotBlank(message = "{account.username.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-	@Size(min = 3, max = 128, message = "{account.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
-	private String username;
+  @NotBlank(message = "{account.username.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+  @Size(min = 3, max = 128, message = "{account.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+  private String username;
 
-	@NotBlank(message = "{account.password.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-	@Size(min = 8, max = 255, message = "{account.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
-	private String password;
+  @NotBlank(message = "{account.password.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+  @Size(min = 8, max = 255, message = "{account.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+  private String password;
 
+}
 ```
 
 ### Conditional validation using the ValidationService
