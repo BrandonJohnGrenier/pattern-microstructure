@@ -14,7 +14,7 @@ To get started, add the following dependency to your depedency list:
 </dependency>
 ```
 
-Valex exposes a ValidationService API that can be used to explicitly trigger validation, as well as a @Valid annotation that can be used to perform validation declaratively. You can wire these services up into your Spring app using the following configuration:
+Valex exposes a ValidationService API that can be used to explicitly trigger validation, as well as @Valid annotations that can be used to perform validation declaratively. You can wire these services up into your Spring app using the following configuration:
 
 ```java
 import javax.validation.Validator;
@@ -49,17 +49,16 @@ public class ValidationConfiguration {
 ```
 
 # Configuration
-You can configure your application's error messages and exception registry using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose.
+You can configure your application's error messages and exception registry using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
 
 ### YAML Configuration
-Place a file named **ValidationMessages.yml** on the root of your classath.
+If you choose to go down the YAML configuration path, place a file named **ValidationMessages.yml** on the root of your classath.
 
 
 ```yaml
 
 default:
   exception: fm.pattern.valex.UnprocessableEntityException
-  
   
 account.id.required: 
   message: "An account id is required."
@@ -95,7 +94,7 @@ account.username.not_found:
 
 ### Properties Configuration
 
-Place a file named **ValidationMessages.properties** on the root of your classath.
+If you choose to go down the Java properties file configuration path, place a file named **ValidationMessages.properties** on the root of your classath.
 
 ```
 default.exception=fm.pattern.valex.UnprocessableEntityException
@@ -123,6 +122,165 @@ account.username.not_found=No such username: %s
 account.username.not_found.code=ACC-0008
 account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
 
+```
+
+#Validating
+
+```java
+
+public interface AccountService {
+
+	Result<Account> create(Account account);
+
+	Result<Account> update(Account account);
+
+	Result<Account> delete(Account account);
+
+	Result<Account> findById(String id);
+
+	Result<Account> findByUsername(String username);
+
+}
+
+```
+
+### Explict validation using the ValidationService
+```java
+
+import fm.pattern.valex.Result;
+import fm.pattern.valex.ValidationService;
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    private final AccountRepository repository;
+    private final ValidationService validationService;
+    
+    @Autowired
+    public AccountServiceImpl(AccountRepository repository, ValidationService validationService) {
+        repository = repository;
+        this.validationService = validationService;
+    }
+
+    public Result<Account> create(Account account) {
+        Result<Account> result = validationService.validate(account);
+        if(result.rejected()) {
+            return result;
+        }
+        return Result.accept(repository.save(account));
+    }
+    
+}
+
+```
+
+### Declarative Validation using Annotations
+```java
+
+import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Valid;
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    private final AccountRepository repository;
+    
+    @Autowired
+    public AccountServiceImpl(AccountRepository repository) {
+        repository = repository;
+    }
+
+    public Result<Account> create(@Valid Account account) {
+        return Result.accept(repository.save(account));
+    }
+    
+```
+
+### Conditional validation using the ValidationService
+```java
+
+import fm.pattern.valex.Result;
+import fm.pattern.valex.ValidationService;
+
+import fm.pattern.valex.sequences.Create;
+import fm.pattern.valex.sequences.Update;
+import fm.pattern.valex.sequences.Delete;
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    private final AccountRepository repository;
+    private final ValidationService validationService;
+    
+    @Autowired
+    public AccountServiceImpl(AccountRepository repository, ValidationService validationService) {
+        repository = repository;
+        this.validationService = validationService;
+    }
+
+    public Result<Account> create(Account account) {
+        Result<Account> result = validationService.validate(account, Create.class);
+        if(result.rejected()) {
+            return result;
+        }
+        return Result.accept(repository.save(account));
+    }
+    
+    public Result<Account> update(Account account) {
+        Result<Account> result = validationService.validate(account, Update.class);
+        if(result.rejected()) {
+            return result;
+        }
+        return Result.accept(repository.update(account));
+    }
+    
+    public Result<Account> delete(Account account) {
+        Result<Account> result = validationService.validate(account, Delete.class);
+        if(result.rejected()) {
+            return result;
+        }
+        return Result.accept(repository.delete(account));
+    }
+            
+}
+    
+```
+
+
+### Conditional validation using Annotations
+```java
+
+import fm.pattern.valex.Result;
+
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Update;
+import fm.pattern.valex.annotations.Delete;
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    private final AccountRepository repository;
+    
+    @Autowired
+    public AccountServiceImpl(AccountRepository repository) {
+        repository = repository;
+        this.validationService = validationService;
+    }
+
+    public Result<Account> create(@Create Account account) {
+        return Result.accept(repository.save(account));
+    }
+    
+    public Result<Account> update(@Update Account account) {
+        return Result.accept(repository.update(account));
+    }
+    
+    public Result<Account> delete(@Delete Account account) {
+        return Result.accept(repository.delete(account));
+    }
+            
+}
+    
 ```
 
 
