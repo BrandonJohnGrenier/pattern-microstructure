@@ -3,7 +3,7 @@
 
 # Introduction
 
-Valex provides YAML-based validation configuration and a fluent exception management library for Java programs.
+Valex provides YAML-based validation configuration and fluent exception management for Java.
 
 To get started, add the following dependency to your depedency list:
 ```xml
@@ -14,7 +14,7 @@ To get started, add the following dependency to your depedency list:
 </dependency>
 ```
 
-Valex exposes a ValidationService API that can be used to explicitly trigger validation, as well as @Valid annotations that can be used to perform validation declaratively. You can wire these services up into your Spring app using the following configuration:
+Valex exposes a ValidationService API that can be used to explicitly trigger validation, as well as @Valid annotations that can be used to perform validation declaratively. You can wire these services into your Spring application using the following configuration:
 
 ```java
 import javax.validation.Validator;
@@ -48,11 +48,11 @@ public class ValidationConfiguration {
 }
 ```
 
-# Configuration
+# Validation Configuration
 You can configure your application's error messages, codes and exceptions using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
 
 ### YAML Configuration
-If you choose to go down the YAML configuration path, place a file named **ValidationMessages.yml** on the root of your classath.
+If you choose to go down the YAML configuration path, place a file named **ValidationMessages.yml** on the root of your classath. An example YAML configuration file will look like:
 
 
 ```yaml
@@ -95,7 +95,7 @@ account.username.not_found:
 
 ### Properties Configuration
 
-If you choose to go down the Java properties file configuration path, place a file named **ValidationMessages.properties** on the root of your classath.
+If you choose to go down the Java properties file configuration path, place a file named **ValidationMessages.properties** on the root of your classath. An example properties configuration file will look like:
 
 ```
 default.exception=fm.pattern.valex.UnprocessableEntityException
@@ -127,6 +127,8 @@ account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
 
 ### Configuration in Detail
 
+We'll take a specific example of a configuration element and describe it in detail:
+
 ```yaml
 account.id.required: 
   message: "An account id is required."
@@ -135,7 +137,7 @@ account.id.required:
 ``` 
 
 **account.id.required**  
-This is the *key* used to resolve the error message, code and exception for this particular validation error. The dot notatation in the key name is purely conventional; you can you use the most appropriate key format for your needs - Valex treats the key as an opaque value.
+The *key* used to resolve the error message, code and exception for this particular validation error. The dot notatation in the key name is purely conventional; you can you use the most appropriate key format for your needs - Valex treats the key as an opaque value.
 
 **message**   
 The error message that should be returned when validation fails for this key. The YAML messages should generally be surrounded by double quotes (double quotes are required when you use *interpolated messaging* - more on this shortly). 
@@ -168,7 +170,7 @@ default:
 default.exception=fm.pattern.valex.UnprocessableEntityException
 ```
 
-In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly provide an exception value.
+In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly define an exception property.
 
 ### Message Interpolation
 
