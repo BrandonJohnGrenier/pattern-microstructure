@@ -48,6 +48,84 @@ public class ValidationConfiguration {
 }
 ```
 
+# Configuration
+You can configure your application's error messages and exception registry using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose.
+
+### YAML Configuration
+Place a file named **ValidationMessages.yml** on the root of your classath.
+
+
+```yaml
+
+default:
+  exception: fm.pattern.valex.UnprocessableEntityException
+  
+  
+account.id.required: 
+  message: "An account id is required."
+  code: ACC-0006
+
+account.username.required: 
+  message: "An account username is required."
+  code: ACC-0001
+
+account.username.size: 
+  message: "An account username must be between {min} and {max} characters."
+  code: ACC-0002
+
+account.username.conflict:
+  message: "The username {validatedValue} is already in use."
+  code: ACC-0003
+  exception: fm.pattern.valex.ResourceConflictException
+
+account.password.required: 
+  message: "An account password is required."
+  code: ACC-0004
+
+account.password.size: 
+  message: "An account password must be between {min} and {max} characters."
+  code: ACC-0005
+
+account.username.not_found: 
+  message: "No such username: %s"
+  code: ACC-0008
+  exception: fm.pattern.valex.EntityNotFoundException
+
+```
+
+### Properties Configuration
+
+Place a file named **ValidationMessages.properties** on the root of your classath.
+
+```
+default.exception=fm.pattern.valex.UnprocessableEntityException
+
+account.id.required=An account id is required.
+account.id.required.code=ACC-0006
+
+account.username.required=An account username is required.
+account.username.required.code=ACC-0001
+
+account.username.size=An account username must be between {min} and {max} characters.
+account.username.size.code=ACC-0002
+
+account.username.conflict=The username {validatedValue} is already in use.
+account.username.conflict.code=ACC-0003
+account.username.conflict.exception=fm.pattern.valex.ResourceConflictException
+
+account.password.required=An account password is required.
+account.password.required.code=ACC-0004
+
+account.password.size=An account password must be between {min} and {max} characters.
+account.password.size.code=ACC-0005
+
+account.username.not_found=No such username: %s
+account.username.not_found.code=ACC-0008
+account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
+
+```
+
+
 # Building from Source
 
 Both JDK 8 and Maven 3 are required to build Valex from source. With these prerequisites in place you can build Valex by:
