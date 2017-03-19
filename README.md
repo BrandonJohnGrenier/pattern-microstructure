@@ -49,7 +49,7 @@ public class ValidationConfiguration {
 ```
 
 # Configuration
-You can configure your application's error messages and exception registry using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
+You can configure your application's error messages, codes and exceptions using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
 
 ### YAML Configuration
 If you choose to go down the YAML configuration path, place a file named **ValidationMessages.yml** on the root of your classath.
@@ -149,8 +149,26 @@ The _ReportableException_ that should be returned when validation fails for this
 * AuthenticationException 
 * AuthorizationException 
 * BadRequestException 
+* ResourceConflictException
 * EntityNotFoundException
 
+You can roll your own ReportableException implementation classes to suit your needs, use the existing Valex exceptions, or use a mix of both. 
+
+### Default Exceptions
+You can configure a default exception class to return when a validation element does not contain an explicit *exception* property.
+
+**YAML Configuration**
+```yaml
+default:
+  exception: fm.pattern.valex.UnprocessableEntityException
+```  
+
+**Properties Configuration**
+```
+default.exception=fm.pattern.valex.UnprocessableEntityException
+```
+
+In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly provide an exception value.
 
 ### Message Interpolation
 
