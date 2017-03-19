@@ -234,7 +234,8 @@ public interface AccountService {
 
 }
 ```
-The contract isn't expressive enough to report on both success and failure conditions in a consistent fashion. If a validation error were to occur within the create(), update() or delete() methods, errors would have to be propogated through a RuntimeException. 
+
+The contract isn't expressive enough to report on both success and failure conditions in a consistent fashion. If a validation error were to occur within the create(), update() or delete() methods, errors would have to be propagated through a RuntimeException. 
 
 The findById() and findByUsername() methods will return accounts if found, but the negative case is subjective - these methods could throw a RuntimeException to communicate that a result wasn't found, or return null as a convention.
 
@@ -332,6 +333,7 @@ class AccountServiceImpl implements AccountService {
     }
 
     public Result<Account> create(@Valid Account account) {
+        // If we get to this point validation has succeeded.
         return Result.accept(repository.save(account));
     }
 
@@ -339,6 +341,28 @@ class AccountServiceImpl implements AccountService {
 ```
 
 # Conditional Validation
+
+### Validation Groups
+
+I've met a number of people who have used the BeanValidation API but haven't had much exposure to conditional validation using validation groups. Validation groups are a great feature of the BeanValidation API, and Valex provides first class support for Validation groups.
+
+```java
+@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })
+public class Account {
+
+	@NotBlank(message = "{account.id.required}", groups = { UpdateLevel1.class, DeleteLevel1.class })
+	@Size(min = 3, max = 128, message = "{account.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String id;
+
+	@NotBlank(message = "{account.username.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	@Size(min = 3, max = 128, message = "{account.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String username;
+
+	@NotBlank(message = "{account.password.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	@Size(min = 8, max = 255, message = "{account.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String password;
+
+```
 
 ### Conditional validation using the ValidationService
 ```java
