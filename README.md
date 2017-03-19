@@ -90,7 +90,8 @@ account.username.not_found:
   code: ACC-0008
   exception: fm.pattern.valex.EntityNotFoundException
 
-```
+``` 
+
 
 ### Properties Configuration
 
@@ -123,6 +124,36 @@ account.username.not_found.code=ACC-0008
 account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
 
 ```
+
+### Configuration in Detail
+
+```yaml
+account.id.required: 
+  message: "An account id is required."
+  code: ACC-0006
+  exception: fm.pattern.valex.UnprocessableEntityException
+``` 
+
+**account.id.required**  
+This is the *key* used to resolve the error message, code and exception for this particular validation error. The dot notatation in the key name is purely conventional; you can you use the most appropriate key format for your needs - Valex treats the key as an opaque value.
+
+**message**   
+The error message that should be returned when validation fails for this key. The YAML messages should generally be surrounded by double quotes (double quotes are required when you use *interpolated messaging* - more on this shortly). 
+
+**code**   
+The error code that should be returned when validation fails for this key. The error code presented above is conventional; choose an error code scheme to suit your needs.
+
+**exception**    
+The _ReportableException_ that should be returned when validation fails for this key. Valex provides a number of ReportableException implementation classes for you to use out of the box:
+* UnprocessableEntityException 
+* AuthenticationException 
+* AuthorizationException 
+* BadRequestException 
+* EntityNotFoundException
+
+
+### Message Interpolation
+
 
 # Triggering Validation
 
