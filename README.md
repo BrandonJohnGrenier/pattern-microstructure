@@ -136,7 +136,7 @@ account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
 
 ### Configuration in Detail
 
-We'll take a specific example of a configuration element and describe it in detail:
+Let's look at a specific configuration element in detail:
 
 ```yaml
 account.id.required: 
@@ -210,10 +210,35 @@ private String username;
 account.username.size: 
   message: "The username {validatedValue} must be between {min} and {max} characters."
 ```
-In this case, the username attribute will be injected into the message.
 
 
 # Triggering Validation
+
+Validation events will produce Generic **Result** objects which contain the state of the validation result. While there are many approaches to handle the Result object after a validation event, the recommended apporach is to return the Result to callers. 
+
+Let's look at the following AccountService interface as an example:
+
+```java
+
+public interface AccountService {
+
+   Account create(Account account);
+
+   Account update(Account account);
+
+   Account delete(Account account);
+
+   Account findById(String id);
+
+   Account findByUsername(String username);
+
+}
+```
+The contract isn't expressive enough to report on both success and failure conditions in a consistent fashion. If a validation error were to occur within the create(), update() or delete() methods, errors would have to be propogated through a RuntimeException. 
+
+The findById() and findByUsername() methods will return accounts if found, but the negative case is subjective - these methods could throw a RuntimeException to communicate that a result wasn't found, or return null as a convention.
+
+A more expressive contract can provide a simple, consistent approach to handling success and error conditions:
 
 ```java
 
@@ -231,6 +256,31 @@ public interface AccountService {
 
 }
 ```
+
+Using the fluent interface, any methods returning a Result<T> will allow API clients to immediatley retrieve the target object if validation was successful, or throw an exception if a validation error occured:
+
+```java
+Account pending = new Account();
+...
+Account account = accountService.create(pending).orThrow();
+
+```
+
+Another benefit of this approach is that it doesn't force API clients to implement try/catch logic if they choose to do something other than propagate exceptions.
+```java
+Account pending = new Account();
+...
+Result<Account> result = accountService.create(pending);
+if(result.accepted()) {
+  // do something
+}
+if(result.rejected()) {
+  // do something else
+}
+
+```
+
+Finally, applying this mechanism consistently across a program can help reduce congitive load; API clients can expect a consistent response from service calls without having to delve into the specific nuances of an API to learn how to deal with success or error conditions.
 
 ### Explict validation using the ValidationService
 ```java
