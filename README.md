@@ -172,7 +172,8 @@ default.exception=fm.pattern.valex.UnprocessableEntityException
 
 In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly define an exception property.
 
-### Message Interpolation
+### Message Interpolation (Dynamic Error Messages)
+
 
 
 # Triggering Validation
