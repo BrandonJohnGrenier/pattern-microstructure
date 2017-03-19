@@ -283,6 +283,9 @@ if(result.rejected()) {
 Finally, applying this mechanism consistently across a program can help reduce congitive load; API clients can expect a consistent response from service calls without having to delve into the specific nuances of an API to learn how to deal with success or error conditions.
 
 ### Explict validation using the ValidationService
+
+You can explicitly trigger validation events by invoking the ValidationService.validate() method on the target object to validate.
+
 ```java
 
 import fm.pattern.valex.Result;
@@ -311,6 +314,9 @@ class AccountServiceImpl implements AccountService {
 ```
 
 ### Declarative Validation using Annotations
+
+Valex also provides a parameter-scoped @Valid annoation that triggers validation and returns a Result immediatley if validation fails. To use this annotation your method must have a signature that returns Result<T>.
+
 ```java
 
 import fm.pattern.valex.Result;
