@@ -47,12 +47,21 @@ public class ValidationConfiguration {
 
 }
 ```
+The Valex API relies on an underlying BeanValidation Validator implementation to execute valiation logic on annotated models. In the example above we're bootstrapping the Spring LocalValidatorFactory bean, but you can bootstrap your own validator as well:
+
+```
+@Bean(name = "validator")
+public Validator validator() {
+    return Validation.buildDefaultValidatorFactory().getValidator();
+}
+
+```
 
 # Validation Configuration
 You can configure your application's error messages, codes and exceptions using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
 
 ### YAML Configuration
-If you choose to go down the YAML configuration path, place a file named **ValidationMessages.yml** on the root of your classath. An example YAML configuration file will look like:
+If you choose to go down the YAML configuration path, place a file named **ValidationMessages.yml** on the root of your classath. An example YAML configuration file will look like this:
 
 
 ```yaml
@@ -95,7 +104,7 @@ account.username.not_found:
 
 ### Properties Configuration
 
-If you choose to go down the Java properties file configuration path, place a file named **ValidationMessages.properties** on the root of your classath. An example properties configuration file will look like:
+If you choose to go down the Java properties file configuration path, place a file named **ValidationMessages.properties** on the root of your classath. An example properties configuration file will look like this:
 
 ```
 default.exception=fm.pattern.valex.UnprocessableEntityException
@@ -173,7 +182,35 @@ default.exception=fm.pattern.valex.UnprocessableEntityException
 In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly define an exception property.
 
 ### Message Interpolation (Dynamic Error Messages)
+Valex supports two kinds of message interpolation so that you can produce data driven error messages.
 
+#### BeanValidation Interpolation
+BeanValidation message interpolation allows you to inject *annotation attribute values* into your validation messages. As an example, let's take the @Size annotated password field with a **min** and **max** attributes defined below:
+
+```java
+@Size(min = 8, max = 255, message = "{account.password.size}")
+private String password;
+```
+
+If you want to inject the min and max attribute values into your error message, you can do so by addressing the attributes in {braces}, like so:
+```
+account.password.size: 
+  message: "An account password must be between {min} and {max} characters."
+  code: ACC-0005
+```
+
+One special message interpolation feature you can use is the {validatedValue} expression. This expression be used to inject the current value of the field being validated into your error message.
+
+```java
+@Size(min = 8, max = 255, message = "{account.username.size}")
+private String username;
+```
+
+```
+account.username.size: 
+  message: "The username {validatedValue} must be between {min} and {max} characters."
+```
+In this case, the username attribute will be injected into the message.
 
 
 # Triggering Validation
