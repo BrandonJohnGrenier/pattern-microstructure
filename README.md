@@ -57,7 +57,7 @@ public Validator validator() {
 
 ```
 
-# Validation Configuration
+# Configure Error Codes, Messages and Exceptions
 You can configure your application's error messages, error codes and exceptions using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
 
 ### YAML Configuration
@@ -181,10 +181,10 @@ default.exception=fm.pattern.valex.UnprocessableEntityException
 
 In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly define an exception property.
 
-### Message Interpolation (Dynamic Error Messages)
+# Message Interpolation
 Valex supports two kinds of message interpolation so that you can produce dynamic error messages.
 
-#### BeanValidation Interpolation
+### BeanValidation Interpolation
 BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, take the following @Size annotated field with **min** and **max** attributes:
 
 ```java
@@ -212,7 +212,7 @@ account.username.size:
 ```
 
 
-# Triggering Validation
+# Validation Events and Results
 
 Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. Valex works best when validation is performed in an application's business layer, and service interfaces within the business layer return typed *Result*s.  
 
@@ -289,7 +289,7 @@ The findById() method in the AccountService could:
  * Return a Result (InternalErrorException.class -> 500) if an account couldn't be retrieved because the underlying database was unavailable
 
 
-### Validation using the ValidationService
+# Validation using the ValidationService
 
 You can explicitly trigger validation events by invoking the *ValidationService* validate() method on the object to validate.
 
@@ -318,7 +318,7 @@ class AccountServiceImpl implements AccountService {
 }
 ```
 
-### Declarative Validation using Annotations
+# Declarative Validation using Annotations
 
 Valex provides a parameter-scoped @Valid annoation that will automatically trigger validation and return a typed Result immediatley if validation fails. To use this annotation your method must have a signature that returns Result<T>.
 
