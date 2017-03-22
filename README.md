@@ -185,7 +185,7 @@ In both cases, an UnprocessableEntityException will be returned when a validatio
 Valex supports two kinds of message interpolation so that you can produce dynamic error messages.
 
 #### BeanValidation Interpolation
-BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, let's take the @Size annotated field with a **min** and **max** attributes defined below:
+BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, take the following @Size annotated field with **min** and **max** attributes:
 
 ```java
 @Size(min = 8, max = 255, message = "{account.password.size}")
@@ -214,7 +214,7 @@ account.username.size:
 
 # Triggering Validation
 
-Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. Valex works best when validation is performed in an appliation's business layer, and service interfaces within the business layer return typed *Result*s.  
+Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. Valex works best when validation is performed in an application's business layer, and service interfaces within the business layer return typed *Result*s.  
 
 Let's take the following AccountService interface as an example:
 
