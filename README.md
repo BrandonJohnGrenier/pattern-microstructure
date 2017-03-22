@@ -58,7 +58,7 @@ public Validator validator() {
 ```
 
 # Validation Configuration
-You can configure your application's error messages, codes and exceptions using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
+You can configure your application's error messages, error codes and exceptions using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
 
 ### YAML Configuration
 If you choose to go down the YAML configuration path, place a file named **ValidationMessages.yml** on the root of your classath. An example YAML configuration file will look like this:
@@ -182,7 +182,7 @@ default.exception=fm.pattern.valex.UnprocessableEntityException
 In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly define an exception property.
 
 ### Message Interpolation (Dynamic Error Messages)
-Valex supports two kinds of message interpolation so that you can produce data driven error messages.
+Valex supports two kinds of message interpolation so that you can produce dynamic error messages.
 
 #### BeanValidation Interpolation
 BeanValidation message interpolation allows you to inject *annotation attribute values* into your validation messages. As an example, let's take the @Size annotated password field with a **min** and **max** attributes defined below:
@@ -214,9 +214,9 @@ account.username.size:
 
 # Triggering Validation
 
-Validation events will produce Generic **Result** objects which contain the state of the validation result. While there are many approaches to handle the Result object after a validation event, the recommended apporach is to return the Result to callers. 
+Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. Valex works best when validation is performed in an appliation's business layer, and service interfaces within the business layer return typed *Result*s.  
 
-Let's look at the following AccountService interface as an example:
+Let's take the following AccountService interface as an example:
 
 ```java
 
@@ -235,9 +235,9 @@ public interface AccountService {
 }
 ```
 
-The contract isn't expressive enough to report on both success and failure conditions in a consistent fashion. If a validation error were to occur within the create(), update() or delete() methods, errors would have to be propagated through a RuntimeException. 
+The contract isn't expressive enough to report on both success and failure conditions in a consistent fashion. If an error occurs within the create(), update() or delete() methods, communication about the error would have to be propagated via RuntimeException. 
 
-The findById() and findByUsername() methods will return accounts if found, but the negative case is subjective - these methods could throw a RuntimeException to communicate that a result wasn't found, or return null as a convention.
+The findById() and findByUsername() methods return an account if found, but could otherwise throw a RuntimeException or return null by convention.
 
 A more expressive contract can provide a simple, consistent approach to handling success and error conditions:
 
@@ -258,7 +258,7 @@ public interface AccountService {
 }
 ```
 
-Using the fluent interface, any methods returning a Result<T> will allow API clients to immediatley retrieve the target object if validation was successful, or throw an exception if a validation error occured:
+When methods return a typed *Result*, clients can call the fluent orThrow() method on the Result to return the typed object if the method call was successful, or throw the Result's underlying exception (as configured in the ValidationMesages configuration file) if the method call failed:
 
 ```java
 Account pending = new Account();
@@ -267,25 +267,31 @@ Account account = accountService.create(pending).orThrow();
 
 ```
 
-Another benefit of this approach is that it doesn't force API clients to implement try/catch logic if they choose to do something other than propagate exceptions.
+This approach doesn't force API clients to implement try/catch logic around method calls since the *Result* object is effectively acting as a catch block (instead of catching an exception explicitly, the method is conditionally *returning* one to you). A *Result* object carries the same intent as a try/catch block, but does so in a less obtrusive way.
+
+Callers may optionally inspect the Result object:
+
 ```java
 Account pending = new Account();
 ...
 Result<Account> result = accountService.create(pending);
-if(result.accepted()) {
-  // do something
-}
 if(result.rejected()) {
-  // do something else
+  // Do something
 }
 
 ```
 
-Finally, applying this mechanism consistently across a program can help reduce congitive load; API clients can expect a consistent response from service calls without having to delve into the specific nuances of an API to learn how to deal with success or error conditions.
+Applying this pattern consistently across a program can help reduce congitive load, since callers can expect a consistent and well-defined response from API calls.
 
-### Explict validation using the ValidationService
+The findById() method in the AccountService could:
+ * Return a Result (EntityNotFoundException.class -> 404) if the account with the specified id could not be found
+ * Return a Result (UnprocessableEntityException.class -> 422) if the account id was empty or invalid.
+ * Return a Result (InternalErrorException.class -> 500) if an account couldn't be retieved because the underlying database was unavailable
 
-You can explicitly trigger validation events by invoking the ValidationService.validate() method on the target object to validate.
+
+### Validation using the ValidationService
+
+You can explicitly trigger validation events by invoking the *ValidationService* validate() method on the object to validate.
 
 ```java
 
@@ -295,11 +301,9 @@ import fm.pattern.valex.ValidationService;
 @Service
 class AccountServiceImpl implements AccountService {
 
-    private final AccountRepository repository;
     private final ValidationService validationService;
     
-    public AccountServiceImpl(AccountRepository repository, ValidationService validationService) {
-        repository = repository;
+    public AccountServiceImpl(ValidationService validationService) {
         this.validationService = validationService;
     }
 
@@ -308,7 +312,7 @@ class AccountServiceImpl implements AccountService {
         if(result.rejected()) {
             return result;
         }
-        return Result.accept(repository.save(account));
+        ...
     }
     
 }
@@ -316,7 +320,7 @@ class AccountServiceImpl implements AccountService {
 
 ### Declarative Validation using Annotations
 
-Valex also provides a parameter-scoped @Valid annoation that triggers validation and returns a Result immediatley if validation fails. To use this annotation your method must have a signature that returns Result<T>.
+Valex provides a parameter-scoped @Valid annoation that will automatically trigger validation and return a typed Result immediatley if validation fails. To use this annotation your method must have a signature that returns Result<T>.
 
 ```java
 
@@ -326,15 +330,8 @@ import fm.pattern.valex.annotations.Valid;
 @Service
 class AccountServiceImpl implements AccountService {
 
-    private final AccountRepository repository;
-    
-    public AccountServiceImpl(AccountRepository repository) {
-        repository = repository;
-    }
-
     public Result<Account> create(@Valid Account account) {
-        // If we get to this point validation has succeeded.
-        return Result.accept(repository.save(account));
+        ... // if we get here the account passed validation
     }
 
 }      
