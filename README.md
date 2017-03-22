@@ -384,7 +384,7 @@ public class Account {
 ```
 
 
-### Conditional validation using the ValidationService
+### Conditional Validation using the ValidationService
 ```java
 
 import fm.pattern.valex.Result;
@@ -397,11 +397,9 @@ import fm.pattern.valex.sequences.Delete;
 @Service
 class AccountServiceImpl implements AccountService {
 
-    private final AccountRepository repository;
     private final ValidationService validationService;
     
-    public AccountServiceImpl(AccountRepository repository, ValidationService validationService) {
-        repository = repository;
+    public AccountServiceImpl(ValidationService validationService) {
         this.validationService = validationService;
     }
 
@@ -410,7 +408,7 @@ class AccountServiceImpl implements AccountService {
         if(result.rejected()) {
             return result;
         }
-        return Result.accept(repository.save(account));
+        ...
     }
     
     public Result<Account> update(Account account) {
@@ -418,7 +416,7 @@ class AccountServiceImpl implements AccountService {
         if(result.rejected()) {
             return result;
         }
-        return Result.accept(repository.update(account));
+        ...
     }
     
     public Result<Account> delete(Account account) {
@@ -426,14 +424,14 @@ class AccountServiceImpl implements AccountService {
         if(result.rejected()) {
             return result;
         }
-        return Result.accept(repository.delete(account));
+        ...
     }
             
 }
 ```
 
 
-### Conditional validation using Annotations
+### Conditional Validation using Annotations
 ```java
 
 import fm.pattern.valex.Result;
@@ -445,23 +443,16 @@ import fm.pattern.valex.annotations.Delete;
 @Service
 class AccountServiceImpl implements AccountService {
 
-    private final AccountRepository repository;
-    
-    public AccountServiceImpl(AccountRepository repository) {
-        repository = repository;
-        this.validationService = validationService;
-    }
-
     public Result<Account> create(@Create Account account) {
-        return Result.accept(repository.save(account));
+        ...
     }
     
     public Result<Account> update(@Update Account account) {
-        return Result.accept(repository.update(account));
+        ...
     }
     
     public Result<Account> delete(@Delete Account account) {
-        return Result.accept(repository.delete(account));
+        ...
     }
             
 }
