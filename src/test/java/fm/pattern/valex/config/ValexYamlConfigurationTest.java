@@ -16,14 +16,10 @@
 
 package fm.pattern.valex.config;
 
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import fm.pattern.valex.config.ValexConfiguration;
-import fm.pattern.valex.config.ValexConfigurationException;
-import fm.pattern.valex.config.ValexYamlConfiguration;
 
 public class ValexYamlConfigurationTest {
 

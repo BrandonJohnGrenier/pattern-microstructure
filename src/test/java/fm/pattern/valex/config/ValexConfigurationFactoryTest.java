@@ -3,9 +3,6 @@ package fm.pattern.valex.config;
 import org.junit.Test;
 
 import fm.pattern.valex.PatternAssertions;
-import fm.pattern.valex.config.ValexConfigurationFactory;
-import fm.pattern.valex.config.ValexPropertiesConfiguration;
-import fm.pattern.valex.config.ValexYamlConfiguration;
 
 public class ValexConfigurationFactoryTest {
 

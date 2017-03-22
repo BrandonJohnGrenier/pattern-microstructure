@@ -2,7 +2,7 @@ package fm.pattern.valex;
 
 import static fm.pattern.valex.PatternAssertions.assertThat;
 import static fm.pattern.valex.dsl.PlaceDSL.place;
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 
 import javax.validation.Validation;
@@ -13,11 +13,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import fm.pattern.valex.InternalErrorException;
-import fm.pattern.valex.Result;
-import fm.pattern.valex.SimpleValidationService;
-import fm.pattern.valex.UnprocessableEntityException;
-import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.fixtures.model.Place;
 import fm.pattern.valex.fixtures.service.DataRepository;
 import fm.pattern.valex.fixtures.service.DataRepositoryImpl;

@@ -1,13 +1,8 @@
 package fm.pattern.valex;
 
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-
-import fm.pattern.valex.BadRequestException;
-import fm.pattern.valex.ResourceConflictException;
-import fm.pattern.valex.Result;
-import fm.pattern.valex.UnprocessableEntityException;
 
 public class ResultTest {
 

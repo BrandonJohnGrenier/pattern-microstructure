@@ -1,12 +1,9 @@
 package fm.pattern.valex.config;
 
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import fm.pattern.valex.config.ValexConfiguration;
-import fm.pattern.valex.config.ValexPropertiesConfiguration;
 
 public class ValexPropertiesConfigurationTest {
 
@@ -86,5 +83,5 @@ public class ValexPropertiesConfigurationTest {
     public void shouldReturnTheDefaultExceptionClassIfAnExceptionClassIsNotDefinedForTheValidationKey() {
         assertThat(configuration.getException("address.city.size")).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
     }
-    
+
 }

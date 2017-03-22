@@ -2,8 +2,6 @@ package fm.pattern.valex;
 
 import org.assertj.core.api.Assertions;
 
-import fm.pattern.valex.Result;
-
 public class PatternAssertions extends Assertions {
 
     public static ResultAssertions assertThat(Result<?> result) {

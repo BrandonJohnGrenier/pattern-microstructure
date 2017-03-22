@@ -181,40 +181,10 @@ default.exception=fm.pattern.valex.UnprocessableEntityException
 
 In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly define an exception property.
 
-# Message Interpolation
-Valex supports two kinds of message interpolation so that you can produce dynamic error messages.
-
-### BeanValidation Interpolation
-BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, take the following @Size annotated field with **min** and **max** attributes:
-
-```java
-@Size(min = 8, max = 255, message = "{account.password.size}")
-private String password;
-```
-
-To inject the min and max attribute values into an error message, address the attributes in {braces}:
-```
-account.password.size: 
-  message: "Your password must be between {min} and {max} characters."
-  code: ACC-0005
-```
-
-The {validatedValue} expression can be used to inject the value of the field being validated into your error message.
-
-```java
-@Size(min = 8, max = 255, message = "{account.username.size}")
-private String username;
-```
-
-```
-account.username.size: 
-  message: "The username {validatedValue} must be between {min} and {max} characters."
-```
-
 
 # Validation Events and Results
 
-Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. Valex works best when validation is performed in an application's business layer, and service interfaces within the business layer return typed *Result*s.  
+Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. Valex works best when validation is performed in an application's business layer, where service interfaces within the business layer return typed *Result*s.  
 
 Let's take the following AccountService interface as an example:
 
@@ -337,11 +307,62 @@ class AccountServiceImpl implements AccountService {
 }      
 ```
 
+
+# Message Interpolation
+Valex supports two types of message interpolation that can be used to produce dynamic error messages.
+
+### BeanValidation Interpolation
+BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, take the following @Size annotated field with **min** and **max** attributes:
+
+```java
+@Size(min = 8, max = 255, message = "{account.password.size}")
+private String password;
+```
+
+To inject the min and max attribute values into an error message, address the attributes in {braces}:
+```
+account.password.size: 
+  message: "Your password must be between {min} and {max} characters."
+  code: ACC-0005
+```
+
+The {validatedValue} expression can be used to inject the value of the field being validated into your error message.
+
+```java
+@Size(min = 8, max = 255, message = "{account.username.size}")
+private String username;
+```
+
+```
+account.username.size: 
+  message: "The username {validatedValue} must be between {min} and {max} characters."
+```
+
+### Result Interpolation
+Result objects can be created using the accept() and reject() methods. The reject() method accepts a key to a configured message or a literal message along with a varargs array for message parameters. The reject() method message formatting is compatible with the [Java Formatter API](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)
+
+```
+public Result<Account> findById(String id) {
+    Account account = repository.findById(id);
+    if(account != null) {
+    	return Result.accept(account);
+    }
+    
+    // 
+    return Result.reject("account.not_found", id);
+    
+    //
+    return Result.reject("No such account id: %s", id);
+}
+```
+
+
 # Conditional Validation
 
 ### Validation Groups
 
-I've met a number of people who have used the BeanValidation API but haven't had much exposure to conditional validation using validation groups. Validation groups are a great feature of the BeanValidation API, and Valex provides first class support for Validation groups.
+Validation groups are a great feature of the BeanValidation API, and Valex provides first class support for them.
+
 
 ```java
 @UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel3.class, UpdateLevel3.class })

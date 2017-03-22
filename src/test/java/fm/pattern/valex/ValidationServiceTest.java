@@ -4,9 +4,6 @@ import javax.validation.Validation;
 
 import org.junit.Before;
 
-import fm.pattern.valex.Result;
-import fm.pattern.valex.SimpleValidationService;
-import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.sequences.Create;
 import fm.pattern.valex.sequences.Delete;
 import fm.pattern.valex.sequences.Update;

@@ -5,8 +5,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import org.junit.Test;
 
-import fm.pattern.valex.UnprocessableEntityException;
-
 public class AddressValidationTest extends ValidationServiceTest {
 
     @Test

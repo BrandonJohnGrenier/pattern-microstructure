@@ -6,10 +6,6 @@ import java.util.stream.Collectors;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import fm.pattern.valex.Reportable;
-import fm.pattern.valex.ReportableException;
-import fm.pattern.valex.Result;
-
 public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>> {
 
     public ResultAssertions(Result<?> result) {

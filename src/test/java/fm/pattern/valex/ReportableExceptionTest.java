@@ -4,13 +4,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.valex.AuthenticationException;
-import fm.pattern.valex.AuthorizationException;
-import fm.pattern.valex.BadRequestException;
-import fm.pattern.valex.InternalErrorException;
-import fm.pattern.valex.Reportable;
-import fm.pattern.valex.UnprocessableEntityException;
-
 public class ReportableExceptionTest {
 
     private Reportable reportable;
