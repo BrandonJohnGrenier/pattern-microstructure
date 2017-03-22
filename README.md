@@ -185,21 +185,21 @@ In both cases, an UnprocessableEntityException will be returned when a validatio
 Valex supports two kinds of message interpolation so that you can produce dynamic error messages.
 
 #### BeanValidation Interpolation
-BeanValidation message interpolation allows you to inject *annotation attribute values* into your validation messages. As an example, let's take the @Size annotated password field with a **min** and **max** attributes defined below:
+BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, let's take the @Size annotated field with a **min** and **max** attributes defined below:
 
 ```java
 @Size(min = 8, max = 255, message = "{account.password.size}")
 private String password;
 ```
 
-If you want to inject the min and max attribute values into your error message, you can do so by addressing the attributes in {braces}, like so:
+To inject the min and max attribute values into an error message, address the attributes in {braces}:
 ```
 account.password.size: 
-  message: "An account password must be between {min} and {max} characters."
+  message: "Your password must be between {min} and {max} characters."
   code: ACC-0005
 ```
 
-One special message interpolation feature you can use is the {validatedValue} expression. This expression be used to inject the current value of the field being validated into your error message.
+The {validatedValue} expression can be used to inject the value of the field being validated into your error message.
 
 ```java
 @Size(min = 8, max = 255, message = "{account.username.size}")
@@ -286,7 +286,7 @@ Applying this pattern consistently across a program can help reduce congitive lo
 The findById() method in the AccountService could:
  * Return a Result (EntityNotFoundException.class -> 404) if the account with the specified id could not be found
  * Return a Result (UnprocessableEntityException.class -> 422) if the account id was empty or invalid.
- * Return a Result (InternalErrorException.class -> 500) if an account couldn't be retieved because the underlying database was unavailable
+ * Return a Result (InternalErrorException.class -> 500) if an account couldn't be retrieved because the underlying database was unavailable
 
 
 ### Validation using the ValidationService
