@@ -383,6 +383,7 @@ public class Account {
 }
 ```
 
+
 ### Conditional validation using the ValidationService
 ```java
 
@@ -466,50 +467,6 @@ class AccountServiceImpl implements AccountService {
 }
 ```
 
-# Explicit Rejection
-
-```java
-
-import fm.pattern.valex.Result;
-
-@Service
-class AccountServiceImpl implements AccountService {
-
-    private final AccountRepository repository;
-    
-    public AccountServiceImpl(AccountRepository repository) {
-        repository = repository;
-    }
-
-    public Result<Account> findById(String id) {
-        if (StringUtils.isBlank(id)) {
-            return Result.reject("account.id.required");
-        }
-
-        Account account = repository.findById(username);
-        if(account == null) {
-            Result.reject("account.id.not_found", username);
-        }
-        
-        return Result.accept(account): 
-    }
-
-    public Result<Account> findByUsername(String username) {
-        if (StringUtils.isBlank(username)) {
-            return Result.reject("account.username.required");
-        }
-
-        Account account = repository.findByUsername(username);
-        if(account == null) {
-            Result.reject("account.username.not_found", username);
-        }
-        
-        return Result.accept(account): 
-    }
-            
-}
-```
-
 
 # Building from Source
 
@@ -520,9 +477,11 @@ cd valex
 mvn clean install
 ```
 
+
 # Continuous Integration
 
 The Continuous Integration service for the project is hosted on [Travis](https://travis-ci.org/PatternFM/valex) 
+
 
 
 # Licensing
