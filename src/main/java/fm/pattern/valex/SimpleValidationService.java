@@ -13,12 +13,12 @@ public class SimpleValidationService implements ValidationService {
     }
 
     @Override
-    public <T> Result<T> validate(T instance, Class<?>... types) {
+    public <T> Result<T> validate(T instance, Class<?>... groups) {
         if (instance == null) {
             return Result.reject("instance.null");
         }
 
-        List<Reportable> errors = ConstraintViolationConverter.convert(validator.validate(instance, types));
+        List<Reportable> errors = ConstraintViolationConverter.convert(validator.validate(instance, groups));
         return !errors.isEmpty() ? Result.reject(errors.toArray(new Reportable[errors.size()])) : Result.accept(instance);
     }
 

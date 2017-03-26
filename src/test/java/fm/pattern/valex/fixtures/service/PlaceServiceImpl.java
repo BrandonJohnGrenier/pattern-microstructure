@@ -56,4 +56,16 @@ public class PlaceServiceImpl implements PlaceService {
         return repository.delete(place);
     }
 
+    public Result<Place> annotationCreate(@fm.pattern.valex.annotations.Create Place place) {
+        return repository.save(place);
+    }
+
+    public Result<Place> annotationUpdate(@fm.pattern.valex.annotations.Update Place place) {
+        return repository.update(place);
+    }
+
+    public Result<Place> annoationDelete(@fm.pattern.valex.annotations.Delete Place place) {
+        return repository.delete(place);
+    }
+
 }

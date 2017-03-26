@@ -60,8 +60,8 @@ public class ValexYamlConfigurationTest {
     }
 
     @Test
-    public void shouldReturnANullAMessageIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getMessage("invalid.key.name")).isNull();
+    public void shouldReturnTheKeyNameAsTheMessageIfTheSpecifiedValidationKeyCannotBeResolved() {
+        assertThat(repository.getMessage("invalid.key.name")).isEqualTo("invalid.key.name");
     }
 
     @Test
@@ -78,8 +78,8 @@ public class ValexYamlConfigurationTest {
     }
 
     @Test
-    public void shouldReturnANullACodeIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getCode("invalid.key.name")).isNull();
+    public void shouldReturnTheKeyNameAsTheCodeIfTheSpecifiedValidationKeyCannotBeResolved() {
+        assertThat(repository.getCode("invalid.key.name")).isEqualTo("invalid.key.name");
     }
 
     @Test

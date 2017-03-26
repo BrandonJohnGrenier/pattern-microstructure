@@ -9,4 +9,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Valid {
 
+    /**
+     * Specify one or more validation groups to apply to the validation step kicked off by this annotation.
+     */
+    Class<?>[] value() default {};
+
 }

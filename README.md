@@ -361,8 +361,9 @@ public Result<Account> findById(String id) {
 
 ### Validation Groups
 
-Validation groups are a great feature of the BeanValidation API, and Valex provides first class support for them.
+Valex provides first-class support for [Validation Groups and Group Sequences](http://beanvalidation.org/1.0/spec/#constraintdeclarationvalidationprocess-groupsequence), BeanValidation features that enable conditional validation.
 
+Valex provides three GroupSequence implementations for creating (Create.class), updating (Update.class) and deleting (Delete.class) entities. Using these three groups sequences can help reduce the boilerplate implementation required to support these common use cases yourself.
 
 ```java
 @UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel3.class, UpdateLevel3.class })
@@ -385,7 +386,7 @@ public class Account {
 
 
 ### Conditional Validation using the ValidationService
-Valex provides three GroupSequence implementations for creating, updating and deleting entities. Using these three groups sequences can help reduce the boilerplate implementation required to support these common use cases yourself.
+The *ValidationService* validate() method takes a varargs array of user defined validation groups, so you can provide your own validation groups if and when the Valex provided groups aren't suitable.
 
 ```java
 

@@ -39,8 +39,8 @@ public class ValexPropertiesConfigurationTest {
     }
 
     @Test
-    public void shouldReturnANullAMessageIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(configuration.getMessage("invalid.key.name")).isNull();
+    public void shouldReturnTheCodeAsTheMessageIfTheSpecifiedValidationKeyCannotBeResolved() {
+        assertThat(configuration.getMessage("invalid.key.name")).isEqualTo("invalid.key.name");
     }
 
     @Test
@@ -57,8 +57,8 @@ public class ValexPropertiesConfigurationTest {
     }
 
     @Test
-    public void shouldReturnANullACodeIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(configuration.getCode("invalid.key.name")).isNull();
+    public void shouldReturnTheKeyAsTheCodeIfTheSpecifiedValidationKeyCannotBeResolved() {
+        assertThat(configuration.getCode("invalid.key.name")).isEqualTo("invalid.key.name");
     }
 
     @Test
@@ -75,8 +75,8 @@ public class ValexPropertiesConfigurationTest {
     }
 
     @Test
-    public void shouldReturnANullExceptionClassIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(configuration.getException("invalid.key.name")).isNull();
+    public void shouldReturnTheDefaultExceptionClassIfTheSpecifiedValidationKeyCannotBeResolved() {
+        assertThat(configuration.getException("invalid.key.name")).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
     }
 
     @Test

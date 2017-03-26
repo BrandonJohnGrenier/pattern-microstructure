@@ -48,21 +48,27 @@ public class ValexPropertiesConfiguration implements ValexConfiguration {
 
     @Override
     public String getMessage(String key) {
-        return StringUtils.isBlank(key) ? null : properties.getProperty(key);
+        if (StringUtils.isBlank(key)) {
+            return null;
+        }
+
+        String message = properties.getProperty(key);
+        return StringUtils.isBlank(message) ? key : message;
     }
 
     @Override
     public String getCode(String key) {
-        return StringUtils.isBlank(key) ? null : properties.getProperty(key + ".code");
+        if (StringUtils.isBlank(key)) {
+            return null;
+        }
+
+        String code = properties.getProperty(key + ".code");
+        return StringUtils.isBlank(code) ? key : code;
     }
 
     @Override
     public String getException(String key) {
         if (StringUtils.isBlank(key)) {
-            return null;
-        }
-
-        if (StringUtils.isBlank(getMessage(key))) {
             return null;
         }
 

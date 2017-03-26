@@ -11,4 +11,10 @@ public interface PlaceService {
 
     Result<Place> delete(Place place);
 
+    Result<Place> annotationCreate(Place place);
+
+    Result<Place> annotationUpdate(Place place);
+
+    Result<Place> annoationDelete(Place place);
+    
 }

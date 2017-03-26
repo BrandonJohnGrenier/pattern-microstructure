@@ -50,12 +50,22 @@ public class ValexYamlConfiguration implements ValexConfiguration {
 
     @Override
     public String getCode(String key) {
-        return StringUtils.isBlank(key) ? null : getValue(properties.get(key), "code");
+        if (StringUtils.isBlank(key)) {
+            return null;
+        }
+
+        String code = getValue(properties.get(key), "code");
+        return StringUtils.isBlank(code) ? key : code;
     }
 
     @Override
     public String getMessage(String key) {
-        return StringUtils.isBlank(key) ? null : getValue(properties.get(key), "message");
+        if (StringUtils.isBlank(key)) {
+            return null;
+        }
+
+        String message = getValue(properties.get(key), "message");
+        return StringUtils.isBlank(message) ? key : message;
     }
 
     @Override
@@ -75,7 +85,7 @@ public class ValexYamlConfiguration implements ValexConfiguration {
     }
 
     private static String getValue(Map<String, String> attributes, String key) {
-        return (StringUtils.isBlank(key) || attributes == null || attributes.isEmpty()) ? null : attributes.get(key);
+        return (attributes == null || attributes.isEmpty()) ? null : attributes.get(key);
     }
 
 }
