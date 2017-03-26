@@ -3,7 +3,7 @@
 
 # Introduction
 
-Valex is a YAML-based validation and fluent exception management API for Java.
+Valex is a YAML-based validation and exception management library for Java.
 
 To get started, add the following dependency to your depedency list:
 ```xml
@@ -134,7 +134,7 @@ account.username.not_found.exception=fm.pattern.valex.EntityNotFoundException
 
 ```
 
-### Configuration in Detail
+### Configuration Detail
 
 Let's look at a specific configuration element in detail:
 
@@ -146,7 +146,7 @@ account.id.required:
 ``` 
 
 **account.id.required**  
-The *key* used to resolve the error message, code and exception for this particular validation error. The dot notatation in the key name is purely conventional; you can you use the most appropriate key format for your needs - Valex treats the key as an opaque value.
+The *key* used to resolve the error message, code and exception for an error. The dot notatation in the key name is purely conventional; Valex treats the key as an opaque value.
 
 **message**   
 The error message that should be returned when validation fails for this key. The YAML messages should generally be surrounded by double quotes (double quotes are required when you use *interpolated messaging* - more on this shortly). 
@@ -155,7 +155,7 @@ The error message that should be returned when validation fails for this key. Th
 The error code that should be returned when validation fails for this key. The error code presented above is conventional; choose an error code scheme to suit your needs.
 
 **exception**    
-The _ReportableException_ that should be returned when validation fails for this key. Valex provides a number of ReportableException implementation classes for you to use out of the box:
+The fully qualified classname of the _ReportableException_ that should be returned when validation fails for this key. Valex provides a number of _ReportableException_ implementations out of the box:
 * UnprocessableEntityException 
 * AuthenticationException 
 * AuthorizationException 
@@ -163,7 +163,7 @@ The _ReportableException_ that should be returned when validation fails for this
 * ResourceConflictException
 * EntityNotFoundException
 
-You can roll your own ReportableException implementation classes to suit your needs, use the existing Valex exceptions, or use a mix of both. 
+You can implement your own *ReportableExceptions* to suit your needs, use the existing Valex exceptions, or use a mix of both. 
 
 ### Default Exceptions
 You can configure a default exception class to return when a validation element does not contain an explicit *exception* property.
@@ -339,7 +339,7 @@ account.username.size:
 ```
 
 ### Result Interpolation
-Result objects can be created using the accept() and reject() methods. The reject() method accepts a key to a configured message or a literal message along with a varargs array for message parameters. The reject() method message formatting is compatible with the [Java Formatter API](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)
+Result objects can be created directly by using the *Result* accept() and reject() methods. The reject() method accepts a key to a configured message or a literal message along with a varargs array for message parameters. The reject() method message format is compatible with the [Java Formatter API](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html). 
 
 ```
 public Result<Account> findById(String id) {
@@ -348,10 +348,10 @@ public Result<Account> findById(String id) {
     	return Result.accept(account);
     }
     
-    // 
+    // Return a result by looking up the 'account.not_found' error, and inject the 'id' value into the error message.
     return Result.reject("account.not_found", id);
     
-    //
+    // Return a Result using the given literal error message.
     return Result.reject("No such account id: %s", id);
 }
 ```
@@ -385,6 +385,8 @@ public class Account {
 
 
 ### Conditional Validation using the ValidationService
+Valex provides three GroupSequence implementations for creating, updating and deleting entities. Using these three groups sequences can help reduce the boilerplate implementation required to support these common use cases yourself.
+
 ```java
 
 import fm.pattern.valex.Result;
@@ -403,6 +405,15 @@ class AccountServiceImpl implements AccountService {
         this.validationService = validationService;
     }
 
+    /**
+     * Validates the given account, restricting validation to properties belonging to the
+     * Create group sequence, which includes:
+     * CreateLevel1.class
+     * CreateLevel2.class 
+     * CreateLevel3.class 
+     * CreateLevel4.class 
+     * CreateLevel5.class
+     */
     public Result<Account> create(Account account) {
         Result<Account> result = validationService.validate(account, Create.class);
         if(result.rejected()) {
@@ -411,6 +422,15 @@ class AccountServiceImpl implements AccountService {
         ...
     }
     
+    /**
+     * Validates the given account, restricting validation to properties belonging to the
+     * Update group sequence, which includes:
+     * UpdateLevel1.class
+     * UpdateLevel2.class 
+     * UpdateLevel3.class 
+     * UpdateLevel4.class 
+     * UpdateLevel5.class
+     */  
     public Result<Account> update(Account account) {
         Result<Account> result = validationService.validate(account, Update.class);
         if(result.rejected()) {
@@ -419,6 +439,15 @@ class AccountServiceImpl implements AccountService {
         ...
     }
     
+    /**
+     * Validates the given account, restricting validation to properties belonging to the
+     * Delete group sequence, which includes:
+     * DeleteLevel1.class
+     * DeleteLevel2.class 
+     * DeleteLevel3.class 
+     * DeleteLevel4.class 
+     * DeleteLevel5.class
+     */     
     public Result<Account> delete(Account account) {
         Result<Account> result = validationService.validate(account, Delete.class);
         if(result.rejected()) {
@@ -432,6 +461,8 @@ class AccountServiceImpl implements AccountService {
 
 
 ### Conditional Validation using Annotations
+To reduce repetitive code even further, you can use the Valex @Create, @Update and @Delete annotations to apply Group Sequence based validation. Like the @Valid annotation introduced before, any methods that include an @Create, @Update or @Delete annotation expect the method signature to return a typed *Result*. 
+
 ```java
 
 import fm.pattern.valex.Result;

@@ -58,7 +58,7 @@ public class ContactValidationTest extends ValidationServiceTest {
 
     @Test
     public void shouldNotBeAbleToCreateAContactIfTheEmailAddressIsGreaterThanEightyCharacters() {
-        assertCreate(contact().withEmailAddress(randomAlphabetic(81)).build()).rejected().withError("CON-1002", "An email address cannot be greater than 80 characters.", UnprocessableEntityException.class);
+        assertCreate(contact().withEmailAddress(randomAlphabetic(81)).build()).rejected().withErrorCount(1).withError("CON-1002", "An email address cannot be greater than 80 characters.", UnprocessableEntityException.class);
     }
 
     @Test
