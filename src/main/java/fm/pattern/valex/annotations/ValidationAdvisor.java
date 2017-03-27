@@ -36,51 +36,45 @@ public class ValidationAdvisor {
     }
 
     @Around("execution(* *(@fm.pattern.valex.annotations.Create (*)))")
-    public Object aroundCreate(ProceedingJoinPoint pjp) throws Throwable {
-        return around(pjp, Create.class);
+    public Object aroundCreate(ProceedingJoinPoint pjp, fm.pattern.valex.annotations.Create create) throws Throwable {
+        return around(pjp, Create.class, create.throwException());
     }
 
     @Around("execution(* *(@fm.pattern.valex.annotations.Update (*)))")
     public Object aroundUpdate(ProceedingJoinPoint pjp) throws Throwable {
-        return around(pjp, Update.class);
+        return around(pjp, Update.class, false);
     }
 
     @Around("execution(* *(@fm.pattern.valex.annotations.Delete (*)))")
     public Object aroundDelete(ProceedingJoinPoint pjp) throws Throwable {
-        return around(pjp, Delete.class);
+        return around(pjp, Delete.class, false);
     }
 
     @Around("execution(* *(@fm.pattern.valex.annotations.Valid (*)))")
     public Object aroundValid(ProceedingJoinPoint pjp) throws Throwable {
-        return around(pjp);
+        // TODO: Check for optional 'Type' passed in as an annotation parameter.
+        return around(pjp, null, false);
     }
 
-    private Object around(ProceedingJoinPoint pjp, Class<?> type) throws Throwable {
+    private Object around(ProceedingJoinPoint pjp, Class<?> group, boolean throwException) throws Throwable {
         Object[] arguments = pjp.getArgs();
         if (arguments.length == 0) {
             return pjp.proceed();
         }
 
-        Result<Object> result = validationService.validate(pjp.getArgs()[0], type);
+        Result<Object> result = validate(pjp.getArgs()[0], group);
         if (result.rejected()) {
+            if (throwException) {
+                throw result.getException();
+            }
             return result;
         }
 
         return pjp.proceed();
     }
 
-    private Object around(ProceedingJoinPoint pjp) throws Throwable {
-        Object[] arguments = pjp.getArgs();
-        if (arguments.length == 0) {
-            return pjp.proceed();
-        }
-
-        Result<Object> result = validationService.validate(pjp.getArgs()[0]);
-        if (result.rejected()) {
-            return result;
-        }
-
-        return pjp.proceed();
+    private Result<Object> validate(Object instance, Class<?> type) {
+        return type == null ? validationService.validate(instance) : validationService.validate(instance, type);
     }
 
 }

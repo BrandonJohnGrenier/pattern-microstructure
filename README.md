@@ -10,7 +10,7 @@ To get started, add the following dependency to your depedency list:
 <dependency>
     <groupId>fm.pattern</groupId>
     <artifactId>valex</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
@@ -246,7 +246,8 @@ Account pending = new Account();
 ...
 Result<Account> result = accountService.create(pending);
 if(result.rejected()) {
-  // Do something
+  List<Reportable> errors = result.getErrors();
+  log.error("Failed to create account: " + errors);
 }
 
 ```

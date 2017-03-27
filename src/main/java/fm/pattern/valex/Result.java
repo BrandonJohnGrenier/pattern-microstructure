@@ -43,6 +43,10 @@ public class Result<T> {
         return instance;
     }
 
+    public ReportableException getException() {
+        return ReportableExceptionRaiser.raise(errors);
+    }
+
     public T orThrow(Class<? extends ReportableException> exception) {
         if (rejected()) {
             throw ReportableExceptionRaiser.raise(exception, errors);

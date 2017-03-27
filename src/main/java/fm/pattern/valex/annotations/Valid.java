@@ -14,4 +14,6 @@ public @interface Valid {
      */
     Class<?>[] value() default {};
 
+    boolean throwException() default false;
+    
 }
