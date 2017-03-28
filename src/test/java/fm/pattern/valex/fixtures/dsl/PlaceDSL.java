@@ -1,7 +1,7 @@
-package fm.pattern.valex.dsl;
+package fm.pattern.valex.fixtures.dsl;
 
-import static fm.pattern.valex.dsl.AddressDSL.address;
-import static fm.pattern.valex.dsl.ContactDSL.contact;
+import static fm.pattern.valex.fixtures.dsl.AddressDSL.address;
+import static fm.pattern.valex.fixtures.dsl.ContactDSL.contact;
 import fm.pattern.valex.fixtures.model.Address;
 import fm.pattern.valex.fixtures.model.Contact;
 import fm.pattern.valex.fixtures.model.Place;

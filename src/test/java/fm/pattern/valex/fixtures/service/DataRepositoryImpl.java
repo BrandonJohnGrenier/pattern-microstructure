@@ -1,7 +1,10 @@
 package fm.pattern.valex.fixtures.service;
 
+import org.springframework.stereotype.Repository;
+
 import fm.pattern.valex.Result;
 
+@Repository
 public class DataRepositoryImpl implements DataRepository {
 
     private final Session session;

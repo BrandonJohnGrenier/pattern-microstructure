@@ -1,6 +1,6 @@
 package fm.pattern.valex;
 
-import static fm.pattern.valex.dsl.AddressDSL.address;
+import static fm.pattern.valex.fixtures.dsl.AddressDSL.address;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import org.junit.Test;

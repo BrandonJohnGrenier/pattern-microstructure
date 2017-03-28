@@ -1,4 +1,4 @@
-package fm.pattern.valex.dsl;
+package fm.pattern.valex.fixtures.dsl;
 
 @SuppressWarnings("unchecked")
 abstract class AbstractDSL<T, C> {

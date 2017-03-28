@@ -1,4 +1,4 @@
-package fm.pattern.valex.dsl;
+package fm.pattern.valex.fixtures.dsl;
 
 import fm.pattern.valex.fixtures.model.Address;
 import fm.pattern.valex.fixtures.model.Location;

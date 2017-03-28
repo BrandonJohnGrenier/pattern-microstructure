@@ -1,7 +1,7 @@
 package fm.pattern.valex;
 
 import static fm.pattern.valex.PatternAssertions.assertThat;
-import static fm.pattern.valex.dsl.PlaceDSL.place;
+import static fm.pattern.valex.fixtures.dsl.PlaceDSL.place;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 
@@ -57,6 +57,14 @@ public class PlaceServiceTest {
     }
 
     @Test
+    public void shouldNotBeAbleToCreateAPlaceIfThePlaceIsInvalid() {
+        Place place = place().withAddress(null).build();
+
+        Result<Place> result = placeService.create(place);
+        assertThat(result).rejected().withError("PLC-1002", "An address is required.", UnprocessableEntityException.class);
+    }
+
+    @Test
     public void shouldNotBeAbleToCreateAPlaceIfTheDatabaseIsUnavailable() {
         Place place = place().build();
         doThrow(new RuntimeException("Some JDBC connection error.")).when(session).save(Mockito.anyObject());
@@ -81,6 +89,14 @@ public class PlaceServiceTest {
 
         Result<Place> result = placeService.update(place);
         assertThat(result).rejected().withError("ADD-2000", "Public places are not currently supported.", UnprocessableEntityException.class);
+    }
+
+    @Test
+    public void shouldNotBeAbleToUpdateAPlaceIfThePlaceIsInvalid() {
+        Place place = place().withAddress(null).build();
+
+        Result<Place> result = placeService.update(place);
+        assertThat(result).rejected().withError("PLC-1002", "An address is required.", UnprocessableEntityException.class);
     }
 
     @Test

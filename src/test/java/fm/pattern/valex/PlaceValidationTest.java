@@ -1,6 +1,6 @@
 package fm.pattern.valex;
 
-import static fm.pattern.valex.dsl.PlaceDSL.place;
+import static fm.pattern.valex.fixtures.dsl.PlaceDSL.place;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import org.junit.Test;

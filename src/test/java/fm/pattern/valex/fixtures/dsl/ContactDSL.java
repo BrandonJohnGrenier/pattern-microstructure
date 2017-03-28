@@ -1,4 +1,4 @@
-package fm.pattern.valex.dsl;
+package fm.pattern.valex.fixtures.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import fm.pattern.valex.fixtures.model.Contact;
