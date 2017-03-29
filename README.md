@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/PatternFM/valex.svg?branch=master)](https://travis-ci.org/PatternFM/valex)
-[![Coverage Status](https://coveralls.io/repos/github/PatternFM/valex/badge.svg?branch=master)](https://coveralls.io/github/PatternFM/valex?branch=master)  
+[![Coverage Status](https://coveralls.io/repos/github/PatternFM/valex/badge.svg?branch=master)](https://coveralls.io/github/PatternFM/valex?branch=master) 
+[![codebeat badge](https://codebeat.co/badges/8bfc9729-9eb3-4527-893d-3e7407fea5d6)](https://codebeat.co/projects/github-com-patternfm-valex-master) 
 
 # Introduction
 
@@ -21,6 +22,7 @@ import javax.validation.Validator;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import fm.pattern.valex.SimpleValidationService;
@@ -28,6 +30,7 @@ import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.annotations.ValidationAdvisor;
 
 @Configuration
+@EnableAspectJAutoProxy
 public class ValidationConfiguration {
 
     @Bean(name = "validator")
@@ -56,6 +59,9 @@ public Validator validator() {
 }
 
 ```
+
+If you plan to make use of Valex annotations, make sure you enable AspectJ proxying by including the ```@EnableAspectJAutoProxy``` annotation.
+
 
 # Configure Error Codes, Messages and Exceptions
 You can configure your application's error messages, error codes and exceptions using a YAML configuration file or a properties configuration file. It's simply a matter of syntax preference in terms of which method you choose. The properties file is available to support an easier migration path if you have an existing BeanValidation implementation with a ValidationMessages.properties file already defined.
@@ -155,7 +161,7 @@ The error message that should be returned when validation fails for this key. Th
 The error code that should be returned when validation fails for this key. The error code presented above is conventional; choose an error code scheme to suit your needs.
 
 **exception**    
-The fully qualified classname of the _ReportableException_ that should be returned when validation fails for this key. Valex provides a number of _ReportableException_ implementations out of the box:
+The fully qualified classname of the _ReportableException_ that should be returned when validation fails for this key. Valex requires all configured exceptions to be _ReportableExceptions_, and a number of _ReportableException_ implementations are provided out of the box:
 * UnprocessableEntityException 
 * AuthenticationException 
 * AuthorizationException 
@@ -163,7 +169,6 @@ The fully qualified classname of the _ReportableException_ that should be return
 * ResourceConflictException
 * EntityNotFoundException
 
-You can implement your own *ReportableExceptions* to suit your needs, use the existing Valex exceptions, or use a mix of both. 
 
 ### Default Exceptions
 You can configure a default exception class to return when a validation element does not contain an explicit *exception* property.
@@ -184,7 +189,7 @@ In both cases, an UnprocessableEntityException will be returned when a validatio
 
 # Validation Events and Results
 
-Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. Valex works best when validation is performed in an application's business layer, where service interfaces within the business layer return typed *Result*s.  
+Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. We'll run through a scenario where validation is performed in an application's business layer, and service interfaces within the business layer return typed *Results*.  
 
 Let's take the following AccountService interface as an example:
 
@@ -254,11 +259,6 @@ if(result.rejected()) {
 
 Applying this pattern consistently across a program can help reduce congitive load, since callers can expect a consistent and well-defined response from API calls.
 
-The findById() method in the AccountService could:
- * Return a Result (EntityNotFoundException.class -> 404) if the account with the specified id could not be found
- * Return a Result (UnprocessableEntityException.class -> 422) if the account id was empty or invalid.
- * Return a Result (InternalErrorException.class -> 500) if an account couldn't be retrieved because the underlying database was unavailable
-
 
 # Validation using the ValidationService
 
@@ -291,23 +291,40 @@ class AccountServiceImpl implements AccountService {
 
 # Declarative Validation using Annotations
 
-Valex provides a parameter-scoped @Valid annoation that will automatically trigger validation and return a typed Result immediatley if validation fails. To use this annotation your method must have a signature that returns Result<T>.
+Valex provides a parameter-scoped @Valid annotation that will automatically trigger validation and return a typed Result immediatley if validation fails. To use this annotation your method must have a signature that returns Result<T>.
 
 ```java
 
-import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Valid;
+public interface AccountService {
+
+    public Result<Account> create(@Valid Account account);
+
+} 
 
 @Service
 class AccountServiceImpl implements AccountService {
 
-    public Result<Account> create(@Valid Account account) {
+    public Result<Account> create(Account account) {
         ... // if we get here the account passed validation
     }
 
 }      
 ```
 
+If you would rather throw an exception on validation failure, you can provide ```throwException = true``` as an argument to the @Valid annotation.
+
+```java
+
+import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Valid;
+
+public interface AccountService {
+
+    public Result<Account> create(@Valid(throwException = true) Account account);
+
+} 
+     
+```
 
 # Message Interpolation
 Valex supports two types of message interpolation that can be used to produce dynamic error messages.
