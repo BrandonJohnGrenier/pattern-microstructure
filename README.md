@@ -31,7 +31,7 @@ account.username.required:
 ```
 The exception, when thrown, will carry with it the error message and error code as specified in the configuration. If you're using Spring, you can use the @ExceptionHandler to easily convert the exception into the JSON format specified above:
 
-```
+```java
 @RestController
 public class Endpoint {
 

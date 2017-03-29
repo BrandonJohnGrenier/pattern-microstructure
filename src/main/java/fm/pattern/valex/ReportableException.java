@@ -2,6 +2,7 @@ package fm.pattern.valex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReportableException extends RuntimeException {
 
@@ -18,6 +19,10 @@ public class ReportableException extends RuntimeException {
 
     public List<Reportable> getErrors() {
         return errors;
+    }
+
+    public ErrorsRepresentation toRepresentation() {
+        return new ErrorsRepresentation(errors.stream().map(e -> new ErrorRepresentation(e.getCode(), e.getMessage())).collect(Collectors.toList()));
     }
 
 }
