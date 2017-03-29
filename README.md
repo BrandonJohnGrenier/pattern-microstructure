@@ -187,6 +187,83 @@ default.exception=fm.pattern.valex.UnprocessableEntityException
 In both cases, an UnprocessableEntityException will be returned when a validation element does not explicitly define an exception property.
 
 
+# Validation using the ValidationService
+
+Clients trigger validation events by invoking the *ValidationService* validate() method on the object to validate.
+
+The validate() method returns typed *Result* objects, which contain the final (and immutable) state of a validation event. Since all ValidationService methods delegate validation execution to the configured BeanValidation [Validator](http://docs.jboss.org/hibernate/beanvalidation/spec/1.0/api/javax/validation/Validator.html), you can use [JSR-303 BeanValidation](http://beanvalidation.org/1.0/) annotations to annotate your model.
+
+```java
+
+import fm.pattern.valex.Result;
+import fm.pattern.valex.ValidationService;
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    private final ValidationService validationService;
+    
+    public AccountServiceImpl(ValidationService validationService) {
+        this.validationService = validationService;
+    }
+
+    // Validates the account, and returns the validation Result containing all 
+    // validation errors if the account is invalid.
+    public Result<Account> create(Account account) {
+        Result<Account> result = validationService.validate(account);
+        if(result.rejected()) {
+            return result;
+        }
+        ...
+        return Result.accept(account);
+    }
+    
+    // Validates the account, and uses the Result doThrow() method to throw the 
+    // underlying exception bound to the result if the account is invalid.
+    public Account create(Account account) {
+        Result<Account> result = validationService.validate(account);
+        if(result.rejected()) {
+            result.doThrow();
+        }
+        ...
+        return account;
+    }    
+    
+    // Validates the account using the fluent orThrow() method, which returns the 
+    // account if the account is valid, otherwise throws the underlying exception 
+    // bound to the result. 
+    public Account create(Account account) {
+        Account valid = validationService.validate(account).orThrow();
+        ...
+        return account;
+    }      
+    
+}
+```
+
+
+
+
+```java
+@UniqueValue(property = "username", message = "{account.username.conflict}")
+public class Account {
+
+  @NotBlank(message = "{account.id.required}")
+  @Size(min = 3, max = 128, message = "{account.username.size}")
+  private String id;
+
+  @NotBlank(message = "{account.username.required}")
+  @Size(min = 3, max = 128, message = "{account.username.size}")
+  private String username;
+
+  @NotBlank(message = "{account.password.required}")
+  @Size(min = 8, max = 255, message = "{account.password.size}")
+  private String password;
+
+}
+```
+ 
+
 # Validation Events and Results
 
 Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. We'll run through a scenario where validation is performed in an application's business layer, and service interfaces within the business layer return typed *Results*.  
@@ -260,33 +337,7 @@ if(result.rejected()) {
 Applying this pattern consistently across a program can help reduce congitive load, since callers can expect a consistent and well-defined response from API calls.
 
 
-# Validation using the ValidationService
 
-You can explicitly trigger validation events by invoking the *ValidationService* validate() method on the object to validate.
-
-```java
-
-import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
-
-@Service
-class AccountServiceImpl implements AccountService {
-
-    private final ValidationService validationService;
-    
-    public AccountServiceImpl(ValidationService validationService) {
-        this.validationService = validationService;
-    }
-
-    public Result<Account> create(Account account) {
-        Result<Account> result = validationService.validate(account);
-        if(result.rejected()) {
-            return result;
-        }
-        ...
-    }
-    
-}
 ```
 
 # Declarative Validation using Annotations

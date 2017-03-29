@@ -43,6 +43,10 @@ public class Result<T> {
         return instance;
     }
 
+    public void doThrow() {
+        throw ReportableExceptionRaiser.raise(errors);
+    }
+    
     public ReportableException getException() {
         return ReportableExceptionRaiser.raise(errors);
     }
