@@ -4,14 +4,85 @@
 
 # Introduction
 
-Valex is a YAML-based validation and exception management library for Java.
+Valex is a YAML-based validation and exception management library that helps you produce consumable REST error payloads.
+
+An API should provide a useful error responses in a known, consumable format. The representation of an error should be no different than the representation of any other resource, just with its own set of fields. An error response should provide a few things for a developer - a useful error message, a unique error code, and a meaningful HTTP response code. A JSON representation of an error payload would look like:
+
+**HTTP 422 (Unprocessable Entity)**
+```json
+{
+  "errors": [
+    {
+      "code": "ACC-0001",
+      "message": "An account username is required."
+    }
+  ]
+}
+```
+
+Valex builds on top of the BeanValidation API to give devlopers the ability to configure an error message, error code, and an exception to throw when a validation check fails, all in one spot.
+
+```yaml
+account.username.required: 
+  message: An account username is required.
+  code: ACC-0001
+  exception: fm.pattern.valex.UnprocessableEntityException
+
+```
+The exception, when thrown, will carry with it the error message and error code as specified in the configuration. If you're using Spring, you can use the @ExceptionHandler to easily convert the exception into the JSON format specified above:
+
+```
+@RestController
+public class Endpoint {
+
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+	@ExceptionHandler(UnprocessableEntityException.class)
+	public ErrorsRepresentation handleUnprocessableEntity(UnprocessableEntityException exception) {
+		return exception.toRepresentation();
+	}
+
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler(AuthenticationException.class)
+	public ErrorsRepresentation handleAuthentication(AuthenticationException exception) {
+		return exception.toRepresentation();
+	}
+
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	@ExceptionHandler(AuthorizationException.class)
+	public ErrorsRepresentation handleAuthorization(AuthorizationException exception) {
+		return exception.toRepresentation();
+	}
+
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ErrorsRepresentation handleEntityNotFound(EntityNotFoundException exception) {
+		return exception.toRepresentation();
+	}
+
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(InternalErrorException.class)
+	public ErrorsRepresentation handleInternalError(EntityNotFoundException exception) {
+		return exception.toRepresentation();
+	}
+
+}
+```
+Because Valex builds on top of the JSR-303 BeanValidation API, you can annotate your models with standard BeanValidation annotations. A ValidationMessages.properties file can also be used with Valex to minimise the migration path for existing JSR-303 implementations that want to use Valex for more robust API error reporting.
+
+
+### Getting Started
 
 To get started, add the following dependency to your depedency list:
 ```xml
 <dependency>
     <groupId>fm.pattern</groupId>
     <artifactId>valex</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
