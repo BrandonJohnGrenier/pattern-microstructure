@@ -75,7 +75,7 @@ public class Endpoint {
 Because Valex builds on top of the JSR-303 BeanValidation API, you can annotate your models with standard BeanValidation annotations. A ValidationMessages.properties file can also be used with Valex to minimise the migration path for existing JSR-303 implementations that want to use Valex for more robust API error reporting.
 
 
-### Getting Started
+# Getting Started
 
 To get started, add the following dependency to your depedency list:
 ```xml
