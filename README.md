@@ -189,9 +189,7 @@ In both cases, an UnprocessableEntityException will be returned when a validatio
 
 # Validation using the ValidationService
 
-Clients trigger validation events by invoking the *ValidationService* validate() method on the object to validate.
-
-The validate() method returns typed *Result* objects, which contain the final (and immutable) state of a validation event. Since all ValidationService methods delegate validation execution to the configured BeanValidation [Validator](http://docs.jboss.org/hibernate/beanvalidation/spec/1.0/api/javax/validation/Validator.html), you can use [JSR-303 BeanValidation](http://beanvalidation.org/1.0/) annotations to annotate your model.
+Use the *ValidationService* validate() method to perform validation against your [BeanValidation](http://beanvalidation.org/1.0/) annotated models. The validate() method returns a typed *Result* object, which contain the final (and immutable) state of a validation event. 
 
 ```java
 
@@ -241,7 +239,7 @@ class AccountServiceImpl implements AccountService {
 }
 ```
 
-
+Since all ValidationService methods delegate validation execution to the configured BeanValidation [Validator](http://docs.jboss.org/hibernate/beanvalidation/spec/1.0/api/javax/validation/Validator.html), you can use [JSR-303 BeanValidation](http://beanvalidation.org/1.0/) annotations to annotate your model.
 
 
 ```java
@@ -262,11 +260,220 @@ public class Account {
 
 }
 ```
- 
 
-# Validation Events and Results
+### Validation Groups
+Valex provides first class support for BeanValidation groups. The validate() method takes a varargs argument of classes that will be used to perform targeted validation.
 
-Validation events produce typed *Result* objects, which contain the final (and immutable) state of a validation event. We'll run through a scenario where validation is performed in an application's business layer, and service interfaces within the business layer return typed *Results*.  
+```java
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    public Result<Account> create(Account account) {
+        Result<Account> result = validationService.validate(account, First.class, Second.class);
+        ...
+        return Result.accept(account);
+    }     
+    
+}
+```
+
+# Declarative Validation using Annotations
+
+Valex provides a parameter-scoped @Valid annotation that will automatically trigger validation and return a typed Result (by default) if validation fails. 
+
+Implementation note: When you have an interface and an underlying implementation class, the @Valid annotation must be declared on the *interface* method, and not the *concrete* method.
+
+```java
+
+public interface AccountService {
+
+    // The @Valid annotation is declared on the interface method.
+    public Result<Account> create(@Valid Account account);
+
+} 
+
+@Service
+class AccountServiceImpl implements AccountService {
+
+    public Result<Account> create(Account account) {
+        ... // if we get here the account passed validation
+    }
+
+}      
+```
+
+You can configure the @Valid annotation to throw an exception on validation failure by providing the  ```throwException = true``` argument to the @Valid annotation.
+
+```java
+
+import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Valid;
+
+public interface AccountService {
+
+    public Account create(@Valid(throwException = true) Account account);
+
+} 
+     
+```
+
+### Annotation Validation Groups
+
+You can specify one or more validation groups to apply when the @Valid annotation is kicked off.
+
+```java
+
+import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Valid;
+
+public interface AccountService {
+
+    public Account create(@Valid(First.class) Account account);
+
+} 
+     
+```
+
+
+
+
+# Message Interpolation
+Valex supports two types of message interpolation that can be used to produce dynamic error messages.
+
+### BeanValidation Interpolation
+BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, take the following @Size annotated field with **min** and **max** attributes:
+
+```java
+@Size(min = 8, max = 255, message = "{account.password.size}")
+private String password;
+```
+
+To inject the min and max attribute values into an error message, address the attributes in {braces}:
+```
+account.password.size: 
+  message: "Your password must be between {min} and {max} characters."
+  code: ACC-0005
+```
+
+The {validatedValue} expression can be used to inject the value of the field being validated into your error message.
+
+```java
+@Size(min = 8, max = 255, message = "{account.username.size}")
+private String username;
+```
+
+```
+account.username.size: 
+  message: "The username {validatedValue} must be between {min} and {max} characters."
+```
+
+### Result Interpolation
+Result objects can be created directly by using the *Result* accept() and reject() methods. The reject() method accepts a key to a configured message or a literal message along with a varargs array for message parameters. The reject() method message format is compatible with the [Java Formatter API](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html). 
+
+```
+public Result<Account> findById(String id) {
+    Account account = repository.findById(id);
+    if(account != null) {
+    	return Result.accept(account);
+    }
+    
+    // Return a result by looking up the 'account.not_found' error, and inject the 'id' value into the error message.
+    return Result.reject("account.not_found", id);
+    
+    // Return a Result using the given literal error message.
+    return Result.reject("No such account id: %s", id);
+}
+```
+
+
+# Group Sequences
+
+Valex provides three GroupSequence implementations for creating (Create.class), updating (Update.class) and deleting (Delete.class) entities. Each GroupSequence has the following definition:
+
+```
+@GroupSequence({CreateLevel1.class, CreateLevel2.class, CreateLevel3.class, CreateLevel4.class, CreateLevel5.class})
+public interface Create {
+
+}
+```
+
+Each level represents and ordered configuration step. Valiation will begin by inspecting the level 1 class, and if validation fails at this level no further levels will be inspected. Validation will only continue up the level sequence if validation succeeds at pevious levels. 
+
+Using the three Valex groups sequences reduces the boilerplate implementation required to support these common use cases yourself, but you are free to implement your own group sequences as well.
+
+Here's an example of the Valex Create group sequence applied to an account object. In this example, all of the @NotBlank checks (level 1) will be run first, and if successful the @Size checks (level 2) will be run next, and if successfull the @UniqueValue check (level 3) will be run last.
+
+```java
+@UniqueValue(property = "username", message = "{account.username.conflict}", groups = {CreateLevel3.class})
+public class Account {
+
+  @NotBlank(message = "{account.id.required}", groups = {CreateLevel1.class})
+  @Size(min = 3, max = 128, message = "{account.username.size}", groups = {CreateLevel1.class})
+  private String id;
+
+  @NotBlank(message = "{account.username.required}", groups = {CreateLevel1.class})
+  @Size(min = 3, max = 128, message = "{account.username.size}", groups = {CreateLevel2.class, UpdateLevel2.class})
+  private String username;
+
+  @NotBlank(message = "{account.password.required}", groups = {CreateLevel1.class})
+  @Size(min = 8, max = 255, message = "{account.password.size}", groups = { CreateLevel2.class})
+  private String password;
+
+}
+```
+
+### Group Sequence Annotations
+If you plan to use the Valex group sequences, you can also take advantage of the Valex @Create, @Update and @Delete annotations as a shorthand notation to apply group sequence based validation. 
+
+```java
+
+import fm.pattern.valex.Result;
+
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Update;
+import fm.pattern.valex.annotations.Delete;
+
+public interface AccountService {
+
+    // Applies the Create group sequence during validation.
+    public Result<Account> create(@Create Account account);
+    
+    // Applies the Update group sequence during validation.
+    public Result<Account> update(@Update Account account);
+    
+    // Applies the Delete group sequence during validation.
+    public Result<Account> delete(@Delete Account account);
+            
+}
+```
+
+The annotations can also be configured to throw the underlying validation result exception if you do not want the annotations to return typed *Result* objects.
+
+```java
+
+import fm.pattern.valex.Result;
+
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Update;
+import fm.pattern.valex.annotations.Delete;
+
+public interface AccountService {
+
+    public Account create(@Create(throwException = true) Account account);
+    
+    public Account update(@Update(throwException = true) Account account);
+    
+    public Account delete(@Delete(throwException = true) Account account);
+            
+}
+```
+
+
+
+# Validation Strategy
+
+We'll run through a strategy where validation is performed in an application's business layer, and service interfaces within the business layer return typed *Results*. This approach has a number of benefits, but is not required to use Valex.  
 
 Let's take the following AccountService interface as an example:
 
@@ -337,227 +544,6 @@ if(result.rejected()) {
 Applying this pattern consistently across a program can help reduce congitive load, since callers can expect a consistent and well-defined response from API calls.
 
 
-
-```
-
-# Declarative Validation using Annotations
-
-Valex provides a parameter-scoped @Valid annotation that will automatically trigger validation and return a typed Result immediatley if validation fails. To use this annotation your method must have a signature that returns Result<T>.
-
-```java
-
-public interface AccountService {
-
-    public Result<Account> create(@Valid Account account);
-
-} 
-
-@Service
-class AccountServiceImpl implements AccountService {
-
-    public Result<Account> create(Account account) {
-        ... // if we get here the account passed validation
-    }
-
-}      
-```
-
-If you would rather throw an exception on validation failure, you can provide ```throwException = true``` as an argument to the @Valid annotation.
-
-```java
-
-import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Valid;
-
-public interface AccountService {
-
-    public Result<Account> create(@Valid(throwException = true) Account account);
-
-} 
-     
-```
-
-# Message Interpolation
-Valex supports two types of message interpolation that can be used to produce dynamic error messages.
-
-### BeanValidation Interpolation
-BeanValidation message interpolation allows you to inject *annotation attribute values* into error messages. As an example, take the following @Size annotated field with **min** and **max** attributes:
-
-```java
-@Size(min = 8, max = 255, message = "{account.password.size}")
-private String password;
-```
-
-To inject the min and max attribute values into an error message, address the attributes in {braces}:
-```
-account.password.size: 
-  message: "Your password must be between {min} and {max} characters."
-  code: ACC-0005
-```
-
-The {validatedValue} expression can be used to inject the value of the field being validated into your error message.
-
-```java
-@Size(min = 8, max = 255, message = "{account.username.size}")
-private String username;
-```
-
-```
-account.username.size: 
-  message: "The username {validatedValue} must be between {min} and {max} characters."
-```
-
-### Result Interpolation
-Result objects can be created directly by using the *Result* accept() and reject() methods. The reject() method accepts a key to a configured message or a literal message along with a varargs array for message parameters. The reject() method message format is compatible with the [Java Formatter API](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html). 
-
-```
-public Result<Account> findById(String id) {
-    Account account = repository.findById(id);
-    if(account != null) {
-    	return Result.accept(account);
-    }
-    
-    // Return a result by looking up the 'account.not_found' error, and inject the 'id' value into the error message.
-    return Result.reject("account.not_found", id);
-    
-    // Return a Result using the given literal error message.
-    return Result.reject("No such account id: %s", id);
-}
-```
-
-
-# Conditional Validation
-
-### Validation Groups
-
-Valex provides first-class support for [Validation Groups and Group Sequences](http://beanvalidation.org/1.0/spec/#constraintdeclarationvalidationprocess-groupsequence), BeanValidation features that enable conditional validation.
-
-Valex provides three GroupSequence implementations for creating (Create.class), updating (Update.class) and deleting (Delete.class) entities. Using these three groups sequences can help reduce the boilerplate implementation required to support these common use cases yourself.
-
-```java
-@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel3.class, UpdateLevel3.class })
-public class Account {
-
-  @NotBlank(message = "{account.id.required}", groups = { UpdateLevel1.class, DeleteLevel1.class })
-  @Size(min = 3, max = 128, message = "{account.username.size}", groups = { UpdateLevel2.class, DeleteLevel2.class })
-  private String id;
-
-  @NotBlank(message = "{account.username.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-  @Size(min = 3, max = 128, message = "{account.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
-  private String username;
-
-  @NotBlank(message = "{account.password.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-  @Size(min = 8, max = 255, message = "{account.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
-  private String password;
-
-}
-```
-
-
-### Conditional Validation using the ValidationService
-The *ValidationService* validate() method takes a varargs array of user defined validation groups, so you can provide your own validation groups if and when the Valex provided groups aren't suitable.
-
-```java
-
-import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
-
-import fm.pattern.valex.sequences.Create;
-import fm.pattern.valex.sequences.Update;
-import fm.pattern.valex.sequences.Delete;
-
-@Service
-class AccountServiceImpl implements AccountService {
-
-    private final ValidationService validationService;
-    
-    public AccountServiceImpl(ValidationService validationService) {
-        this.validationService = validationService;
-    }
-
-    /**
-     * Validates the given account, restricting validation to properties belonging to the
-     * Create group sequence, which includes:
-     * CreateLevel1.class
-     * CreateLevel2.class 
-     * CreateLevel3.class 
-     * CreateLevel4.class 
-     * CreateLevel5.class
-     */
-    public Result<Account> create(Account account) {
-        Result<Account> result = validationService.validate(account, Create.class);
-        if(result.rejected()) {
-            return result;
-        }
-        ...
-    }
-    
-    /**
-     * Validates the given account, restricting validation to properties belonging to the
-     * Update group sequence, which includes:
-     * UpdateLevel1.class
-     * UpdateLevel2.class 
-     * UpdateLevel3.class 
-     * UpdateLevel4.class 
-     * UpdateLevel5.class
-     */  
-    public Result<Account> update(Account account) {
-        Result<Account> result = validationService.validate(account, Update.class);
-        if(result.rejected()) {
-            return result;
-        }
-        ...
-    }
-    
-    /**
-     * Validates the given account, restricting validation to properties belonging to the
-     * Delete group sequence, which includes:
-     * DeleteLevel1.class
-     * DeleteLevel2.class 
-     * DeleteLevel3.class 
-     * DeleteLevel4.class 
-     * DeleteLevel5.class
-     */     
-    public Result<Account> delete(Account account) {
-        Result<Account> result = validationService.validate(account, Delete.class);
-        if(result.rejected()) {
-            return result;
-        }
-        ...
-    }
-            
-}
-```
-
-
-### Conditional Validation using Annotations
-To reduce repetitive code even further, you can use the Valex @Create, @Update and @Delete annotations to apply Group Sequence based validation. Like the @Valid annotation introduced before, any methods that include an @Create, @Update or @Delete annotation expect the method signature to return a typed *Result*. 
-
-```java
-
-import fm.pattern.valex.Result;
-
-import fm.pattern.valex.annotations.Create;
-import fm.pattern.valex.annotations.Update;
-import fm.pattern.valex.annotations.Delete;
-
-@Service
-class AccountServiceImpl implements AccountService {
-
-    public Result<Account> create(@Create Account account) {
-        ...
-    }
-    
-    public Result<Account> update(@Update Account account) {
-        ...
-    }
-    
-    public Result<Account> delete(@Delete Account account) {
-        ...
-    }
-            
-}
-```
 
 
 # Building from Source
