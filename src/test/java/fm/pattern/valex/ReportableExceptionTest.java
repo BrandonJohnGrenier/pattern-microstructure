@@ -1,6 +1,7 @@
 package fm.pattern.valex;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,27 +16,39 @@ public class ReportableExceptionTest {
 
     @Test
     public void shouldBeAbleToCreateAnAuthenticationExceptionWithASingleReportable() {
-        Assertions.assertThat(new AuthenticationException(reportable).getErrors()).contains(reportable);
+        assertThat(new AuthenticationException(reportable).getErrors()).contains(reportable);
     }
 
     @Test
     public void shouldBeAbleToCreateAnAuthorizationExceptionWithASingleReportable() {
-        Assertions.assertThat(new AuthorizationException(reportable).getErrors()).contains(reportable);
+        assertThat(new AuthorizationException(reportable).getErrors()).contains(reportable);
     }
 
     @Test
     public void shouldBeAbleToCreateAnUnprocessableEntityExceptionWithASingleReportable() {
-        Assertions.assertThat(new UnprocessableEntityException(reportable).getErrors()).contains(reportable);
+        assertThat(new UnprocessableEntityException(reportable).getErrors()).contains(reportable);
     }
 
     @Test
     public void shouldBeAbleToCreateABadRequestExceptionWithASingleReportable() {
-        Assertions.assertThat(new BadRequestException(reportable).getErrors()).contains(reportable);
+        assertThat(new BadRequestException(reportable).getErrors()).contains(reportable);
     }
 
     @Test
     public void shouldBeAbleToCreateAnInternalErrorExceptionWithASingleReportable() {
-        Assertions.assertThat(new InternalErrorException(reportable).getErrors()).contains(reportable);
+        assertThat(new InternalErrorException(reportable).getErrors()).contains(reportable);
+    }
+
+    @Test
+    public void shouldBeAbleToConvertAReportableExceptionIntoAnErrorsRepresentation() {
+        ResourceConflictException exception = new ResourceConflictException(Reportable.report("contact.name.required"));
+
+        ErrorsRepresentation representation = exception.toRepresentation();
+        assertThat(representation.getErrors()).hasSize(1);
+
+        ErrorRepresentation error = representation.getErrors().get(0);
+        assertThat(error.getCode()).isEqualTo("CON-1000");
+        assertThat(error.getMessage()).isEqualTo("A contact name is required.");
     }
 
 }

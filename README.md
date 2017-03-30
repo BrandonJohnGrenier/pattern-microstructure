@@ -82,7 +82,7 @@ To get started, add the following dependency to your depedency list:
 <dependency>
     <groupId>fm.pattern</groupId>
     <artifactId>valex</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 
@@ -383,6 +383,7 @@ import fm.pattern.valex.annotations.Valid;
 
 public interface AccountService {
 
+    // Throw an exception if the account is invalid.
     public Account create(@Valid(throwException = true) Account account);
 
 } 
@@ -522,8 +523,6 @@ public interface AccountService {
 The annotations can also be configured to throw the underlying validation result exception if you do not want the annotations to return typed *Result* objects.
 
 ```java
-
-import fm.pattern.valex.Result;
 
 import fm.pattern.valex.annotations.Create;
 import fm.pattern.valex.annotations.Update;
