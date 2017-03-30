@@ -5,7 +5,7 @@
 
    <groupId>fm.pattern</groupId>
    <artifactId>valex</artifactId>
-   <version>1.0.6-SNAPSHOT</version>
+   <version>1.0.6</version>
    <modelVersion>4.0.0</modelVersion>
    <packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
    <scm>
       <developerConnection>scm:git:https://github.com/PatternFM/valex.git</developerConnection>
       <url>scm:git:https://github.com/PatternFM/valex.git</url>
-      <tag>HEAD</tag>
+      <tag>valex-1.0.6</tag>
    </scm>
 
    <licenses>
