@@ -1,0 +1,3 @@
+address.city.size:
+  code: ADD-1000
+  message: The unit number cannot be greater than 10 characters.

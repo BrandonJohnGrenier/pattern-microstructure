@@ -64,9 +64,9 @@ public class Reportable {
         return StringUtils.isBlank(code) ? key : code;
     }
 
-    private static String getMessage(String input) {
-        String message = ValexConfiguration.getMessage(input);
-        return StringUtils.isBlank(message) ? input : message;
+    private static String getMessage(String key) {
+        String message = ValexConfiguration.getMessage(key);
+        return StringUtils.isBlank(message) ? key : message;
     }
 
     private static Class<? extends ReportableException> getException(String key) {

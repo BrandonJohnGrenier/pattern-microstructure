@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import fm.pattern.valex.config.PropertyConfigurationFile;
+import fm.pattern.valex.config.ValexConfiguration;
 import fm.pattern.valex.fixtures.model.Place;
 import fm.pattern.valex.fixtures.service.DataRepository;
 import fm.pattern.valex.fixtures.service.DataRepositoryImpl;
@@ -31,6 +33,8 @@ public class PlaceServiceTest {
 
     @Before
     public void before() {
+        ValexConfiguration.use(new PropertyConfigurationFile());
+        
         MockitoAnnotations.initMocks(this);
         this.repository = new DataRepositoryImpl(session);
 

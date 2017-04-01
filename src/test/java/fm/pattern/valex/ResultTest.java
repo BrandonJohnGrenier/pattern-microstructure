@@ -5,15 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import fm.pattern.valex.config.PropertyConfigurationFile;
 import fm.pattern.valex.config.ValexConfiguration;
 
 public class ResultTest {
 
     @Before
     public void before() {
-        ValexConfiguration.use(ValexConfiguration.PROPERTY_FILE);
+        ValexConfiguration.use(new PropertyConfigurationFile());
     }
-    
+
     @Test
     public void shouldBeAbleToSubstituteArgumentsInAnErrorMessage() {
         Result<String> result = Result.reject("The username %s cannot be greater than %d characters.", "smithers", 5);
@@ -51,7 +52,7 @@ public class ResultTest {
         Result<String> result = Result.reject("contact.name.required");
         result.doThrow();
     }
-    
+
     @Test
     public void shouldNotThrowACustomizedExceptionAndReturnTheInstanceWhenTheResultHasNoErrors() {
         Result<String> result = Result.accept("string");

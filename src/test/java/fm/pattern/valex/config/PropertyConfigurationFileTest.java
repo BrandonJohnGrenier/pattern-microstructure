@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PropertyFileConfigurationTest {
+public class PropertyConfigurationFileTest {
 
     private ValexConfigurationFile configuration;
 
@@ -82,6 +82,15 @@ public class PropertyFileConfigurationTest {
     @Test
     public void shouldReturnTheDefaultExceptionClassIfAnExceptionClassIsNotDefinedForTheValidationKey() {
         assertThat(configuration.getException("address.city.size")).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
+    }
+
+    @Test
+    public void shouldReturnNullIfAnExceptionClassIsNotDefinedForTheValidationKeyAndNoDefaultExceptionIsConfigured() {
+        ValexConfiguration.use(null);
+        System.setProperty("valex.config", "validation-nde.properties");
+
+        ValexConfigurationFile configurationWithNoDefaultException = ValexConfiguration.getConfiguration();
+        assertThat(configurationWithNoDefaultException.getException("address.unit.size")).isNull();
     }
 
 }

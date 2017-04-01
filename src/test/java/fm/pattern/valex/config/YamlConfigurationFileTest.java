@@ -21,18 +21,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class YamlFileConfigurationTest {
+public class YamlConfigurationFileTest {
 
-    private ValexConfigurationFile repository;
+    private ValexConfigurationFile file;
 
     @Before
     public void before() {
-        this.repository = new YamlConfigurationFile();
+        this.file = new YamlConfigurationFile();
     }
 
     @Test
     public void theRepositoryShouldBeAvailableWhenAYamlFileIsLocatedAndLoadedSuccessfully() {
-        assertThat(repository.isAvailable()).isTrue();
+        assertThat(file.isAvailable()).isTrue();
     }
 
     @Test
@@ -48,61 +48,71 @@ public class YamlFileConfigurationTest {
 
     @Test
     public void shouldBeAbleToResolveAMessageForTheSpecifiedValidationKey() {
-        String description = repository.getMessage("contact.name.required");
+        String description = file.getMessage("contact.name.required");
         assertThat(description).isEqualTo("A contact name is required.");
     }
 
     @Test
     public void shouldReturnANullAMessageIfTheSpecifiedValidationKeyIsNullOrEmpty() {
-        assertThat(repository.getMessage(null)).isNull();
-        assertThat(repository.getMessage("")).isNull();
-        assertThat(repository.getMessage("   ")).isNull();
+        assertThat(file.getMessage(null)).isNull();
+        assertThat(file.getMessage("")).isNull();
+        assertThat(file.getMessage("   ")).isNull();
     }
 
     @Test
     public void shouldReturnTheKeyNameAsTheMessageIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getMessage("invalid.key.name")).isEqualTo("invalid.key.name");
+        assertThat(file.getMessage("invalid.key.name")).isEqualTo("invalid.key.name");
     }
 
     @Test
     public void shouldBeAbleToResolveACodeForTheSpecifiedValidationKey() {
-        String code = repository.getCode("contact.name.required");
+        String code = file.getCode("contact.name.required");
         assertThat(code).isEqualTo("CON-1000");
     }
 
     @Test
     public void shouldReturnANullCodeIfTheSpecifiedValidationKeyIsNullOrEmpty() {
-        assertThat(repository.getCode(null)).isNull();
-        assertThat(repository.getCode("")).isNull();
-        assertThat(repository.getCode("   ")).isNull();
+        assertThat(file.getCode(null)).isNull();
+        assertThat(file.getCode("")).isNull();
+        assertThat(file.getCode("   ")).isNull();
     }
 
     @Test
     public void shouldReturnTheKeyNameAsTheCodeIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getCode("invalid.key.name")).isEqualTo("invalid.key.name");
+        assertThat(file.getCode("invalid.key.name")).isEqualTo("invalid.key.name");
     }
 
     @Test
     public void shouldBeAbleToResolveAnExceptionClassForTheSpecifiedValidationKey() {
-        String exception = repository.getException("contact.name.required");
+        String exception = file.getException("contact.name.required");
         assertThat(exception).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
     }
 
     @Test
     public void shouldReturnANullExceptionClassIfTheSpecifiedValidationKeyIsNullOrEmpty() {
-        assertThat(repository.getException(null)).isNull();
-        assertThat(repository.getException("")).isNull();
-        assertThat(repository.getException("   ")).isNull();
+        assertThat(file.getException(null)).isNull();
+        assertThat(file.getException("")).isNull();
+        assertThat(file.getException("   ")).isNull();
     }
 
     @Test
     public void shouldReturnANullExceptionClassIfTheSpecifiedValidationKeyCannotBeResolved() {
-        assertThat(repository.getException("invalid.key.name")).isNull();
+        assertThat(file.getException("invalid.key.name")).isNull();
     }
 
     @Test
     public void shouldReturnTheDefaultExceptionClassIfAnExceptionClassIsNotDefinedForTheValidationKey() {
-        assertThat(repository.getException("address.city.size")).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
+        assertThat(file.getException("address.city.size")).isEqualTo("fm.pattern.valex.UnprocessableEntityException");
     }
 
+
+    @Test
+    public void shouldReturnNullIfAnExceptionClassIsNotDefinedForTheValidationKeyAndNoDefaultExceptionIsConfigured() {
+        ValexConfiguration.use(null);
+        System.setProperty("valex.config", "validation-nde.yml");
+        
+        ValexConfigurationFile configurationWithNoDefaultException = ValexConfiguration.getConfiguration();
+        assertThat(configurationWithNoDefaultException.getException("address.city.size")).isNull();
+    }
+    
 }

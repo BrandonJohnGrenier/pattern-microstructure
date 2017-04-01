@@ -1,5 +1,7 @@
 package fm.pattern.valex;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +10,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.valex.config.ValexConfiguration;
+import fm.pattern.valex.config.YamlConfigurationFile;
 
 public class ReportableExceptionRaiserTest {
 
     @Before
     public void before() {
-        ValexConfiguration.use(ValexConfiguration.YAML_FILE);
+        ValexConfiguration.use(new YamlConfigurationFile());
     }
-    
+
     @Test
     public void shouldBeAbleToRaiseAReportableExceptionPopulatedWithTheGivenReportableErrors() {
         List<Reportable> errors = new ArrayList<>();
@@ -78,6 +81,30 @@ public class ReportableExceptionRaiserTest {
 
         ReportableException exception = ReportableExceptionRaiser.raise(null, errors);
         Assertions.assertThat(exception).isInstanceOf(UnprocessableEntityException.class);
+    }
+
+    @Test
+    public void shouldReturnAnUnprocessableEntityExceptionIfThePropertiesFileHasNoDefaultExceptionConfiguration() {
+        ValexConfiguration.use(null);
+        System.setProperty("valex.config", "validation-nde.properties");
+
+        Reportable reportable = new Reportable("address.unit.size");
+        List<Reportable> errors = new ArrayList<Reportable>();
+        errors.add(reportable);
+
+        assertThat(ReportableExceptionRaiser.raise(errors)).isInstanceOf(UnprocessableEntityException.class);
+    }
+
+    @Test
+    public void shouldReturnAnUnprocessableEntityExceptionIfTheYamlFileHasNoDefaultExceptionConfiguration() {
+        ValexConfiguration.use(null);
+        System.setProperty("valex.config", "validation-nde.yml");
+
+        Reportable reportable = new Reportable("address.city.size");
+        List<Reportable> errors = new ArrayList<Reportable>();
+        errors.add(reportable);
+
+        assertThat(ReportableExceptionRaiser.raise(errors)).isInstanceOf(UnprocessableEntityException.class);
     }
 
     @Test

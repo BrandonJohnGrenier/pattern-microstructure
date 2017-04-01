@@ -22,12 +22,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.valex.config.ValexConfiguration;
+import fm.pattern.valex.config.YamlConfigurationFile;
 
 public class ReportableTest {
 
     @Before
     public void before() {
-        ValexConfiguration.use(ValexConfiguration.YAML_FILE);
+        ValexConfiguration.use(new YamlConfigurationFile());
     }
 
     @Test

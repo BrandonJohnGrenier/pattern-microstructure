@@ -22,8 +22,8 @@ public final class ValexConfiguration {
 
     private static ValexConfigurationFile explicitConfiguration = null;
 
-    public static final ValexConfigurationFile PROPERTY_FILE = new PropertyConfigurationFile();
-    public static final ValexConfigurationFile YAML_FILE = new YamlConfigurationFile();
+    private static final ValexConfigurationFile PROPERTY_FILE = new PropertyConfigurationFile();
+    private static final ValexConfigurationFile YAML_FILE = new YamlConfigurationFile();
 
     private ValexConfiguration() {
 

@@ -34,6 +34,7 @@ public class PropertyConfigurationFile implements ValexConfigurationFile {
         }
 
         try {
+            properties.clear();
             properties.load(inputStream);
             available = true;
         }
@@ -73,7 +74,7 @@ public class PropertyConfigurationFile implements ValexConfigurationFile {
         if (StringUtils.isBlank(key)) {
             return null;
         }
-
+        
         String exception = properties.getProperty(key + ".exception");
         return StringUtils.isBlank(exception) ? properties.getProperty("default.exception") : exception;
     }
