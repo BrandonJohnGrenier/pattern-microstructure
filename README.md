@@ -84,7 +84,9 @@ public class Account {
 }
 ```
 
-Fourth, setup your Spring ```ExceptionHandler``` to handle the exceptions you've configured in your ```ValidationMessages.yml``` file. This allows you to map the appropriate HTTP response code against the exception classes you've configured. The toRepresentation() method of the Valex UnprocessableEntityException returns an ```ErrorsRepresentation``` object, which produces the appropriate JSON payload described in the introduction.
+Fourth, setup your Spring ```ExceptionHandler``` to handle the exceptions you've configured in your ```ValidationMessages.yml``` file. This allows you to map the appropriate HTTP response code against the exception classes you've configured. 
+
+The toRepresentation() method of the Valex UnprocessableEntityException returns an ```ErrorsRepresentation``` object, which produces the JSON payload as described in the introduction.
 
 ```java
 @RestController
