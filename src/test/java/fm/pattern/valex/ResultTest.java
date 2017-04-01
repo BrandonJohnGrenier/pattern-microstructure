@@ -46,6 +46,12 @@ public class ResultTest {
         result.orThrow(ResourceConflictException.class);
     }
 
+    @Test(expected = UnprocessableEntityException.class)
+    public void shouldBeAbleToThrowTheUnderlyingExceptionBoundToTheKey() {
+        Result<String> result = Result.reject("contact.name.required");
+        result.doThrow();
+    }
+    
     @Test
     public void shouldNotThrowACustomizedExceptionAndReturnTheInstanceWhenTheResultHasNoErrors() {
         Result<String> result = Result.accept("string");

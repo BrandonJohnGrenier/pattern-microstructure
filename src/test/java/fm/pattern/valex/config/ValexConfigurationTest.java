@@ -16,6 +16,25 @@ public class ValexConfigurationTest {
     }
 
     @Test
+    public void shouldBeAbleToSpecifyTheConfigurationFileToUseViaSystemProperty() {
+        ValexConfiguration.use(null);
+
+        System.setProperty("valex.config", "ValidationMessages.yml");
+        PatternAssertions.assertThat(ValexConfiguration.getConfiguration().getClass()).isEqualTo(YamlConfigurationFile.class);
+
+        System.setProperty("valex.config", "ValidationMessages.properties");
+        PatternAssertions.assertThat(ValexConfiguration.getConfiguration().getClass()).isEqualTo(PropertyConfigurationFile.class);
+    }
+
+    @Test(expected = ValexConfigurationException.class)
+    public void shouldThrowAConfigurationExceptionIfTheSpecifiedConfigurationFileIsNotSupported() {
+        ValexConfiguration.use(null);
+
+        System.setProperty("valex.config", "ValidationMessages.xml");
+        ValexConfiguration.getConfiguration();
+    }
+
+    @Test
     public void theClassShouldBeAWellDefinedUtilityClass() {
         PatternAssertions.assertClass(ValexConfiguration.class).isAWellDefinedUtilityClass();
     }
