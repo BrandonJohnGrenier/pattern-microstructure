@@ -6,7 +6,7 @@
 
 An API should provide useful error responses in a predictable and consumable format. An error response should provide a few things for a developer - a useful error message, a unique error code, and a meaningful HTTP response code.
 
-Valex can help you produce useful responses with an appropriate HTTP response code and a JSON representation of an error that looks like this:
+Valex can help you produce meaningful responses that include an appropriate HTTP response code as well as a JSON payload that looks like this:
 
 ```
 {
@@ -23,7 +23,40 @@ Valex can help you produce useful responses with an appropriate HTTP response co
 }
 ```
 
-First, create a file named ```ValidationMessages.yml``` on the root of your classpath with the following configuration:
+The JSON payload is entirely configuration driven, so you can produce a JSON payload that looks like this just as easily:
+
+```
+{
+  "errors": [
+    {
+      "code": "ACC-1000",
+      "message": "An account username is required.",
+      "field": "account.username",
+      "support_url": "https://support.yoursite.com/kb/articles/acc-1000.html"
+    },
+    {
+      "code": "ADD-1001",
+      "message": "An account password is required."
+      "field": "account.password",
+      "support_url": "https://support.yoursite.com/kb/articles/add-1001.html"
+    }
+  ]
+}
+```
+
+# Quick Start
+
+First, add Valex to your project dependency list:
+
+```xml
+<dependency>
+    <groupId>fm.pattern</groupId>
+    <artifactId>valex</artifactId>
+    <version>1.0.6</version>
+</dependency>
+```
+
+Second, create a file named ```ValidationMessages.yml``` on the root of your classpath with the following configuration:
 
 ```yaml
 account.username.required:
@@ -37,7 +70,7 @@ account.password.required:
   exception: fm.pattern.valex.UnprocessableEntityException
 ```
 
-Second, annotate your model with BeanValidation annotations. 
+Third, annotate your model with BeanValidation annotations. The ```message``` annotation attribute is used to resolve properties from the ```ValidationMessages.yml``` file.
 
 ```java
 public class Account {
@@ -51,9 +84,7 @@ public class Account {
 }
 ```
 
-
-Valex builds on top of the BeanValidation API to give developers the ability to configure an error message, error code, and an exception to throw when a validation check fails, all in one spot.
-The exception, when thrown, will carry with it the error message and error code as specified in the configuration. If you're using Spring, you can use the @ExceptionHandler to easily convert the exception into the JSON format specified above:
+Fourth, setup your Spring ```ExceptionHandler``` to handle the exceptions you've configured in your ```ValidationMessages.yml``` file. This allows you to map the appropriate HTTP response code against the exception classes you've configured.
 
 ```java
 @RestController
@@ -66,49 +97,25 @@ public class Endpoint {
 		return exception.toRepresentation();
 	}
 
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-	@ExceptionHandler(AuthenticationException.class)
-	public ErrorsRepresentation handleAuthentication(AuthenticationException exception) {
-		return exception.toRepresentation();
-	}
+}
+```
 
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.FORBIDDEN)
-	@ExceptionHandler(AuthorizationException.class)
-	public ErrorsRepresentation handleAuthorization(AuthorizationException exception) {
-		return exception.toRepresentation();
-	}
 
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ErrorsRepresentation handleEntityNotFound(EntityNotFoundException exception) {
-		return exception.toRepresentation();
-	}
 
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	@ExceptionHandler(InternalErrorException.class)
-	public ErrorsRepresentation handleInternalError(EntityNotFoundException exception) {
-		return exception.toRepresentation();
-	}
+Third, trigger validation. Valex provides a few ways to trigger validation, but we'll start with the Valex @Valid annotation. We instruct the annotation to throw an exception (as configured in ```ValidationMessages.yml```) if validation fails.
+
+```java
+public interface AccountService {
+
+    public Result<Account> create(@Valid(throwException = true) Account account);
 
 }
 ```
+
+
+
+
 Because Valex builds on top of the [JSR-303 BeanValidation API](http://beanvalidation.org/1.0/), you can annotate your models with standard BeanValidation annotations. A ValidationMessages.properties file can also be used with Valex to minimise the migration path for existing JSR-303 implementations that want to use Valex for more robust API error reporting.
-
-
-# Getting Started
-
-To get started, add the following dependency to your depedency list:
-```xml
-<dependency>
-    <groupId>fm.pattern</groupId>
-    <artifactId>valex</artifactId>
-    <version>1.0.6</version>
-</dependency>
-```
 
 
 # Documentation
