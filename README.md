@@ -4,23 +4,9 @@
 
 # Introduction
 
-Produce predictable and consumable REST error payloads with Valex, a YAML-based validation and exception management library for Java.
-
 An API should provide useful error responses in a predictable and consumable format. An error response should provide a few things for a developer - a useful error message, a unique error code, and a meaningful HTTP response code.
 
-When Valex is configured with the following error codes and error messages:
-
-```yaml
-account.username.required:
-  code: ACC-1000
-  message: An account username is required.
-
-account.password.required:
-  code: ACC-1001
-  message: An account password is required.
-```
-
-Valex produces a JSON representation of an error that looks like this:
+Valex can help you produce useful responses with an appropriate HTTP response code and a JSON representation of an error that looks like this:
 
 ```
 {
@@ -37,6 +23,33 @@ Valex produces a JSON representation of an error that looks like this:
 }
 ```
 
+First, create a file named ```ValidationMessages.yml``` on the root of your classpath with the following configuration:
+
+```yaml
+account.username.required:
+  code: ACC-1000
+  message: An account username is required.
+  exception: fm.pattern.valex.UnprocessableEntityException
+
+account.password.required:
+  code: ACC-1001
+  message: An account password is required.
+  exception: fm.pattern.valex.UnprocessableEntityException
+```
+
+Second, annotate your model with BeanValidation annotations. 
+
+```java
+public class Account {
+
+  @NotBlank(message = "{account.username.required}")
+  private String username;
+
+  @NotBlank(message = "{account.password.required}")
+  private String password;
+
+}
+```
 
 
 Valex builds on top of the BeanValidation API to give developers the ability to configure an error message, error code, and an exception to throw when a validation check fails, all in one spot.
