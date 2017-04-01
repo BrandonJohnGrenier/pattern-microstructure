@@ -36,7 +36,7 @@ The JSON payload is entirely configuration driven, so you can produce a JSON pay
     },
     {
       "code": "ADD-1001",
-      "message": "An account password is required."
+      "message": "An account password is required.",
       "field": "account.password",
       "support_url": "https://support.yoursite.com/kb/articles/add-1001.html"
     }
@@ -84,7 +84,7 @@ public class Account {
 }
 ```
 
-Fourth, setup your Spring ```ExceptionHandler``` to handle the exceptions you've configured in your ```ValidationMessages.yml``` file. This allows you to map the appropriate HTTP response code against the exception classes you've configured. The toRepresentation() method of the Valex ```UnprocessableEntityException``` returns an ```ErrorsRepresetation``` object, which produces the appropriate JSON payload.
+Fourth, setup your Spring ```ExceptionHandler``` to handle the exceptions you've configured in your ```ValidationMessages.yml``` file. This allows you to map the appropriate HTTP response code against the exception classes you've configured. The toRepresentation() method of the Valex UnprocessableEntityException returns an ```ErrorsRepresentation``` object, which produces the appropriate JSON payload described in the introduction.
 
 ```java
 @RestController
@@ -102,7 +102,6 @@ public class Endpoint {
 Fifth, configure and wire up the Valex validation APIs. Valex exposes a ValidationService API that can be used to explicitly trigger validation, as well as @Valid annotations that can be used to perform validation declaratively. You can wire these services into your Spring application using the following configuration:
 
 ```java
-
 @Configuration
 @EnableAspectJAutoProxy
 public class ValidationConfiguration {
@@ -124,7 +123,7 @@ public class ValidationConfiguration {
 
 }
 ```
-The Valex API relies on an underlying BeanValidation Validator implementation to execute valiation logic on annotated models. In the example above we're using the Spring LocalValidatorFactory bean, but you can use your own validator as well:
+The Valex API relies on an underlying [BeanValidation](http://beanvalidation.org/1.0/) Validator implementation to execute valiation logic on annotated models. In the example above we're using the Spring LocalValidatorFactory bean, but you can use your own validator as well:
 
 ```java
 @Bean(name = "validator")
@@ -134,7 +133,7 @@ public Validator validator() {
 ```
 
 
-Lastly, trigger validation. Valex provides a few ways to trigger validation, but we'll start with the Valex @Valid annotation. We instruct the annotation to throw an exception (as configured in ```ValidationMessages.yml```) if validation fails.
+Last, trigger validation. Valex provides a few ways to trigger validation, but we'll start with the Valex @Valid annotation. In this case, we instruct the annotation to throw an exception if validation fails by passing a ```throwException = true``` argument to the annotation.
 
 ```java
 public interface AccountService {
@@ -146,12 +145,8 @@ public interface AccountService {
 
 
 
-
-Because Valex builds on top of the [JSR-303 BeanValidation API](http://beanvalidation.org/1.0/), you can annotate your models with standard BeanValidation annotations. A ValidationMessages.properties file can also be used with Valex to minimise the migration path for existing JSR-303 implementations that want to use Valex for more robust API error reporting.
-
-
 # Documentation
-Documentation is hosted on the [Valex Project Page](http://pattern.fm/valex/#documentation).
+Complete documentation for Valex is hosted on the [Valex Project Page](http://pattern.fm/valex/#documentation).
 
 
 # Building from Source
