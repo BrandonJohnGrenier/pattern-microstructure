@@ -33,9 +33,9 @@ public class ReportableTest {
 
     @Test
     public void shouldBeAbleToConstructAReportable() {
-        Reportable reportable = new Reportable("bad.request");
-        assertThat(reportable.getCode()).isEqualTo("REQ-1000");
-        assertThat(reportable.getMessage()).isEqualTo("Bad Request");
+        Reportable reportable = new Reportable("bad.request.one");
+        assertThat(reportable.getCode()).isEqualTo("BR-1000");
+        assertThat(reportable.getMessage()).isEqualTo("Bad request 1.");
         assertThat(reportable.getException()).isEqualTo(BadRequestException.class);
     }
 
@@ -50,6 +50,13 @@ public class ReportableTest {
         Reportable reportable = Reportable.report("bad.request", "explicit message");
         assertThat(reportable.getCode()).isEqualTo("REQ-1000");
         assertThat(reportable.getMessage()).isEqualTo("explicit message");
+    }
+
+    @Test
+    public void shouldBeAbleToConstructAReportableWithCustomProperties() {
+        Reportable reportable = new Reportable("contact.name.required");
+        assertThat(reportable.getCode()).isEqualTo("CON-1000");
+        assertThat(reportable.getProperty("url")).isEqualTo("http://www.support.com/kb/article/con-1000");
     }
 
 }

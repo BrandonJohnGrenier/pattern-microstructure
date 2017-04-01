@@ -8,13 +8,9 @@ address.city.size:
 contact.name.required:
   code: CON-1000
   message: A contact name is required.
+  url: "http://www.support.com/kb/article/con-1000"
   exception: fm.pattern.valex.UnprocessableEntityException
 
-bad.request:
-  code: REQ-1000
-  message: Bad Request
-  exception: fm.pattern.valex.BadRequestException
-  
 username.length:
   code: USR-1000
   message: "The username %s cannot be greater than %d characters."  
@@ -39,12 +35,22 @@ internal.error.two:
    message: "Internal error 2."
    exception: fm.pattern.valex.InternalErrorException   
 
+other.request:
+   code: REQ-1000
+   message: "Bad Request"
+   exception: fm.pattern.valex.BadRequestException
+
+bad.request:
+  code: REQ-1000
+  message: Bad Request
+  exception: fm.pattern.valex.BadRequestException
+  
 bad.request.one:
    code: BR-1000
    message: "Bad request 1."
    exception: fm.pattern.valex.BadRequestException  
 
-bad.reqeust.two:
+bad.request.two:
    code: BR-1001
    message: "Bad request 2."
    exception: fm.pattern.valex.BadRequestException  

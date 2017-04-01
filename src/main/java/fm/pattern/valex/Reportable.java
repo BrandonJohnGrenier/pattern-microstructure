@@ -27,10 +27,7 @@ import fm.pattern.valex.config.ValexConfiguration;
 @SuppressWarnings("unchecked")
 public class Reportable {
 
-    private final String code;
-    private final String message;
     private final Map<String, String> properties = new HashMap<>();
-
     private final Class<? extends ReportableException> exception;
 
     public Reportable(String key, Object... arguments) {
@@ -38,8 +35,9 @@ public class Reportable {
     }
 
     private Reportable(String key, String message, Object... arguments) {
-        this.code = getCode(key);
-        this.message = String.format(message, arguments);
+        this.properties.putAll(ValexConfiguration.getProperties(key));
+        this.properties.put("code", ValexConfiguration.getCode(key));
+        this.properties.put("message", String.format(message, arguments));
         this.exception = getException(key);
     }
 
@@ -48,20 +46,23 @@ public class Reportable {
     }
 
     public String getCode() {
-        return code;
+        return getProperty("code");
     }
 
     public String getMessage() {
-        return message;
+        return getProperty("message");
+    }
+
+    public String getProperty(String key) {
+        return properties.get(key);
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
     }
 
     public Class<? extends ReportableException> getException() {
         return exception;
-    }
-
-    private static String getCode(String key) {
-        String code = ValexConfiguration.getCode(key);
-        return StringUtils.isBlank(code) ? key : code;
     }
 
     private static String getMessage(String key) {

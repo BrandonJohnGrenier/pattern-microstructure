@@ -16,6 +16,9 @@
 
 package fm.pattern.valex.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
 public final class ValexConfiguration {
@@ -43,6 +46,17 @@ public final class ValexConfiguration {
 
     public static String getException(String key) {
         return getConfiguration().getException(key);
+    }
+
+    public static Map<String, String> getProperties(String key) {
+        Map<String, String> map = getConfiguration().getProperties(key);
+        if (map == null) {
+            return new HashMap<String, String>();
+        }
+
+        Map<String, String> properties = new HashMap<String, String>(map);
+        properties.remove("exception");
+        return properties;
     }
 
     public static ValexConfigurationFile getConfiguration() {

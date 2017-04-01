@@ -22,7 +22,7 @@ public class ReportableException extends RuntimeException {
     }
 
     public ErrorsRepresentation toRepresentation() {
-        return new ErrorsRepresentation(errors.stream().map(e -> new ErrorRepresentation(e.getCode(), e.getMessage())).collect(Collectors.toList()));
+        return new ErrorsRepresentation(errors.stream().map(e -> e.getProperties()).collect(Collectors.toList()));
     }
 
 }

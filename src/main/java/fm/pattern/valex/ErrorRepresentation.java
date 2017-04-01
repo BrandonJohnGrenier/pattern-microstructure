@@ -1,5 +1,7 @@
 package fm.pattern.valex;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -8,24 +10,22 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorRepresentation {
 
-    private String code;
-    private String message;
+    private Map<String, String> error;
 
     public ErrorRepresentation() {
 
     }
 
-    public ErrorRepresentation(String code, String message) {
-        this.code = code;
-        this.message = message;
+    public ErrorRepresentation(Map<String, String> error) {
+        this.error = error;
     }
 
-    public String getCode() {
-        return code;
+    public Map<String, String> getError() {
+        return error;
     }
 
-    public String getMessage() {
-        return message;
+    public void setError(Map<String, String> error) {
+        this.error = error;
     }
 
 }

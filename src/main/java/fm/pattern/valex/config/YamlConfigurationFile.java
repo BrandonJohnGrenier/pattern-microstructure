@@ -84,7 +84,7 @@ public class YamlConfigurationFile implements ValexConfigurationFile {
     }
 
     public Map<String, String> getProperties(String key) {
-        return properties.get("key");
+        return properties.get(key);
     }
 
     private static String getValue(Map<String, String> attributes, String key) {

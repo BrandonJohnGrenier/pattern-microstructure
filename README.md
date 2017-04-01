@@ -6,30 +6,40 @@
 
 Produce predictable and consumable REST error payloads with Valex, a YAML-based validation and exception management library for Java.
 
-An API should provide a useful error responses in a known, consumable format. The representation of an error should be no different than the representation of any other resource, just with its own set of fields. An error response should provide a few things for a developer - a useful error message, a unique error code, and a meaningful HTTP response code. 
+An API should provide useful error responses in a predictable and consumable format. An error response should provide a few things for a developer - a useful error message, a unique error code, and a meaningful HTTP response code.
 
-A JSON representation of an error payload would look like:
+When Valex is configured with the following error codes and error messages:
 
-```json
+```yaml
+account.username.required:
+  code: ACC-1000
+  message: An account username is required.
+
+account.password.required:
+  code: ACC-1001
+  message: An account password is required.
+```
+
+Valex produces a JSON representation of an error that looks like this:
+
+```
 {
   "errors": [
     {
-      "code": "ACC-0001",
+      "code": "ACC-1000",
       "message": "An account username is required."
+    },
+    {
+      "code": "ADD-1001",
+      "message": "An account password is required."
     }
   ]
 }
 ```
 
-Valex builds on top of the BeanValidation API to give devlopers the ability to configure an error message, error code, and an exception to throw when a validation check fails, all in one spot.
 
-```yaml
-account.username.required: 
-  message: An account username is required.
-  code: ACC-0001
-  exception: fm.pattern.valex.UnprocessableEntityException
 
-```
+Valex builds on top of the BeanValidation API to give developers the ability to configure an error message, error code, and an exception to throw when a validation check fails, all in one spot.
 The exception, when thrown, will carry with it the error message and error code as specified in the configuration. If you're using Spring, you can use the @ExceptionHandler to easily convert the exception into the JSON format specified above:
 
 ```java

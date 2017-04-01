@@ -2,6 +2,7 @@ package fm.pattern.valex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,21 +12,21 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorsRepresentation {
 
-    private List<ErrorRepresentation> errors = new ArrayList<ErrorRepresentation>();
+    private List<Map<String, String>> errors = new ArrayList<Map<String, String>>();
 
     public ErrorsRepresentation() {
 
     }
 
-    public ErrorsRepresentation(List<ErrorRepresentation> errors) {
+    public ErrorsRepresentation(List<Map<String, String>> errors) {
         this.errors.addAll(errors);
     }
 
-    public List<ErrorRepresentation> getErrors() {
+    public List<Map<String, String>> getErrors() {
         return errors;
     }
 
-    public void setErrors(List<ErrorRepresentation> errors) {
+    public void setErrors(List<Map<String, String>> errors) {
         this.errors = errors;
     }
 
