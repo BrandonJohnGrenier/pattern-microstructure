@@ -18,49 +18,37 @@ package fm.pattern.valex;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import fm.pattern.valex.config.ValexConfiguration;
 
 public class ReportableTest {
 
+    @Before
+    public void before() {
+        ValexConfiguration.use(ValexConfiguration.YAML_FILE);
+    }
+
     @Test
     public void shouldBeAbleToConstructAReportable() {
-        Reportable reportable = new Reportable("code", "message", BadRequestException.class);
-        assertThat(reportable.getCode()).isEqualTo("code");
-        assertThat(reportable.getMessage()).isEqualTo("message");
+        Reportable reportable = new Reportable("bad.request");
+        assertThat(reportable.getCode()).isEqualTo("REQ-1000");
+        assertThat(reportable.getMessage()).isEqualTo("Bad Request");
         assertThat(reportable.getException()).isEqualTo(BadRequestException.class);
     }
 
     @Test
-    public void shouldBeAbleToConstructAReportableWithAFormattableString() {
-        Reportable reportable = new Reportable("code", "message %s", UnprocessableEntityException.class, "content");
-        assertThat(reportable.getCode()).isEqualTo("code");
-        assertThat(reportable.getMessage()).isEqualTo("message content");
-    }
-
-    @Test
-    public void shouldBeAbleToFormatAMessageWithArguments() {
-        String message = Reportable.report("The username %s cannot be greater than %d characters.", "smithers", 5).getMessage();
-        assertThat(message).isEqualTo("The username smithers cannot be greater than 5 characters.");
-    }
-
-    @Test
     public void shouldBeAbleToLookupAndFormatAMessageWithArguments() {
-        String message = Reportable.report("username.length", "smithers", 5).getMessage();
+        String message = new Reportable("username.length", "smithers", 5).getMessage();
         assertThat(message).isEqualTo("The username smithers cannot be greater than 5 characters.");
     }
 
     @Test
-    public void shouldBeAbleToLookupACodeAndMessageByKey() {
-        Reportable reportable = Reportable.report("contact.name.required");
-        assertThat(reportable.getMessage()).isEqualTo("A contact name is required.");
-        assertThat(reportable.getCode()).isEqualTo("CON-1000");
-    }
-
-    @Test
-    public void shouldBeAbleToLookupACodeAndMessageByKeyAndSubstituteValues() {
-        Reportable reportable = Reportable.report("username.length", "jim", 2);
-        assertThat(reportable.getCode()).isEqualTo("LOC-NTFD");
-        assertThat(reportable.getMessage()).isEqualTo("The username jim cannot be greater than 2 characters.");
+    public void shouldBeAbleToConstructAReportableWithAFormattableString() {
+        Reportable reportable = Reportable.report("bad.request", "explicit message");
+        assertThat(reportable.getCode()).isEqualTo("REQ-1000");
+        assertThat(reportable.getMessage()).isEqualTo("explicit message");
     }
 
 }

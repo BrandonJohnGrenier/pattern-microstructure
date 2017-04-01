@@ -2,10 +2,18 @@ package fm.pattern.valex;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import fm.pattern.valex.config.ValexConfiguration;
 
 public class ResultTest {
 
+    @Before
+    public void before() {
+        ValexConfiguration.use(ValexConfiguration.PROPERTY_FILE);
+    }
+    
     @Test
     public void shouldBeAbleToSubstituteArgumentsInAnErrorMessage() {
         Result<String> result = Result.reject("The username %s cannot be greater than %d characters.", "smithers", 5);

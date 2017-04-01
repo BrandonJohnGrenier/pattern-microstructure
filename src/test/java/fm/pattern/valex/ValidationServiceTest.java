@@ -13,7 +13,7 @@ public abstract class ValidationServiceTest {
     private ValidationService validationService;
 
     @Before
-    public void before() {
+    public void setup() {
         this.validationService = new SimpleValidationService(Validation.buildDefaultValidatorFactory().getValidator());
     }
 

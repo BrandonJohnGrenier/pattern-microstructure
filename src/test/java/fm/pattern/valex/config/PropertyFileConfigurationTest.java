@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ValexPropertiesConfigurationTest {
+public class PropertyFileConfigurationTest {
 
-    private ValexConfiguration configuration;
+    private ValexConfigurationFile configuration;
 
     @Before
     public void before() {
-        this.configuration = new ValexPropertiesConfiguration();
+        this.configuration = new PropertyConfigurationFile();
     }
 
     @Test
@@ -21,7 +21,7 @@ public class ValexPropertiesConfigurationTest {
 
     @Test
     public void theRepositoryShouldBNotBeAvailableWhenAPropertiesFileCannotBeFound() {
-        ValexConfiguration unavailable = new ValexPropertiesConfiguration("invalid.properties");
+        ValexConfigurationFile unavailable = new PropertyConfigurationFile("invalid.properties");
         assertThat(unavailable.isAvailable()).isFalse();
     }
 

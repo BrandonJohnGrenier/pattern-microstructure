@@ -9,24 +9,24 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 @SuppressWarnings("unchecked")
-public class ValexYamlConfiguration implements ValexConfiguration {
+public class YamlConfigurationFile implements ValexConfigurationFile {
 
-    private static final Logger log = LoggerFactory.getLogger(ValexPropertiesConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(PropertyConfigurationFile.class);
     private static final String FILENAME = "ValidationMessages.yml";
 
     private Map<String, Map<String, String>> properties;
     private boolean available = false;
 
-    public ValexYamlConfiguration() {
+    public YamlConfigurationFile() {
         load(FILENAME);
     }
 
-    public ValexYamlConfiguration(String filename) {
+    public YamlConfigurationFile(String filename) {
         load(filename);
     }
 
     private void load(String filename) {
-        InputStream inputStream = ValexYamlConfiguration.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = YamlConfigurationFile.class.getClassLoader().getResourceAsStream(filename);
         if (inputStream == null) {
             available = false;
             log.warn("Unable to find " + filename + " on the classpath.");
@@ -50,22 +50,12 @@ public class ValexYamlConfiguration implements ValexConfiguration {
 
     @Override
     public String getCode(String key) {
-        if (StringUtils.isBlank(key)) {
-            return null;
-        }
-
-        String code = getValue(properties.get(key), "code");
-        return StringUtils.isBlank(code) ? key : code;
+        return getValue(key, "code");
     }
 
     @Override
     public String getMessage(String key) {
-        if (StringUtils.isBlank(key)) {
-            return null;
-        }
-
-        String message = getValue(properties.get(key), "message");
-        return StringUtils.isBlank(message) ? key : message;
+        return getValue(key, "message");
     }
 
     @Override
@@ -82,6 +72,19 @@ public class ValexYamlConfiguration implements ValexConfiguration {
 
         Map<String, String> defaults = properties.get("default");
         return (defaults == null || defaults.isEmpty()) ? null : defaults.get("exception");
+    }
+
+    public String getValue(String elementKey, String attributeKey) {
+        if (StringUtils.isBlank(elementKey)) {
+            return null;
+        }
+    
+        String value = getValue(properties.get(elementKey), attributeKey);
+        return StringUtils.isBlank(value) ? elementKey : value;
+    }
+
+    public Map<String, String> getProperties(String key) {
+        return properties.get("key");
     }
 
     private static String getValue(Map<String, String> attributes, String key) {

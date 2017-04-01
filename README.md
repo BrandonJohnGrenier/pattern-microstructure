@@ -6,7 +6,9 @@
 
 Produce predictable and consumable REST error payloads with Valex, a YAML-based validation and exception management library for Java.
 
-An API should provide a useful error responses in a known, consumable format. The representation of an error should be no different than the representation of any other resource, just with its own set of fields. An error response should provide a few things for a developer - a useful error message, a unique error code, and a meaningful HTTP response code. A JSON representation of an error payload would look like:
+An API should provide a useful error responses in a known, consumable format. The representation of an error should be no different than the representation of any other resource, just with its own set of fields. An error response should provide a few things for a developer - a useful error message, a unique error code, and a meaningful HTTP response code. 
+
+A JSON representation of an error payload would look like:
 
 ```json
 {
@@ -87,7 +89,7 @@ To get started, add the following dependency to your depedency list:
 
 
 # Documentation
-Documentation is hosted on the [Valex Project Page](http://pattern.fm/valex).
+Documentation is hosted on the [Valex Project Page](http://pattern.fm/valex/#documentation).
 
 
 # Building from Source

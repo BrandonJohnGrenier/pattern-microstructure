@@ -24,8 +24,8 @@ public class Result<T> {
         return new Result<>(instance);
     }
 
-    public static <T> Result<T> reject(String keyOrMessage, Object... arguments) {
-        return new Result<>(null, Reportable.report(keyOrMessage, arguments));
+    public static <T> Result<T> reject(String key, Object... arguments) {
+        return new Result<>(null, new Reportable(key, arguments));
     }
 
     public static <T> Result<T> reject(Reportable... errors) {

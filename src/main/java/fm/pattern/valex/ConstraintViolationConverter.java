@@ -13,7 +13,7 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 import org.apache.commons.lang3.StringUtils;
 
-import fm.pattern.valex.config.ValexConfigurationFactory;
+import fm.pattern.valex.config.ValexConfiguration;
 
 public final class ConstraintViolationConverter {
 
@@ -30,8 +30,8 @@ public final class ConstraintViolationConverter {
         for (ConstraintViolation<T> violation : violations) {
             if (isNotEmpty(violation.getMessage())) {
                 String key = violation.getMessageTemplate().replace("{", "").replace("}", "");
-                String message = ValexConfigurationFactory.getMessage(key);
-                errors.add(Reportable.interpolated(key, interpolate(message, violation)));
+                String message = ValexConfiguration.getMessage(key);
+                errors.add(Reportable.report(key, interpolate(message, violation)));
             }
         }
 

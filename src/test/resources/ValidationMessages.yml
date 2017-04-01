@@ -9,6 +9,45 @@ contact.name.required:
   code: CON-1000
   message: A contact name is required.
   exception: fm.pattern.valex.UnprocessableEntityException
+
+bad.request:
+  code: REQ-1000
+  message: Bad Request
+  exception: fm.pattern.valex.BadRequestException
+  
+username.length:
+  code: USR-1000
+  message: "The username %s cannot be greater than %d characters."  
+  
+not.found.one:
+   code: FR-1000
+   message: "Not found 1."
+   exception: fm.pattern.valex.EntityNotFoundException  
+
+not.found.two:
+   code: FR-1001
+   message: "Not found 2."
+   exception: fm.pattern.valex.EntityNotFoundException 
+ 
+internal.error.one:
+   code: ER-1000
+   message: "Internal error 1."
+   exception: fm.pattern.valex.InternalErrorException  
+
+internal.error.two:
+   code: ER-1001
+   message: "Internal error 2."
+   exception: fm.pattern.valex.InternalErrorException   
+
+bad.request.one:
+   code: BR-1000
+   message: "Bad request 1."
+   exception: fm.pattern.valex.BadRequestException  
+
+bad.reqeust.two:
+   code: BR-1001
+   message: "Bad request 2."
+   exception: fm.pattern.valex.BadRequestException  
   
 instance.null:
   code: SYS-0006

@@ -3,10 +3,18 @@ package fm.pattern.valex;
 import static fm.pattern.valex.fixtures.dsl.AddressDSL.address;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import fm.pattern.valex.config.ValexConfiguration;
 
 public class AddressValidationTest extends ValidationServiceTest {
 
+    @Before
+    public void before() {
+        ValexConfiguration.use(ValexConfiguration.PROPERTY_FILE);
+    }
+    
     @Test
     public void shouldBeAbleToCreateAnAddress() {
         assertCreate(address().build()).accepted();

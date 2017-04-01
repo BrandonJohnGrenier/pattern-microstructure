@@ -16,30 +16,35 @@
 
 package fm.pattern.valex;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
 import fm.pattern.commons.util.JSON;
-import fm.pattern.valex.config.ValexConfigurationFactory;
+import fm.pattern.valex.config.ValexConfiguration;
 
 @SuppressWarnings("unchecked")
 public class Reportable {
 
     private final String code;
     private final String message;
+    private final Map<String, String> properties = new HashMap<>();
+
     private final Class<? extends ReportableException> exception;
 
-    public Reportable(String code, String message, Class<? extends ReportableException> exception, Object... arguments) {
-        this.code = code;
+    public Reportable(String key, Object... arguments) {
+        this(key, getMessage(key), arguments);
+    }
+
+    private Reportable(String key, String message, Object... arguments) {
+        this.code = getCode(key);
         this.message = String.format(message, arguments);
-        this.exception = exception;
+        this.exception = getException(key);
     }
 
-    public static Reportable report(String keyOrMessage, Object... arguments) {
-        return new Reportable(getCode(keyOrMessage), getMessage(keyOrMessage), getException(keyOrMessage), arguments);
-    }
-
-    static Reportable interpolated(String key, String message, Object... arguments) {
-        return new Reportable(getCode(key), message, getException(key), arguments);
+    public static Reportable report(String key, String message) {
+        return new Reportable(key, message);
     }
 
     public String getCode() {
@@ -55,17 +60,17 @@ public class Reportable {
     }
 
     private static String getCode(String key) {
-        String code = ValexConfigurationFactory.getCode(key);
+        String code = ValexConfiguration.getCode(key);
         return StringUtils.isBlank(code) ? key : code;
     }
 
     private static String getMessage(String input) {
-        String message = ValexConfigurationFactory.getMessage(input);
+        String message = ValexConfiguration.getMessage(input);
         return StringUtils.isBlank(message) ? input : message;
     }
 
     private static Class<? extends ReportableException> getException(String key) {
-        String className = ValexConfigurationFactory.getException(key);
+        String className = ValexConfiguration.getException(key);
         if (StringUtils.isBlank(className)) {
             return null;
         }

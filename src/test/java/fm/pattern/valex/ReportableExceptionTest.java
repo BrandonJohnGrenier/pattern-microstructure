@@ -11,7 +11,7 @@ public class ReportableExceptionTest {
 
     @Before
     public void before() {
-        this.reportable = new Reportable("code", "message", null);
+        this.reportable = new Reportable("code", "message");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ReportableExceptionTest {
 
     @Test
     public void shouldBeAbleToConvertAReportableExceptionIntoAnErrorsRepresentation() {
-        ResourceConflictException exception = new ResourceConflictException(Reportable.report("contact.name.required"));
+        ResourceConflictException exception = new ResourceConflictException(new Reportable("contact.name.required"));
 
         ErrorsRepresentation representation = exception.toRepresentation();
         assertThat(representation.getErrors()).hasSize(1);

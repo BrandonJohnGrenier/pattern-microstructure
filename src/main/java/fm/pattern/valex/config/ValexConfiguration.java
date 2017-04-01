@@ -16,14 +16,53 @@
 
 package fm.pattern.valex.config;
 
-public interface ValexConfiguration {
+import org.apache.commons.lang3.StringUtils;
 
-    String getCode(String key);
+public final class ValexConfiguration {
 
-    String getMessage(String key);
+    private static ValexConfigurationFile explicitConfiguration = null;
 
-    String getException(String key);
+    public static final ValexConfigurationFile PROPERTY_FILE = new PropertyConfigurationFile();
+    public static final ValexConfigurationFile YAML_FILE = new YamlConfigurationFile();
 
-    boolean isAvailable();
-    
+    private ValexConfiguration() {
+
+    }
+
+    public static void use(ValexConfigurationFile configuration) {
+        explicitConfiguration = configuration;
+    }
+
+    public static String getCode(String key) {
+        return getConfiguration().getCode(key);
+    }
+
+    public static String getMessage(String key) {
+        return getConfiguration().getMessage(key);
+    }
+
+    public static String getException(String key) {
+        return getConfiguration().getException(key);
+    }
+
+    public static ValexConfigurationFile getConfiguration() {
+        if (explicitConfiguration != null) {
+            return explicitConfiguration;
+        }
+
+        String filename = System.getProperty("valex.config");
+        if (StringUtils.isBlank(filename)) {
+            return YAML_FILE.isAvailable() ? YAML_FILE : PROPERTY_FILE;
+        }
+
+        if (filename.endsWith(".yml")) {
+            return new YamlConfigurationFile(filename);
+        }
+        if (filename.endsWith(".properties")) {
+            return new PropertyConfigurationFile(filename);
+        }
+
+        throw new ValexConfigurationException("Invalid Valex configuration file '" + filename + "' - file must be a .yml or .properties file");
+    }
+
 }

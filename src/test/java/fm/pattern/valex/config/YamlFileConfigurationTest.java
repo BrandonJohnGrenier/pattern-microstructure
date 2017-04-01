@@ -21,13 +21,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ValexYamlConfigurationTest {
+public class YamlFileConfigurationTest {
 
-    private ValexConfiguration repository;
+    private ValexConfigurationFile repository;
 
     @Before
     public void before() {
-        this.repository = new ValexYamlConfiguration();
+        this.repository = new YamlConfigurationFile();
     }
 
     @Test
@@ -37,13 +37,13 @@ public class ValexYamlConfigurationTest {
 
     @Test
     public void theRepositoryShouldNotBeAvailableWhenAYamlFileCannotBeFound() {
-        ValexConfiguration unavailable = new ValexYamlConfiguration("sadlfisj.yaml");
+        ValexConfigurationFile unavailable = new YamlConfigurationFile("sadlfisj.yaml");
         assertThat(unavailable.isAvailable()).isFalse();
     }
 
     @Test(expected = ValexConfigurationException.class)
     public void theRepositoryShouldThrowAnExceptionWhenAYamlFileCannotBeParsed() {
-        new ValexYamlConfiguration("invalid.yml");
+        new YamlConfigurationFile("invalid.yml");
     }
 
     @Test

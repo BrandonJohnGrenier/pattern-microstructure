@@ -1,30 +1,32 @@
 package fm.pattern.valex.config;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ValexPropertiesConfiguration implements ValexConfiguration {
+public class PropertyConfigurationFile implements ValexConfigurationFile {
 
-    private static final Logger log = LoggerFactory.getLogger(ValexPropertiesConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(PropertyConfigurationFile.class);
     private static final String default_filename = "ValidationMessages.properties";
 
     private static final Properties properties = new Properties();
     private static boolean available = false;
 
-    public ValexPropertiesConfiguration() {
+    public PropertyConfigurationFile() {
         load(default_filename);
     }
 
-    public ValexPropertiesConfiguration(String filename) {
+    public PropertyConfigurationFile(String filename) {
         load(filename);
     }
 
     private void load(String filename) {
-        InputStream inputStream = ValexPropertiesConfiguration.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = PropertyConfigurationFile.class.getClassLoader().getResourceAsStream(filename);
         if (inputStream == null) {
             available = false;
             log.warn("Unable to find Valex configuration file '" + filename + "' on the classpath.");
@@ -74,6 +76,11 @@ public class ValexPropertiesConfiguration implements ValexConfiguration {
 
         String exception = properties.getProperty(key + ".exception");
         return StringUtils.isBlank(exception) ? properties.getProperty("default.exception") : exception;
+    }
+
+    @Override
+    public Map<String, String> getProperties(String key) {
+        return new HashMap<String, String>();
     }
 
 }
