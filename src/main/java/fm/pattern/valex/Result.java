@@ -32,6 +32,10 @@ public class Result<T> {
         return new Result<>(null, errors);
     }
 
+    public static <T> Result<T> reject(List<Reportable> errors) {
+        return new Result<>(null, errors.toArray(new Reportable[errors.size()]));
+    }
+    
     public T getInstance() {
         return instance;
     }
